@@ -9,7 +9,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
         customError.status = 400;
     }
 
-    return res.status(customError.status).json({ error: customError.message });
+    return res.status(customError.status).json({ status: false, error: customError.message });
 };
 
 module.exports = errorHandlerMiddleware;
