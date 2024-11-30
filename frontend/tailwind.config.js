@@ -16,6 +16,7 @@ export default {
 				blackdefault: '#161618',
 				whitedefault: '#fafafa',
 				bluedefault: '#4589ff',
+				greendefault: '#5cb85c',
 
     			background: 'hsl(var(--background))',
     			foreground: 'hsl(var(--foreground))',

@@ -1,12 +1,91 @@
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import GoogleSign from "./GoogleSign";
+import { registerUser } from "@/store/user/userSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+interface RegisterForm {
+    firstName: String;
+    lastName: String;
+    email: String;
+    password: String;
+}
 
 export default function RegisterForm() {
+    // redux
+    const { isLoading, success, error } = useAppSelector((state) => ({
+        ...state.user,
+    }));
+    const dispatch = useAppDispatch();
+
+    // navigate
+    const navigate = useNavigate();
+
+    // toast
+    const { toast } = useToast();
+
+    // ref
+    const firstNameRef = useRef<null | HTMLInputElement>(null);
+    const lastNameRef = useRef<null | HTMLInputElement>(null);
+    const emailRef = useRef<null | HTMLInputElement>(null);
+    const passwordRef = useRef<null | HTMLInputElement>(null);
+
+    // handle login
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(
+            formData.entries()
+        ) as unknown as RegisterForm;
+
+        await dispatch(registerUser(data));
+    };
+
+    useEffect(() => {
+        if (success) {
+            toast({
+                title: "Success",
+                description: success,
+                variant: "default",
+                style: {
+                    color: "#fafafa",
+                    backgroundColor: "#5cb85c",
+                },
+            });
+
+            // clear inputs
+            if (firstNameRef.current && lastNameRef.current && emailRef.current && passwordRef.current) {
+                firstNameRef.current.value = "";
+                firstNameRef.current.disabled = true;
+                lastNameRef.current.value = "";
+                lastNameRef.current.disabled = true;
+                emailRef.current.value = "";
+                emailRef.current.disabled = true;
+                passwordRef.current.value = "";
+                passwordRef.current.disabled = true;
+            }
+
+            navigate("/auth/login");
+        } else if (error) {
+            toast({
+                title: "Error",
+                description: error,
+                variant: "destructive",
+            });
+        }
+    }, [success, error]);
+
     return (
-        <form className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault">
+        <form
+            onSubmit={handleSubmit}
+            className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
+        >
             <h1 className="text-center text-4xl m-2 font-bold text-gray-700">
                 Register
             </h1>
@@ -31,6 +110,7 @@ export default function RegisterForm() {
                         required
                         id="firstName"
                         name="firstName"
+                        ref={firstNameRef}
                     />
                 </div>
                 <div>
@@ -44,6 +124,7 @@ export default function RegisterForm() {
                         required
                         id="lastName"
                         name="lastName"
+                        ref={lastNameRef}
                     />
                 </div>
             </div>
@@ -58,6 +139,7 @@ export default function RegisterForm() {
                     required
                     id="email"
                     name="email"
+                    ref={emailRef}
                 />
             </div>
             <div>
@@ -71,9 +153,19 @@ export default function RegisterForm() {
                     required
                     id="password"
                     name="password"
+                    ref={passwordRef}
                 />
             </div>
-            <Button type="submit">Register</Button>
+            <Button type="submit" disabled={isLoading ? true : false}>
+                {isLoading ? (
+                    <>
+                        <Loader2 className="animate-spin" />
+                        Please wait
+                    </>
+                ) : (
+                    "Register"
+                )}
+            </Button>
             <p className="text-xs">
                 Do you have an account?{" "}
                 <Link to="/auth/login" className="text-blue-700 underline">

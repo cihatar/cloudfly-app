@@ -4,6 +4,7 @@ import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
     return (
@@ -18,6 +19,10 @@ export default function App() {
                         <Route
                             path="/auth/forgot-password"
                             element={<ForgotPassword />}
+                        />
+                        <Route
+                            path="/auth/reset-password"
+                            element={<ResetPassword />}
                         />
                     </Route>
                 </Routes>
