@@ -106,11 +106,14 @@ const forgotPassword = async (req, res) => {
 
 // reset password
 const resetPassword = async (req, res) => {
-    const { token } = req.query;
-    const { password } = req.body;
+    const { token, password, password_confirmation } = req.body;
 
-    if (!token || !password) {
+    if (!token || !password && !password_confirmation) {
         throw new CustomAPIError("Please provide all required fields", 400);
+    }
+
+    if (password !== password_confirmation) {
+        throw new CustomAPIError("Passwords are not same", 400);
     }
     
     const resetPasswordToken = await ResetPasswordToken.findOne({ token });
@@ -128,15 +131,16 @@ const resetPassword = async (req, res) => {
     const currentDate = new Date();
     const expirationDate = new Date(resetPasswordToken.expirationDate);
     if (expirationDate.getTime() < currentDate.getTime()) {
+        await resetPasswordToken.deleteOne();
         throw new CustomAPIError("Token has expired", 400);
     }
-
-    // remove token from db
-    await resetPasswordToken.deleteOne();
 
     // update password
     user.password = password;
     await user.save();
+
+    // remove token from db
+    await resetPasswordToken.deleteOne();
 
     res.status(200).json({ message: "Your password has been successfully updated" })
 }
