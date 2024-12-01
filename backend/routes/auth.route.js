@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { rateLimit } = require("express-rate-limit");
 const trimRequest = require("trim-request");
 const passport = require("passport");
 const {
@@ -11,11 +12,23 @@ const {
     resetPassword,
 } = require("../controllers/auth.controller.js");
 
-router.post("/login", trimRequest.all, loginUser);
-router.post("/register", trimRequest.all, registerUser);
+// rate limiter
+const limiter = rateLimit({
+	windowMs: 1000 * 60 * 5,
+	limit: 10,
+    handler: (req, res) => {
+        res.status(429).json({
+            status: false,
+            error: "Too many requests, please try again later",
+        });
+    }
+})
+
+router.post("/login", limiter, trimRequest.all, loginUser);
+router.post("/register", limiter, trimRequest.all, registerUser);
 router.get("/logout", logout);
-router.post("/forgot-password", trimRequest.all, forgotPassword);
-router.post("/reset-password", trimRequest.all, resetPassword);
+router.post("/forgot-password", limiter, trimRequest.all, forgotPassword);
+router.post("/reset-password", limiter, trimRequest.all, resetPassword);
 
 // google oauth
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));

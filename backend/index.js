@@ -10,7 +10,6 @@ const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const cors = require("cors");
 const compression = require("compression");
-const { rateLimit } = require("express-rate-limit");
 const session = require("express-session");
 const passport = require("passport");
 require("./config/passport.js");
@@ -42,20 +41,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// rate limiter
-const limiter = rateLimit({
-	windowMs: 1000 * 60 * 5,
-	limit: 10,
-    handler: (req, res) => {
-        res.status(429).json({
-            status: false,
-            error: "Too many requests, please try again later",
-        });
-    }
-})
-
 // routes
-app.use("/api/auth", limiter, authRoute);
+app.use("/api/auth", authRoute);
 
 // error handling
 app.use(errorHandlerMiddleware);
