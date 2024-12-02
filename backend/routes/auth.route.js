@@ -3,6 +3,7 @@ const router = express.Router();
 const { rateLimit } = require("express-rate-limit");
 const trimRequest = require("trim-request");
 const passport = require("passport");
+const { authenticateUser } = require("../middlewares/authentication.js");
 const {
     registerUser,
     loginUser,
@@ -10,6 +11,7 @@ const {
     logout,
     forgotPassword,
     resetPassword,
+    verifyToken
 } = require("../controllers/auth.controller.js");
 
 // rate limiter
@@ -29,6 +31,7 @@ router.post("/register", limiter, trimRequest.all, registerUser);
 router.get("/logout", logout);
 router.post("/forgot-password", limiter, trimRequest.all, forgotPassword);
 router.post("/reset-password", limiter, trimRequest.all, resetPassword);
+router.post("/verify-token", authenticateUser, verifyToken)
 
 // google oauth
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));

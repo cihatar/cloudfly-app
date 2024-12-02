@@ -38,23 +38,17 @@ export default function ResetPasswordForm({ token }: { token: String }) {
             formData.entries()
         ) as unknown as ResetPasswordForm;
 
-        await dispatch(
-            resetPassword({ token, password, password_confirmation })
-        );
-    };
-
-    useEffect(() => {
-        if (success) {
+        await dispatch(resetPassword({ token, password, password_confirmation })).unwrap().then((res) => {
             toast({
                 title: "Success",
-                description: success,
+                description: res.message,
                 variant: "default",
                 style: {
                     color: "#fafafa",
                     backgroundColor: "#5cb85c",
                 },
             });
-
+    
             // clear inputs
             if (passwordRef.current && passwordConfirmationRef.current) {
                 passwordRef.current.value = "";
@@ -64,14 +58,15 @@ export default function ResetPasswordForm({ token }: { token: String }) {
             }
 
             navigate("/auth/login");
-        } else if (error) {
-            toast({
-                title: "Error",
-                description: error,
-                variant: "destructive",
+            
+            }).catch((err) => {
+                toast({
+                    title: "Error",
+                    description: err,
+                    variant: "destructive",
+                });
             });
-        }
-    }, [success, error]);
+    };
 
     return (
         <form

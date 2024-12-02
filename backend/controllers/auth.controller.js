@@ -145,4 +145,19 @@ const resetPassword = async (req, res) => {
     res.status(200).json({ message: "Your password has been successfully updated" })
 }
 
-module.exports = { registerUser, loginUser, googleSign, logout, forgotPassword, resetPassword };
+const verifyToken = async (req, res) => {
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+        throw new CustomAPIError("User not found", 404);
+    }
+
+    return res.status(200).json({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profileImage: user.profileImage,
+        maxStorage: user.maxStorage,
+    });
+}
+
+module.exports = { registerUser, loginUser, googleSign, logout, forgotPassword, resetPassword, verifyToken };

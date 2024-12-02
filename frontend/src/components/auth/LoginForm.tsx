@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -16,7 +16,7 @@ interface LoginForm {
 
 export default function LoginForm() {
     // redux
-    const { user, isLoading, error } = useAppSelector((state) => ({
+    const { isLoading } = useAppSelector((state) => ({
         ...state.user,
     }));
     const dispatch = useAppDispatch();
@@ -30,6 +30,9 @@ export default function LoginForm() {
     // ref
     const emailRef = useRef<null | HTMLInputElement>(null);
     const passwordRef = useRef<null | HTMLInputElement>(null);
+    
+    // button loading
+    const [btnLoading, setBtnLoading] = useState(false);
 
     // handle login
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,14 +43,11 @@ export default function LoginForm() {
             formData.entries()
         ) as unknown as LoginForm;
 
-        await dispatch(loginUser(data));
-    };
-
-    useEffect(() => {
-        if (user && user.firstName) {
+        setBtnLoading(true);
+        await dispatch(loginUser(data)).unwrap().then((res) => {            
             toast({
                 title: "Success",
-                description: `Welcome, ${user.firstName}!`,
+                description: `Welcome, ${res?.firstName}!`,
                 variant: "default",
                 duration: 3000,
                 style: {
@@ -55,7 +55,6 @@ export default function LoginForm() {
                     backgroundColor: "#5cb85c",
                 },
             });
-
             // clear inputs
             if (emailRef.current && passwordRef.current) {
                 emailRef.current.value = "";
@@ -65,18 +64,19 @@ export default function LoginForm() {
             }
 
             // redirect user
-            const timeoutId = setTimeout(() => {
+            setTimeout(() => {
                 navigate("/");
+                setBtnLoading(false);
             }, 3000);
-            return () => clearTimeout(timeoutId);
-        } else if (error) {
+        }).catch((err) => {
             toast({
                 title: "Error",
-                description: error,
+                description: err,
                 variant: "destructive",
             });
-        }
-    }, [user, error]);
+            setBtnLoading(false);
+        });
+    };
 
     return (
         <form
@@ -128,7 +128,7 @@ export default function LoginForm() {
                     ref={passwordRef}
                 />
             </div>
-            <Button type="submit" disabled={isLoading ? true : user ? true : false}>
+            <Button type="submit" disabled={btnLoading ? true : false}>
                 {isLoading ? (
                     <>
                         <Loader2 className="animate-spin" />

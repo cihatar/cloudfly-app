@@ -44,14 +44,10 @@ export default function RegisterForm() {
             formData.entries()
         ) as unknown as RegisterForm;
 
-        await dispatch(registerUser(data));
-    };
-
-    useEffect(() => {
-        if (success) {
+        await dispatch(registerUser(data)).unwrap().then((res) => {
             toast({
                 title: "Success",
-                description: success,
+                description: res.message,
                 variant: "default",
                 style: {
                     color: "#fafafa",
@@ -72,14 +68,14 @@ export default function RegisterForm() {
             }
 
             navigate("/auth/login");
-        } else if (error) {
+        }).catch((err) => {
             toast({
                 title: "Error",
-                description: error,
+                description: err,
                 variant: "destructive",
             });
-        }
-    }, [success, error]);
+        });
+    };
 
     return (
         <form
