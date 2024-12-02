@@ -31,10 +31,10 @@ router.post("/register", limiter, trimRequest.all, registerUser);
 router.get("/logout", logout);
 router.post("/forgot-password", limiter, trimRequest.all, forgotPassword);
 router.post("/reset-password", limiter, trimRequest.all, resetPassword);
-router.post("/verify-token", authenticateUser, verifyToken)
+router.post("/verify-token", authenticateUser, verifyToken);
 
 // google oauth
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
-router.get("/google/callback", passport.authenticate("google", { failureRedirect: '/' }), googleSign);
+router.get("/google/callback", passport.authenticate("google", { failureRedirect: `${process.env.FRONTEND_URL}/auth/login` }), googleSign);
 
 module.exports = router;

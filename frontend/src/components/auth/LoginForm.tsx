@@ -66,6 +66,7 @@ export default function LoginForm() {
             // redirect user
             setTimeout(() => {
                 navigate("/");
+                window.location.reload();
                 setBtnLoading(false);
             }, 3000);
         }).catch((err) => {

@@ -1,11 +1,16 @@
 import { Button } from "../ui/button";
 
 export default function GoogleSign() {
+    const handleGoogle = () => {
+        window.location.href = import.meta.env.VITE_BACKEND_URL + "/api/auth/google";
+    }
+
     return (
         <Button
             variant="secondary"
             className="hover:bg-bluedefault hover:text-whitedefault"
             type="button"
+            onClick={handleGoogle}
         >
             <svg
                 className="-ml-1 w-4 h-4"

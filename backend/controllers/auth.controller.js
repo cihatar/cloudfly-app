@@ -59,12 +59,9 @@ const loginUser = async (req, res) => {
 
 // google login & signup
 const googleSign = async (req, res) => {
-    const { firstName, lastName, email, profileImage, maxStorage } = req.user;
-
     // set cookie
     attachCookiesToResponse({ res, payload: { userId: req.user._id } });
-
-    return res.status(200).json({ firstName, lastName, email, profileImage, maxStorage });
+    return res.redirect(process.env.FRONTEND_URL);
 }
 
 // logout
