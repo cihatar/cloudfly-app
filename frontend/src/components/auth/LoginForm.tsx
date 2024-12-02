@@ -10,8 +10,8 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface LoginForm {
-    email: String;
-    password: String;
+    email: string;
+    password: string;
 }
 
 export default function LoginForm() {
@@ -44,7 +44,7 @@ export default function LoginForm() {
         ) as unknown as LoginForm;
 
         setBtnLoading(true);
-        await dispatch(loginUser(data)).unwrap().then((res) => {            
+        await dispatch(loginUser(data)).unwrap().then((res) => {     
             toast({
                 title: "Success",
                 description: `Welcome, ${res?.firstName}!`,

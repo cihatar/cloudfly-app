@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { resetPassword } from "@/store/user/userSlice";
@@ -8,13 +8,13 @@ import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface ResetPasswordForm {
-    password: String;
-    password_confirmation: String;
+    password: string;
+    password_confirmation: string;
 }
 
-export default function ResetPasswordForm({ token }: { token: String }) {
+export default function ResetPasswordForm({ token }: { token: string }) {
     // redux
-    const { isLoading, success, error } = useAppSelector((state) => ({
+    const { isLoading } = useAppSelector((state) => ({
         ...state.user,
     }));
     const dispatch = useAppDispatch();

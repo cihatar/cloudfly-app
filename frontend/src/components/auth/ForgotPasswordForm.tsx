@@ -4,16 +4,16 @@ import { Input } from "../ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { forgotPassword } from "@/store/user/userSlice";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Loader2 } from "lucide-react";
 
 interface ForgotPasswordForm {
-    email: String;
+    email: string;
 }
 
 export default function ForgotPasswordForm() {
     // redux
-    const { isLoading, success, error } = useAppSelector((state) => ({
+    const { isLoading } = useAppSelector((state) => ({
         ...state.user,
     }));
     const dispatch = useAppDispatch();

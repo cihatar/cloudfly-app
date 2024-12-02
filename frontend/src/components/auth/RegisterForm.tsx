@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -10,15 +10,15 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface RegisterForm {
-    firstName: String;
-    lastName: String;
-    email: String;
-    password: String;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
 }
 
 export default function RegisterForm() {
     // redux
-    const { isLoading, success, error } = useAppSelector((state) => ({
+    const { isLoading } = useAppSelector((state) => ({
         ...state.user,
     }));
     const dispatch = useAppDispatch();
