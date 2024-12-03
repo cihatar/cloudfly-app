@@ -33,7 +33,7 @@ export default function ForgotPasswordForm() {
             formData.entries()
         ) as unknown as ForgotPasswordForm;
 
-        await dispatch(forgotPassword(data)).unwrap().then((res) => {
+        dispatch(forgotPassword(data)).unwrap().then((res) => {
             toast({
                 title: "Success",
                 description: res.message,

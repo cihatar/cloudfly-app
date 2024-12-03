@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { resetPassword } from "@/store/user/userSlice";
@@ -29,6 +29,9 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     const passwordRef = useRef<null | HTMLInputElement>(null);
     const passwordConfirmationRef = useRef<null | HTMLInputElement>(null);
 
+    // button loading
+    const [btnLoading, setBtnLoading] = useState(false);
+
     // handle reset password
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,7 +41,8 @@ export default function ResetPasswordForm({ token }: { token: string }) {
             formData.entries()
         ) as unknown as ResetPasswordForm;
 
-        await dispatch(resetPassword({ token, password, password_confirmation })).unwrap().then((res) => {
+        setBtnLoading(true);
+        dispatch(resetPassword({ token, password, password_confirmation })).unwrap().then((res) => {
             toast({
                 title: "Success",
                 description: res.message,
@@ -57,14 +61,20 @@ export default function ResetPasswordForm({ token }: { token: string }) {
                 passwordConfirmationRef.current.disabled = true;
             }
 
-            navigate("/auth/login");
-            
+            // navigate("/auth/login");
+
+            setTimeout(() => {
+                navigate("/auth/login");
+                window.location.reload();
+                setBtnLoading(false);
+            }, 3000);
             }).catch((err) => {
                 toast({
                     title: "Error",
                     description: err,
                     variant: "destructive",
                 });
+                setBtnLoading(false);
             });
     };
 
@@ -96,7 +106,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
                     ref={passwordConfirmationRef}
                 />
             </div>
-            <Button type="submit" disabled={isLoading ? true : false}>
+            <Button type="submit" disabled={btnLoading ? true : false}>
                 {isLoading ? (
                     <>
                         <Loader2 className="animate-spin" />

@@ -44,7 +44,7 @@ export default function LoginForm() {
         ) as unknown as LoginForm;
 
         setBtnLoading(true);
-        await dispatch(loginUser(data)).unwrap().then((res) => {     
+        dispatch(loginUser(data)).unwrap().then((res) => {     
             toast({
                 title: "Success",
                 description: `Welcome, ${res?.firstName}!`,

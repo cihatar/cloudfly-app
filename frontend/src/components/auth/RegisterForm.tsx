@@ -44,7 +44,7 @@ export default function RegisterForm() {
             formData.entries()
         ) as unknown as RegisterForm;
 
-        await dispatch(registerUser(data)).unwrap().then((res) => {
+        dispatch(registerUser(data)).unwrap().then((res) => {
             toast({
                 title: "Success",
                 description: res.message,

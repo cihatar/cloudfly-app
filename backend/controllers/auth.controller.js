@@ -50,10 +50,6 @@ const loginUser = async (req, res) => {
 
     return res.status(200).json({
         firstName: existingUser.firstName,
-        lastName: existingUser.lastName,
-        email: existingUser.email,
-        profileImage: existingUser.profileImage,
-        maxStorage: existingUser.maxStorage,
     });
 };
 
@@ -109,13 +105,13 @@ const resetPassword = async (req, res) => {
         throw new CustomAPIError("Please provide all required fields", 400);
     }
 
-    if (password !== password_confirmation) {
-        throw new CustomAPIError("Passwords are not same", 400);
-    }
-    
     const resetPasswordToken = await ResetPasswordToken.findOne({ token });
     if (!resetPasswordToken) {
         throw new CustomAPIError("Token is invalid", 400);
+    }
+
+    if (password !== password_confirmation) {
+        throw new CustomAPIError("Passwords are not same", 400);
     }
 
     const userId = resetPasswordToken.user;
