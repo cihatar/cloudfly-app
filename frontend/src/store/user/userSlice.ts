@@ -7,6 +7,7 @@ interface User {
     lastName: string;
     email: string;
     maxStorage: number;
+    profileImage: string;
 }
 
 // user state interface
@@ -107,59 +108,59 @@ const userSlice = createSlice({
     extraReducers(builder) {
         builder
             // login
-            .addCase(loginUser.pending, (state, action) => {
+            .addCase(loginUser.pending, (state) => {
                 state.user = null;
                 state.isLoading = true;
             })
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(loginUser.fulfilled, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
-            .addCase(loginUser.rejected, (state, action) => {
+            .addCase(loginUser.rejected, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
             // register
-            .addCase(registerUser.pending, (state, action) => {
+            .addCase(registerUser.pending, (state) => {
                 state.user = null;
                 state.isLoading = true;
             })
-            .addCase(registerUser.fulfilled, (state, action) => {
+            .addCase(registerUser.fulfilled, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
-            .addCase(registerUser.rejected, (state, action) => {
+            .addCase(registerUser.rejected, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
             // forgot password
-            .addCase(forgotPassword.pending, (state, action) => {
+            .addCase(forgotPassword.pending, (state) => {
                 state.user = null;
                 state.isLoading = true;
             })
-            .addCase(forgotPassword.fulfilled, (state, action) => {
+            .addCase(forgotPassword.fulfilled, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
-            .addCase(forgotPassword.rejected, (state, action) => {
+            .addCase(forgotPassword.rejected, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
             // reset password
-            .addCase(resetPassword.pending, (state, action) => {
+            .addCase(resetPassword.pending, (state) => {
                 state.user = null;
                 state.isLoading = true;
             })
-            .addCase(resetPassword.fulfilled, (state, action) => {
+            .addCase(resetPassword.fulfilled, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
-            .addCase(resetPassword.rejected, (state, action) => {
+            .addCase(resetPassword.rejected, (state) => {
                 state.user = null;
                 state.isLoading = false;
             })
             // verify token
-            .addCase(verifyToken.pending, (state, action) => {
+            .addCase(verifyToken.pending, (state) => {
                 state.user = null;
                 state.isLoading = true;
             })
@@ -168,7 +169,7 @@ const userSlice = createSlice({
                 state.user = action.payload as User;
                 state.isLoading = false;
             })
-            .addCase(verifyToken.rejected, (state, action) => {
+            .addCase(verifyToken.rejected, (state) => {
                 localStorage.removeItem("user");
                 state.user = null;
                 state.isLoading = false;

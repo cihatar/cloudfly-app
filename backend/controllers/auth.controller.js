@@ -139,17 +139,12 @@ const resetPassword = async (req, res) => {
 }
 
 const verifyToken = async (req, res) => {
-    const user = await User.findById(req.user.userId);
-    if (!user) {
-        throw new CustomAPIError("User not found", 404);
-    }
-
     return res.status(200).json({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        profileImage: user.profileImage,
-        maxStorage: user.maxStorage,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+        profileImage: req.user.profileImage,
+        maxStorage: req.user.maxStorage,
     });
 }
 

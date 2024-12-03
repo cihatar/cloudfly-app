@@ -12,12 +12,12 @@ const authenticateUser = async (req, res, next) => {
     try {
         const { userId } = isTokenValid({ token });
 
-        const user = await User.findOne({ _id: userId });
+        const user = await User.findById(userId);
         if (!user) {
             throw new CustomAPIError("Authentication Invalid", 401);
         }
 
-        req.user = { userId };
+        req.user = user;
         next();
     } catch (error) {
         throw new CustomAPIError("Authentication Invalid", 401);
