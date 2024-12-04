@@ -61,8 +61,6 @@ export default function ResetPasswordForm({ token }: { token: string }) {
                 passwordConfirmationRef.current.disabled = true;
             }
 
-            // navigate("/auth/login");
-
             setTimeout(() => {
                 navigate("/auth/login");
                 window.location.reload();

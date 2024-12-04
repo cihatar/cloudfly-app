@@ -15,7 +15,7 @@ function AppRoutes() {
     const [logoScale, setLogoScale] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const location = useLocation();
+    const location = useLocation();    
 
     // redux
     const { user } = useAppSelector((state) => ({
@@ -31,7 +31,7 @@ function AppRoutes() {
                 setTimeout(() => setLoading(false), 1000);
             });
         };
-        if (!user) {
+        if (!user && !location.pathname.includes("auth")) {
             authenticateUser();
         }
     }, []);
