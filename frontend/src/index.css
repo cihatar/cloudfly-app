@@ -68,3 +68,7 @@
   }
 }
 
+.active {
+  @apply bg-blackdefault/5;
+}
+
