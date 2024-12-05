@@ -33,7 +33,9 @@ const userSchema = new mongoose.Schema(
         },
         profileImage: {
             type: String,
-            default: "/images/default-profile-image.jpg",
+            default: function () {
+                return `${process.env.BASE_URL}/images/default-profile-image.jpg`;
+            },
         },
         maxStorage: {
             type: Number,
@@ -53,6 +55,6 @@ userSchema.pre("save", async function () {
 // compare password
 userSchema.method("comparePassword", async function comparePassword(password) {
     return await bcrypt.compare(password, this.password);
-})
+});
 
 module.exports = mongoose.model("user", userSchema);
