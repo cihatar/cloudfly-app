@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import ProfileSettings from "./pages/ProfileSettings";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Cloudy, Loader2 } from "lucide-react";
@@ -64,6 +65,10 @@ function AppRoutes() {
                     <Route
                         path="/auth/reset-password"
                         element={user ? <Navigate to="/" /> : <ResetPassword />}
+                    />
+                    <Route
+                        path="/profile/settings"
+                        element={user ? <ProfileSettings /> : <Navigate to="/auth/login" />}
                     />
                 </Route>
             </Routes>

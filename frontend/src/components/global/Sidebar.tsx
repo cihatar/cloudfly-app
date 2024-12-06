@@ -4,8 +4,8 @@ import {
     FolderHeart,
     HardDrive,
     LogOut,
-    Pencil,
     Settings,
+    Settings2,
     Trash2,
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
@@ -17,6 +17,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function Sidebar() {
     // redux
@@ -24,24 +25,28 @@ export default function Sidebar() {
 
     return (
         <div
-            className="w-full bg-blackdefault/5 text-blackdefault min-h-[calc(100vh-48px)] px-6 py-4
+            className="w-full bg-blackdefault/5 text-blackdefault px-6 py-4
         flex flex-col justify-between"
         >
-            {/* header */}
             <div>
+                {/* header */}
                 <DropdownMenu>
                     <DropdownMenuTrigger className="w-full flex justify-between items-center mb-4 p-2 rounded cursor-pointer hover:bg-blackdefault/5">
                         <div className="w-full flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <img
-                                    src={`${import.meta.env.VITE_BACKEND_URL}/${
-                                        user?.profileImage
-                                    }`}
-                                    alt=""
-                                    className="rounded w-8"
-                                />
+                                
+                                <Avatar className="rounded w-8 h-8">
+                                    <AvatarImage
+                                        src={user?.profileImage}
+                                        alt={user?.firstName}
+                                    />
+                                    <AvatarFallback className="rounded">
+                                        {`${user?.firstName}`.slice(0, 1)}
+                                    </AvatarFallback>
+                                </Avatar>
+
                                 <div className="text-start">
-                                    <h2 className="font-bold text-sm">
+                                    <h2 className="font-semibold text-sm">
                                         {`${user?.firstName} ${user?.lastName}`
                                             .length > 15
                                             ? `${user?.firstName} ${user?.lastName}`.substring(
@@ -63,11 +68,11 @@ export default function Sidebar() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             <Link
-                                to="/edit-profile"
+                                to="/profile/settings"
                                 className="flex items-center gap-1"
                             >
-                                <Pencil className="scale-75" />
-                                Edit Profile
+                                <Settings2 className="scale-75" />
+                                Settings
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
@@ -116,7 +121,6 @@ export default function Sidebar() {
                         </div>
                         <ChevronRight className="scale-50" />
                     </NavLink>
-                    
                 </div>
             </div>
 
