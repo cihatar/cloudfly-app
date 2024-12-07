@@ -2,12 +2,12 @@ import customAxios from "@/config/axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // user interface
-interface User {
-    firstName: string;
-    lastName: string;
-    email: string;
-    maxStorage: number;
-    profileImage: string;
+export interface User {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    maxStorage?: number;
+    profileImage?: string;
 }
 
 // user state interface
