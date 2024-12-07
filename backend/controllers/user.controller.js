@@ -20,8 +20,8 @@ const updateName = async (req, res) => {
     res.status(200).json({ firstName, lastName, message: "Your name has been successfully updated" });
 };
 
-// update password
-const updatePassword = async (req, res) => {
+// change password
+const changePassword = async (req, res) => {
     const { oldPassword, password, password_confirmation } = req.body;
     const user = req.user;
 
@@ -51,4 +51,4 @@ const deleteUser = async (req, res) => {
     res.status(200).json({ message: "Your account has been deleted" });
 };
 
-module.exports = { updateImage, updateName, updatePassword, deleteUser };
+module.exports = { updateImage, updateName, changePassword, deleteUser };

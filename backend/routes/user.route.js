@@ -3,7 +3,7 @@ const router = express.Router();
 const { rateLimit } = require("express-rate-limit");
 const trimRequest = require("trim-request");
 const { authenticateUser } = require("../middlewares/authentication.js");
-const { updateImage, updateName, updatePassword, deleteUser } = require("../controllers/user.controller.js");
+const { updateImage, updateName, changePassword, deleteUser } = require("../controllers/user.controller.js");
 
 // rate limiter
 const limiter = rateLimit({
@@ -19,7 +19,7 @@ const limiter = rateLimit({
 
 router.put("/update-image", limiter, authenticateUser, updateImage);
 router.put("/update-name", limiter, authenticateUser, trimRequest.all, updateName);
-router.put("/update-password", limiter, authenticateUser, trimRequest.all, updatePassword);
+router.put("/change-password", limiter, authenticateUser, trimRequest.all, changePassword);
 router.delete("/delete", limiter, authenticateUser, deleteUser);
 
 module.exports = router;

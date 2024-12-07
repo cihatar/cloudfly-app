@@ -103,6 +103,19 @@ export const updateName = createAsyncThunk(
     }
 );
 
+// change password
+export const changePassword = createAsyncThunk(
+    "user/changePassword",
+    async (data: { oldPassword: string, password: string, password_confirmation: string }, thunkAPI) => {
+        try {
+            const resp = await customAxios.put("/api/user/change-password", data);
+            return resp.data; 
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.response.data.error);
+        }
+    }
+);
+
 // get user from storage
 const getUser = () => {
     const storedUser = localStorage.getItem("user");
@@ -200,6 +213,16 @@ const userSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(updateName.rejected, (state) => {
+                state.isLoading = false;
+            })
+            // update password
+            .addCase(changePassword.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(changePassword.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(changePassword.rejected, (state) => {
                 state.isLoading = false;
             })
     },

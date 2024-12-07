@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User } from "@/store/user/userSlice";
+import { changePassword, User } from "@/store/user/userSlice";
 import {
     Dialog,
     DialogClose,
@@ -11,12 +11,65 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+import { useRef } from "react";
 
 interface ChangePasswordProps {
     user: User | null;
 }
 
+interface ChangePasswordForm {
+    oldPassword: string;
+    password: string;
+    password_confirmation: string;
+}
+
 export default function ChangePassword({ user }: ChangePasswordProps) {
+    // redux
+    const { isLoading } = useAppSelector((state) => ({
+        ...state.user,
+    }));
+    const dispatch = useAppDispatch();
+
+    // toast
+    const { toast } = useToast();
+
+    // ref
+    const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
+
+    // handle change password
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(
+            formData.entries()
+        ) as unknown as ChangePasswordForm;
+
+        dispatch(changePassword(data)).unwrap().then((res) => {     
+            toast({
+                title: "Success",
+                description: res.message,
+                variant: "default",
+                duration: 3000,
+                style: {
+                    color: "#fafafa",
+                    backgroundColor: "#5cb85c",
+                },
+            });
+            // close dialog after changing password
+            cancelBtnRef.current?.click();
+        }).catch((err) => {
+            toast({
+                title: "Error",
+                description: err,
+                variant: "destructive",
+            });
+        });
+    };
+
     return (
         <div className="flex flex-col gap-y-4">
             <div>
@@ -57,51 +110,55 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
                     <DialogHeader>
                         <DialogTitle>Change Password Request</DialogTitle>
                     </DialogHeader>
-                    <form className="flex justify-center flex-col gap-y-1 mt-4">
-                        <div className="grid flex-1 gap-2">
-                            <Input
-                                className="focus-visible:ring-offset-0 mb-4"
-                                type="password"
-                                placeholder="Enter your password"
-                                required
-                                id="oldPassword"
-                                name="oldPassword"
-                            />
-                        </div>
-                        <div className="grid flex-1 gap-2">
-                            <Input
-                                className="focus-visible:ring-offset-0 mb-4"
-                                type="password"
-                                placeholder="Enter your new password"
-                                required
-                                id="password"
-                                name="password"
-                            />
-                        </div>
-                        <div className="grid flex-1 gap-2">
-                            <Input
-                                className="focus-visible:ring-offset-0"
-                                type="password"
-                                placeholder="Enter your new password again"
-                                required
-                                id="password_confirmation"
-                                name="password_confirmation"
-                            />
-                        </div>
-                    </form>
-                    <DialogFooter className="sm:justify-start gap-2">
-                        <Button
-                            type="submit"
-                            className="bg-greendefault hover:bg-greendefault/90"
-                        >
-                            Change
-                        </Button>
-                        <DialogClose asChild>
-                            <Button type="button" variant="secondary">
-                                Cancel
+                    <form
+                        onSubmit={handleSubmit}
+                        className="flex justify-center flex-col gap-y-1 mt-4"
+                    >
+                        <Input
+                            className="focus-visible:ring-offset-0 mb-4"
+                            type="password"
+                            placeholder="Enter your password"
+                            required
+                            id="oldPassword"
+                            name="oldPassword"
+                        />
+                        <Input
+                            className="focus-visible:ring-offset-0 mb-4"
+                            type="password"
+                            placeholder="Enter your new password"
+                            required
+                            id="password"
+                            name="password"
+                        />
+                        <Input
+                            className="focus-visible:ring-offset-0 mb-4"
+                            type="password"
+                            placeholder="Enter your new password again"
+                            required
+                            id="password_confirmation"
+                            name="password_confirmation"
+                        />
+                        <DialogFooter className="sm:justify-start gap-2">
+                            <Button
+                                type="submit"
+                                disabled={isLoading ? true : false}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 className="animate-spin" />
+                                        Please wait
+                                    </>
+                                ) : (
+                                    "Change"
+                                )}
                             </Button>
-                        </DialogClose>
-                    </DialogFooter>
+                            <DialogClose asChild>
+                                <Button type="button" variant="secondary" ref={cancelBtnRef}>
+                                    Cancel
+                                </Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </form>
                 </DialogContent>
             </Dialog>
         </div>
