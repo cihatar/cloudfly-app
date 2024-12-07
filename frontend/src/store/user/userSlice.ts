@@ -90,6 +90,19 @@ export const verifyToken = createAsyncThunk(
     }
 );
 
+// update name
+export const updateName = createAsyncThunk(
+    "user/updateName",
+    async (data: { firstName: string, lastName: string }, thunkAPI) => {
+        try {
+            const resp = await customAxios.put("/api/user/update-name", data);
+            return resp.data; 
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.response.data.error);
+        }
+    }
+);
+
 // get user from storage
 const getUser = () => {
     const storedUser = localStorage.getItem("user");
@@ -172,6 +185,21 @@ const userSlice = createSlice({
             .addCase(verifyToken.rejected, (state) => {
                 localStorage.removeItem("user");
                 state.user = null;
+                state.isLoading = false;
+            })
+            // update name
+            .addCase(updateName.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateName.fulfilled, (state, action) => {
+                const user = getUser();
+                user.firstName = action.payload.firstName;
+                user.lastName = action.payload.lastName;
+                state.user = user;
+                localStorage.setItem("user", JSON.stringify(state.user));
+                state.isLoading = false;
+            })
+            .addCase(updateName.rejected, (state) => {
                 state.isLoading = false;
             })
     },

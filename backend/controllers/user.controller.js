@@ -17,7 +17,7 @@ const updateName = async (req, res) => {
     user.lastName = lastName;
     await user.save();
 
-    res.status(200).json({ message: "Your name has been successfully updated" });
+    res.status(200).json({ firstName, lastName, message: "Your name has been successfully updated" });
 };
 
 // update password
