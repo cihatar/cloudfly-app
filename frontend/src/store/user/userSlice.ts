@@ -116,6 +116,19 @@ export const changePassword = createAsyncThunk(
     }
 );
 
+// delete user
+export const deleteUser = createAsyncThunk(
+    "user/deleteUser",
+    async (_, thunkAPI) => {
+        try {
+            const resp = await customAxios.delete("/api/user/delete");
+            return resp.data; 
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.response.data.error);
+        }
+    }
+);
+
 // get user from storage
 const getUser = () => {
     const storedUser = localStorage.getItem("user");
@@ -219,10 +232,22 @@ const userSlice = createSlice({
             .addCase(changePassword.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(changePassword.fulfilled, (state, action) => {
+            .addCase(changePassword.fulfilled, (state) => {
                 state.isLoading = false;
             })
             .addCase(changePassword.rejected, (state) => {
+                state.isLoading = false;
+            })
+             // delete user
+             .addCase(deleteUser.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteUser.fulfilled, (state) => {
+                localStorage.removeItem("user");
+                state.user = null;
+                state.isLoading = false;
+            })
+            .addCase(deleteUser.rejected, (state) => {
                 state.isLoading = false;
             })
     },

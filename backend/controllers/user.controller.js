@@ -48,6 +48,7 @@ const changePassword = async (req, res) => {
 const deleteUser = async (req, res) => {
     const user = req.user;
     await user.deleteOne();
+    res.clearCookie("token");
     res.status(200).json({ message: "Your account has been deleted" });
 };
 
