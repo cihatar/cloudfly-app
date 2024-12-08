@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogClose,
@@ -13,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { deleteUser } from "@/store/user/userSlice";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function DeleteUser() {
@@ -21,6 +23,9 @@ export default function DeleteUser() {
         ...state.user,
     }));
     const dispatch = useAppDispatch();
+
+    // checkbox 
+    const [checked, setChecked] = useState(false);
 
     // navigate
     const navigate = useNavigate();
@@ -32,26 +37,28 @@ export default function DeleteUser() {
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        dispatch(deleteUser()).unwrap().then((res) => {
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
+        dispatch(deleteUser())
+            .unwrap()
+            .then((res) => {
+                toast({
+                    title: "Success",
+                    description: res.message,
+                    variant: "default",
+                    duration: 3000,
+                    style: {
+                        color: "#fafafa",
+                        backgroundColor: "#5cb85c",
+                    },
+                });
+                navigate("/auth/login");
+            })
+            .catch((err) => {
+                toast({
+                    title: "Error",
+                    description: err,
+                    variant: "destructive",
+                });
             });
-            navigate("/auth/login")
-        })
-        .catch((err) => {
-            toast({
-                title: "Error",
-                description: err,
-                variant: "destructive",
-            });
-        });
     };
 
     return (
@@ -64,16 +71,27 @@ export default function DeleteUser() {
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Delete Account Request</DialogTitle>
-                    <DialogDescription>
-                        In case you delete your account, all the data you have
-                        uploaded will be permanently removed.
+                    <DialogDescription className="flex flex-col gap-y-4">
+                        <p className="text-sm text-muted-foreground">
+                            In case you delete your account, all the data you
+                            have uploaded will be permanently removed.
+                        </p>
+                        <div className="flex items-center gap-x-2">
+                            <Checkbox id="terms" checked={checked} onCheckedChange={() => setChecked(!checked)}/>
+                            <label
+                                htmlFor="terms"
+                                className="text-xs"
+                            >
+                                Accept terms and conditions
+                            </label>
+                        </div>
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="sm:justify-start gap-2">
                     <Button
                         onClick={handleSubmit}
                         variant="destructive"
-                        disabled={isLoading ? true : false}
+                        disabled={isLoading ? true : checked ? false : true}
                     >
                         {isLoading ? (
                             <>
