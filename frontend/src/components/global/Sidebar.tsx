@@ -18,6 +18,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import LogoutButton from "../auth/LogoutButton";
 
 export default function Sidebar() {
     // redux
@@ -76,9 +77,7 @@ export default function Sidebar() {
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <div className="flex items-center gap-1 cursor-pointer">
-                                <LogOut className="scale-75" /> Logout
-                            </div>
+                            <LogoutButton />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

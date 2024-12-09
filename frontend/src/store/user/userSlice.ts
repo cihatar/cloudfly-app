@@ -51,6 +51,19 @@ export const registerUser = createAsyncThunk(
     }
 );
 
+// logout
+export const logout = createAsyncThunk(
+    "user/logout",
+    async (_, thunkAPI) => {
+        try {
+            const resp = await customAxios.post("/api/auth/logout");
+            return resp.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.response.data.error);
+        }
+    }
+);
+
 // forgot password
 export const forgotPassword = createAsyncThunk(
     "user/forgotPassword",
@@ -170,6 +183,18 @@ const userSlice = createSlice({
             })
             .addCase(registerUser.rejected, (state) => {
                 state.user = null;
+                state.isLoading = false;
+            })
+            // logout
+            .addCase(logout.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(logout.fulfilled, (state) => {
+                localStorage.removeItem("user");
+                state.user = null;
+                state.isLoading = false;
+            })
+            .addCase(logout.rejected, (state) => {
                 state.isLoading = false;
             })
             // forgot password
