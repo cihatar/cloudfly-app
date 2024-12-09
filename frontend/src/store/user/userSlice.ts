@@ -239,9 +239,6 @@ const userSlice = createSlice({
                 state.isLoading = false;
             })
             // update name
-            .addCase(updateName.pending, (state) => {
-                state.isLoading = true;
-            })
             .addCase(updateName.fulfilled, (state, action) => {
                 const user = getUser();
                 user.firstName = action.payload.firstName;
@@ -250,30 +247,10 @@ const userSlice = createSlice({
                 localStorage.setItem("user", JSON.stringify(state.user));
                 state.isLoading = false;
             })
-            .addCase(updateName.rejected, (state) => {
-                state.isLoading = false;
-            })
-            // update password
-            .addCase(changePassword.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(changePassword.fulfilled, (state) => {
-                state.isLoading = false;
-            })
-            .addCase(changePassword.rejected, (state) => {
-                state.isLoading = false;
-            })
              // delete user
-             .addCase(deleteUser.pending, (state) => {
-                state.isLoading = true;
-            })
             .addCase(deleteUser.fulfilled, (state) => {
                 localStorage.removeItem("user");
                 state.user = null;
-                state.isLoading = false;
-            })
-            .addCase(deleteUser.rejected, (state) => {
-                state.isLoading = false;
             })
     },
 });

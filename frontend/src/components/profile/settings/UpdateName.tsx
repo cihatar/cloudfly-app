@@ -2,9 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { updateName, User } from "@/store/user/userSlice";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 interface UpdateNameProps {
     user: User | null;
@@ -17,13 +18,13 @@ interface UpdateNameForm {
 
 export default function UpdateName({ user }: UpdateNameProps) {
     // redux
-    const { isLoading } = useAppSelector((state) => ({
-        ...state.user,
-    }));
     const dispatch = useAppDispatch();
 
     // toast
     const { toast } = useToast();
+    
+    // button loading
+    const [btnLoading, setBtnLoading] = useState(false);
 
     // handle update name
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,6 +35,7 @@ export default function UpdateName({ user }: UpdateNameProps) {
             formData.entries()
         ) as unknown as UpdateNameForm;
 
+        setBtnLoading(true);
         dispatch(updateName(data)).unwrap().then((res) => {     
             toast({
                 title: "Success",
@@ -51,7 +53,7 @@ export default function UpdateName({ user }: UpdateNameProps) {
                 description: err,
                 variant: "destructive",
             });
-        });
+        }).finally(() => setBtnLoading(false));
     };
 
     return (
@@ -84,8 +86,8 @@ export default function UpdateName({ user }: UpdateNameProps) {
                     defaultValue={user?.lastName}
                 />
             </div>
-            <Button type="submit" variant="secondary" disabled={isLoading ? true : false}>
-            {isLoading ? (
+            <Button type="submit" variant="secondary" disabled={btnLoading ? true : false}>
+            {btnLoading ? (
                     <>
                         <Loader2 className="animate-spin" />
                         Please wait

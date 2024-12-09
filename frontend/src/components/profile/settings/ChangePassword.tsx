@@ -11,10 +11,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 interface ChangePasswordProps {
     user: User | null;
@@ -28,9 +28,6 @@ interface ChangePasswordForm {
 
 export default function ChangePassword({ user }: ChangePasswordProps) {
     // redux
-    const { isLoading } = useAppSelector((state) => ({
-        ...state.user,
-    }));
     const dispatch = useAppDispatch();
 
     // toast
@@ -38,6 +35,9 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
 
     // ref
     const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
+
+    // button loading
+    const [btnLoading, setBtnLoading] = useState(false);
 
     // handle change password
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -48,6 +48,7 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
             formData.entries()
         ) as unknown as ChangePasswordForm;
 
+        setBtnLoading(true);
         dispatch(changePassword(data)).unwrap().then((res) => {     
             toast({
                 title: "Success",
@@ -67,7 +68,7 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
                 description: err,
                 variant: "destructive",
             });
-        });
+        }).finally(() => setBtnLoading(false));
     };
 
     return (
@@ -141,9 +142,9 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
                         <DialogFooter className="sm:justify-start gap-2">
                             <Button
                                 type="submit"
-                                disabled={isLoading ? true : false}
+                                disabled={btnLoading ? true : false}
                             >
-                                {isLoading ? (
+                                {btnLoading ? (
                                     <>
                                         <Loader2 className="animate-spin" />
                                         Please wait

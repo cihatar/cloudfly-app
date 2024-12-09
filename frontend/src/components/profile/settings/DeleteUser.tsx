@@ -11,7 +11,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { deleteUser } from "@/store/user/userSlice";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -19,9 +19,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function DeleteUser() {
     // redux
-    const { isLoading } = useAppSelector((state) => ({
-        ...state.user,
-    }));
     const dispatch = useAppDispatch();
 
     // checkbox 
@@ -33,10 +30,14 @@ export default function DeleteUser() {
     // toast
     const { toast } = useToast();
 
+    // button loading
+    const [btnLoading, setBtnLoading] = useState(false);
+
     // handle delete user
     const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
+        setBtnLoading(true);
         dispatch(deleteUser())
             .unwrap()
             .then((res) => {
@@ -58,7 +59,7 @@ export default function DeleteUser() {
                     description: err,
                     variant: "destructive",
                 });
-            });
+            }).finally(() => setBtnLoading(false));
     };
 
     return (
@@ -91,9 +92,9 @@ export default function DeleteUser() {
                     <Button
                         onClick={handleClick}
                         variant="destructive"
-                        disabled={isLoading ? true : checked ? false : true}
+                        disabled={btnLoading ? true : checked ? false : true}
                     >
-                        {isLoading ? (
+                        {btnLoading ? (
                             <>
                                 <Loader2 className="animate-spin" />
                                 Please wait
