@@ -33,8 +33,8 @@ export default function DeleteUser() {
     // toast
     const { toast } = useToast();
 
-    // handle update name
-    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    // handle delete user
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         dispatch(deleteUser())
@@ -89,7 +89,7 @@ export default function DeleteUser() {
                 </DialogHeader>
                 <DialogFooter className="sm:justify-start gap-2">
                     <Button
-                        onClick={handleSubmit}
+                        onClick={handleClick}
                         variant="destructive"
                         disabled={isLoading ? true : checked ? false : true}
                     >
