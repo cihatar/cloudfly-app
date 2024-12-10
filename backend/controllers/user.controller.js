@@ -1,8 +1,41 @@
 const CustomAPIError = require("../errors/custom.error.js");
-const User = require("../models/user.model.js");
+const path = require("path");
+const fs = require("fs").promises;
+const { v4: uuid } = require('uuid');
 
 // update image
-const updateImage = async (req, res) => {};
+const updateImage = async (req, res) => {
+    if (!req.files) {
+        throw new CustomAPIError("No file uploaded", 400);
+    }
+
+    const profileImage = req.files.profileImage;
+    if (!profileImage.mimetype.startsWith("image")) {
+        throw new CustomAPIError("Please upload a valid image", 400);
+    }
+
+    const maxSize = 1024 * 1024; // 1 mb
+    if (profileImage.size > maxSize) {
+        throw new CustomAPIError("Please upload an image smaller 1 MB", 400);
+    }
+
+    const profileImageName = uuid() + "-" + profileImage.name;
+    
+    const uploadPath = path.join(__dirname, `../public/images/${req.user._id}/`);
+    try {
+        await fs.mkdir(uploadPath, { recursive: true });
+    } catch (err) {
+        throw new CustomAPIError("Something went wrong", 500);
+    }
+
+    const imagePath = path.join(uploadPath, profileImageName);
+    await profileImage.mv(imagePath);
+
+    res.status(200).json({
+        profileImage: `${process.env.BASE_URL}/images/${req.user._id}/${profileImageName}`,
+        message: "Your profile photo has been successfully updated",
+    });
+};
 
 // update name
 const updateName = async (req, res) => {
