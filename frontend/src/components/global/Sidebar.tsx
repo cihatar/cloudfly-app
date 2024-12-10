@@ -6,7 +6,9 @@ import {
     LogOut,
     Settings,
     Settings2,
+    SquareUser,
     Trash2,
+    UserRound,
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import {
@@ -69,10 +71,17 @@ export default function Sidebar() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             <Link
+                                to="/profile"
+                                className="flex items-center gap-1"
+                            >
+                                Profile
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link
                                 to="/profile/settings"
                                 className="flex items-center gap-1"
                             >
-                                <Settings2 className="scale-75" />
                                 Settings
                             </Link>
                         </DropdownMenuItem>

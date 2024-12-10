@@ -46,14 +46,11 @@ export default function LogoutButton() {
 
     return (
         <Button
-            asChild
             variant="secondary"
-            className="h-[32px]"
+            className="h-5 bg-transparent p-0 font-normal"
             onClick={handleClick}
         >
-            <div className="flex items-center gap-1 cursor-pointer font-normal">
-                <LogOut className="scale-75" /> Logout
-            </div>
+                Logout
         </Button>
     );
 }
