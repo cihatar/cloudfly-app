@@ -3,12 +3,8 @@ import {
     ChevronRight,
     FolderHeart,
     HardDrive,
-    LogOut,
     Settings,
-    Settings2,
-    SquareUser,
     Trash2,
-    UserRound,
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import {

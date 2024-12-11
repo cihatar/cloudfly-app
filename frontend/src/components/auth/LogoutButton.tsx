@@ -1,4 +1,3 @@
-import { LogOut } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";

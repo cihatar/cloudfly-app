@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { removeImage, updateImage, User } from "@/store/user/userSlice";
-import { Loader2, Trash2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React, { useRef, useState } from "react";
 
 interface ChangeProfilePictureProps {
