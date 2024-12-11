@@ -103,6 +103,21 @@ export const verifyToken = createAsyncThunk(
     }
 );
 
+// update image
+export const updateImage = createAsyncThunk(
+    "user/updateImage",
+    async (data: FormData, thunkAPI) => {
+        try {
+            const resp = await customAxios.put("/api/user/update-image", data, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            return resp.data; 
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.response.data.error);
+        }
+    }
+);
+
 // update name
 export const updateName = createAsyncThunk(
     "user/updateName",
@@ -186,16 +201,9 @@ const userSlice = createSlice({
                 state.isLoading = false;
             })
             // logout
-            .addCase(logout.pending, (state) => {
-                state.isLoading = true;
-            })
             .addCase(logout.fulfilled, (state) => {
                 localStorage.removeItem("user");
                 state.user = null;
-                state.isLoading = false;
-            })
-            .addCase(logout.rejected, (state) => {
-                state.isLoading = false;
             })
             // forgot password
             .addCase(forgotPassword.pending, (state) => {
@@ -238,6 +246,13 @@ const userSlice = createSlice({
                 state.user = null;
                 state.isLoading = false;
             })
+            // update image
+            .addCase(updateImage.fulfilled, (state, action) => {
+                const user = getUser();
+                user.profileImage = action.payload.profileImage;
+                state.user = user;
+                localStorage.setItem("user", JSON.stringify(state.user));
+            })
             // update name
             .addCase(updateName.fulfilled, (state, action) => {
                 const user = getUser();
@@ -245,7 +260,6 @@ const userSlice = createSlice({
                 user.lastName = action.payload.lastName;
                 state.user = user;
                 localStorage.setItem("user", JSON.stringify(state.user));
-                state.isLoading = false;
             })
              // delete user
             .addCase(deleteUser.fulfilled, (state) => {
