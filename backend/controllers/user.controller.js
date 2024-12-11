@@ -43,6 +43,27 @@ const updateImage = async (req, res) => {
     });
 };
 
+// remove image 
+const removeImage = async (req, res) => {
+    const user = req.user;
+    
+    const uploadPath = path.join(__dirname, `../public/images/${user._id}/`);
+    try {
+        await fs.rm(uploadPath, { recursive: true, force: true })
+    } catch (err) {
+        throw new CustomAPIError("Something went wrong", 500);
+    }
+
+    const profileImageUrl = `${process.env.BASE_URL}/images/default-profile-image.jpg`;
+    user.profileImage = profileImageUrl;
+    await user.save();
+
+    res.status(200).json({
+        profileImage: profileImageUrl,
+        message: "Your profile image has been removed",
+    });
+}
+
 // update name
 const updateName = async (req, res) => {
     const { firstName, lastName } = req.body;
@@ -91,4 +112,4 @@ const deleteUser = async (req, res) => {
     res.status(200).json({ message: "Your account has been deleted" });
 };
 
-module.exports = { updateImage, updateName, changePassword, deleteUser };
+module.exports = { updateImage, removeImage, updateName, changePassword, deleteUser };

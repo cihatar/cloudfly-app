@@ -118,6 +118,19 @@ export const updateImage = createAsyncThunk(
     }
 );
 
+// remove image
+export const removeImage = createAsyncThunk(
+    "user/removeImage",
+    async (_, thunkAPI) => {
+        try {
+            const resp = await customAxios.delete("/api/user/remove-image");
+            return resp.data; 
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.response.data.error);
+        }
+    }
+);
+
 // update name
 export const updateName = createAsyncThunk(
     "user/updateName",
@@ -248,6 +261,13 @@ const userSlice = createSlice({
             })
             // update image
             .addCase(updateImage.fulfilled, (state, action) => {
+                const user = getUser();
+                user.profileImage = action.payload.profileImage;
+                state.user = user;
+                localStorage.setItem("user", JSON.stringify(state.user));
+            })
+            // remove image
+            .addCase(removeImage.fulfilled, (state, action) => {
                 const user = getUser();
                 user.profileImage = action.payload.profileImage;
                 state.user = user;

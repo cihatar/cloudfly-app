@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/hooks";
-import { updateImage, User } from "@/store/user/userSlice";
+import { removeImage, updateImage, User } from "@/store/user/userSlice";
 import { Loader2, Trash2 } from "lucide-react";
 import React, { useRef, useState } from "react";
 
@@ -22,7 +22,8 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
     const fileRef = useRef<null | HTMLInputElement>(null);
 
     // button loading
-    const [btnLoading, setBtnLoading] = useState(false);
+    const [uploadBtnLoading, setUploadBtnLoading] = useState(false);
+    const [removeBtnLoading, setRemoveBtnLoading] = useState(false);
 
     // toast
     const { toast } = useToast();
@@ -47,7 +48,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setBtnLoading(true);
+        setUploadBtnLoading(true);
 
         const image = profileImage as File;
         const formData = new FormData();
@@ -72,8 +73,36 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                 description: err,
                 variant: "destructive",
             });
-        }).finally(() => setBtnLoading(false));
-    }
+        }).finally(() => setUploadBtnLoading(false));
+    };
+
+
+
+    // handle remove image 
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        setRemoveBtnLoading(true);
+
+        dispatch(removeImage()).unwrap().then((res) => {     
+            toast({
+                title: "Success",
+                description: res.message,
+                variant: "default",
+                duration: 3000,
+                style: {
+                    color: "#fafafa",
+                    backgroundColor: "#5cb85c",
+                },
+            });
+        }).catch((err) => {
+            toast({
+                title: "Error",
+                description: err,
+                variant: "destructive",
+            });
+        }).finally(() => setRemoveBtnLoading(false));
+    };
 
 
     return (
@@ -100,22 +129,38 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                     ref={fileRef}
                     onChange={handleChange}
                 />
+
+                {/* upload image button */}
                 <Button
                     className="w-full"
-                    disabled={btnLoading ? true : profileImage ? false : true}
+                    disabled={uploadBtnLoading ? true : profileImage ? false : true}
                 >
-                     {btnLoading ? (
-                            <>
-                                <Loader2 className="animate-spin" />
-                                Please wait
-                            </>
-                        ) : (
-                            "Change"
-                        )}
+                    {uploadBtnLoading ? (
+                        <>
+                            <Loader2 className="animate-spin" />
+                            Please wait
+                        </>
+                    ) : (
+                        "Change"
+                    )}
                 </Button>
-                <Button type="button" className="w-full" variant={"secondary"}>
-                    <Trash2 />
-                    Remove
+
+                {/* remove image button */}
+                <Button
+                    type="button"
+                    className="w-full"
+                    variant={"secondary"}
+                    disabled={removeBtnLoading ? true : false}
+                    onClick={handleClick}
+                >
+                    {removeBtnLoading ? (
+                        <>
+                            <Loader2 className="animate-spin" />
+                            Please wait
+                        </>
+                    ) : (
+                        "Remove"
+                    )}
                 </Button>
             </form>
         </>
