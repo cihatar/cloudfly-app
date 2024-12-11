@@ -5,6 +5,8 @@ const { v4: uuid } = require('uuid');
 
 // update image
 const updateImage = async (req, res) => {
+    const user = req.user;
+
     if (!req.files) {
         throw new CustomAPIError("No file uploaded", 400);
     }
@@ -16,12 +18,12 @@ const updateImage = async (req, res) => {
 
     const maxSize = 1024 * 1024; // 1 mb
     if (profileImage.size > maxSize) {
-        throw new CustomAPIError("Please upload an image smaller 1 MB", 400);
+        throw new CustomAPIError("Please upload an image smaller than 1 MB", 400);
     }
 
     const profileImageName = uuid() + "-" + profileImage.name;
     
-    const uploadPath = path.join(__dirname, `../public/images/${req.user._id}/`);
+    const uploadPath = path.join(__dirname, `../public/images/${user._id}/`);
     try {
         await fs.mkdir(uploadPath, { recursive: true });
     } catch (err) {
@@ -31,9 +33,13 @@ const updateImage = async (req, res) => {
     const imagePath = path.join(uploadPath, profileImageName);
     await profileImage.mv(imagePath);
 
+    const profileImageUrl = `${process.env.BASE_URL}/images/${user._id}/${profileImageName}`;
+    user.profileImage = profileImageUrl;
+    await user.save();
+
     res.status(200).json({
-        profileImage: `${process.env.BASE_URL}/images/${req.user._id}/${profileImageName}`,
-        message: "Your profile photo has been successfully updated",
+        profileImage: profileImageUrl,
+        message: "Your profile image has been successfully updated",
     });
 };
 
