@@ -15,6 +15,9 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
     const [profileImage, setProfileImage] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 
+    const defaultProfileImage = `${import.meta.env.VITE_BACKEND_URL}/images/default-profile-image.jpg`;
+    const isDefaultProfileImage = user?.profileImage === defaultProfileImage;
+
     // redux 
     const dispatch = useAppDispatch();
 
@@ -95,6 +98,8 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                     backgroundColor: "#5cb85c",
                 },
             });
+            setProfileImage(null);
+            setPreviewImage(null); 
         }).catch((err) => {
             toast({
                 title: "Error",
@@ -150,7 +155,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                     type="button"
                     className="w-full"
                     variant={"secondary"}
-                    disabled={removeBtnLoading ? true : false}
+                    disabled={isDefaultProfileImage ? true : removeBtnLoading ? true : false}
                     onClick={handleClick}
                 >
                     {removeBtnLoading ? (
