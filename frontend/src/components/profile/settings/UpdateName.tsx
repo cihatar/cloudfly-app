@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { updateName, User } from "@/store/user/userSlice";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface UpdateNameProps {
     user: User | null;
@@ -34,6 +34,9 @@ export default function UpdateName({ user }: UpdateNameProps) {
         const data = Object.fromEntries(
             formData.entries()
         ) as unknown as UpdateNameForm;
+
+        if (data.firstName === user?.firstName &&
+            data.lastName === user?.lastName) return;
 
         setBtnLoading(true);
         dispatch(updateName(data)).unwrap().then((res) => {     
