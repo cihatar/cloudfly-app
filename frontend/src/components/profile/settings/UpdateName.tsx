@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { updateName, User } from "@/store/user/userSlice";
 import { Loader2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 interface UpdateNameProps {
     user: User | null;
