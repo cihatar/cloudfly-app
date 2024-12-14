@@ -20,7 +20,7 @@ import LogoutButton from "../auth/LogoutButton";
 
 export default function Sidebar() {
     // redux
-    const { user } = useAppSelector((state) => ({ ...state.user }));
+    const user = useAppSelector((state) => state.user.user);
 
     return (
         <div

@@ -13,9 +13,7 @@ interface ForgotPasswordForm {
 
 export default function ForgotPasswordForm() {
     // redux
-    const { isLoading } = useAppSelector((state) => ({
-        ...state.user,
-    }));
+    const isLoading = useAppSelector((state) => state.user.isLoading);
     const dispatch = useAppDispatch();
 
     // toast

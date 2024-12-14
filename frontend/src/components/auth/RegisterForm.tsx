@@ -18,9 +18,7 @@ interface RegisterForm {
 
 export default function RegisterForm() {
     // redux
-    const { isLoading } = useAppSelector((state) => ({
-        ...state.user,
-    }));
+    const isLoading = useAppSelector((state) => state.user.isLoading);
     const dispatch = useAppDispatch();
 
     // navigate

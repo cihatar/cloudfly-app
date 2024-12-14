@@ -14,9 +14,7 @@ interface ResetPasswordForm {
 
 export default function ResetPasswordForm({ token }: { token: string }) {
     // redux
-    const { isLoading } = useAppSelector((state) => ({
-        ...state.user,
-    }));
+    const isLoading = useAppSelector((state) => state.user.isLoading);
     const dispatch = useAppDispatch();
 
     // toast

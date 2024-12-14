@@ -9,7 +9,7 @@ import { useAppSelector } from "@/store/hooks";
 
 export default function ProfileSettings() {
     // redux
-    const user = useAppSelector((state) => ({ ...state.user.user }));
+    const user = useAppSelector((state) => state.user.user);
 
     return (
         <div className="grid grid-cols-[280px,1fr] h-[calc(100vh-48px)]">
