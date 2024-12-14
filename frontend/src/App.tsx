@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import VerifyToken from "./components/global/VerifyToken";
 import Navbar from "./components/global/Navbar";
+import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -14,11 +15,11 @@ function AppRoutes() {
     const location = useLocation();    
     const user = useAppSelector((state) => state.user.user);
 
-    return <AnimatePresence mode="wait">
-                <VerifyToken user={user} location={location}>
+    return <VerifyToken user={user} location={location}>
+                <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
                         <Route path="/" element={<Navbar />}>
-                            <Route index />
+                            <Route index element={user ? <Navigate to="/drive" /> : <Home />} />
                             <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
                             <Route path="/auth/login" element={user ? <Navigate to="/drive" /> : <Login />} />
                             <Route path="/auth/register" element={user ? <Navigate to="/drive" /> : <Register />} />
@@ -36,8 +37,8 @@ function AppRoutes() {
                             />
                         </Route>
                     </Routes>
-                </VerifyToken>
-            </AnimatePresence>
+                </AnimatePresence>
+            </VerifyToken>
 }
 
 export default function App() {
