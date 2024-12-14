@@ -62,11 +62,8 @@ export default function LoginForm() {
             }
 
             // redirect user
-            setTimeout(() => {
-                navigate("/");
-                window.location.reload();
-                setBtnLoading(false);
-            }, 3000);
+            navigate("/drive");
+            setBtnLoading(false);
         }).catch((err) => {
             toast({
                 title: "Error",

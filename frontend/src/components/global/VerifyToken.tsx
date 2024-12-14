@@ -24,12 +24,12 @@ export default function VerifyToken({ children, user, location }: Props) {
                 setTimeout(() => setLoading(false), 1000);
             });
         };
-        if (!user &&
-            location.pathname !== "/" &&
-            location.pathname !== "/auth/login" &&
-            location.pathname !== "/auth/register" &&
-            location.pathname !== "/auth/forgot-password" &&
-            location.pathname !== "/auth/reset-password") {
+        if (!user && 
+            (location.pathname !== "/" && 
+            location.pathname !== "/auth/login" && 
+            location.pathname !== "/auth/register" && 
+            location.pathname !== "/auth/forgot-password" && 
+            location.pathname !== "/auth/reset-password")) {
             authenticateUser();
         }
     }, []);

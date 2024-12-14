@@ -50,6 +50,10 @@ const loginUser = async (req, res) => {
 
     return res.status(200).json({
         firstName: existingUser.firstName,
+        lastName: existingUser.lastName,
+        email: existingUser.email,
+        profileImage: existingUser.profileImage,
+        maxStorage: existingUser.maxStorage,
     });
 };
 
@@ -57,7 +61,7 @@ const loginUser = async (req, res) => {
 const googleSign = async (req, res) => {
     // set cookie
     attachCookiesToResponse({ res, payload: { userId: req.user._id } });
-    return res.redirect(process.env.FRONTEND_URL);
+    return res.redirect(process.env.FRONTEND_URL + "/drive");
 }
 
 // logout
