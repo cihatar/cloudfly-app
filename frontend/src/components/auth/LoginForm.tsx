@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -28,9 +28,6 @@ export default function LoginForm() {
     // ref
     const emailRef = useRef<null | HTMLInputElement>(null);
     const passwordRef = useRef<null | HTMLInputElement>(null);
-    
-    // button loading
-    const [btnLoading, setBtnLoading] = useState(false);
 
     // handle login
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,7 +38,6 @@ export default function LoginForm() {
             formData.entries()
         ) as unknown as LoginForm;
 
-        setBtnLoading(true);
         dispatch(loginUser(data)).unwrap().then((res) => {     
             toast({
                 title: "Success",
@@ -63,14 +59,12 @@ export default function LoginForm() {
 
             // redirect user
             navigate("/drive");
-            setBtnLoading(false);
         }).catch((err) => {
             toast({
                 title: "Error",
                 description: err,
                 variant: "destructive",
             });
-            setBtnLoading(false);
         });
     };
 
@@ -124,7 +118,7 @@ export default function LoginForm() {
                     ref={passwordRef}
                 />
             </div>
-            <Button type="submit" disabled={btnLoading ? true : false}>
+            <Button type="submit" disabled={isLoading ? true : false}>
                 {isLoading ? (
                     <>
                         <Loader2 className="animate-spin" />
