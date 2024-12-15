@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "@radix-ui/react-label";
 import GoogleSign from "./GoogleSign";
-import { loginUser } from "@/store/user/userSlice";
+import { loginUser, setUser } from "@/store/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -49,6 +49,7 @@ export default function LoginForm() {
                     backgroundColor: "#5cb85c",
                 },
             });
+            
             // clear inputs
             if (emailRef.current && passwordRef.current) {
                 emailRef.current.value = "";
@@ -57,8 +58,11 @@ export default function LoginForm() {
                 passwordRef.current.disabled = true;
             }
 
-            // redirect user
-            navigate("/drive");
+            // set and redirect user
+            setTimeout(() => {
+                dispatch(setUser(res));
+                navigate("/drive");
+            }, 1000);
         }).catch((err) => {
             toast({
                 title: "Error",
