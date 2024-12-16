@@ -32,7 +32,7 @@ export default function LogoutButton() {
                         backgroundColor: "#5cb85c",
                     },
                 });
-                navigate("/auth/login");
+                navigate("/");
             })
             .catch((err) => {
                 toast({
