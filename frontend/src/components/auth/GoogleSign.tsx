@@ -30,7 +30,7 @@ export default function GoogleSign() {
                                 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
                 ></path>
             </svg>
-            Sign in with Google
+            Continue with Google
         </Button>
     );
 }
