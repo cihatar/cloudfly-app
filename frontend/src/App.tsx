@@ -10,6 +10,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ProfileSettings from "./pages/ProfileSettings";
 import { AnimatePresence } from "framer-motion";
 import { useAppSelector } from "./store/hooks";
+import Sidebar from "./components/global/Sidebar";
 
 function AppRoutes() {
     const location = useLocation();    
@@ -18,24 +19,22 @@ function AppRoutes() {
     return <VerifyToken user={user} location={location}>
                 <AnimatePresence mode="wait">
                     <Routes location={location} key={location.pathname}>
+                        
                         <Route path="/" element={<Navbar />}>
+                            {/* public routes */}
                             <Route index element={user ? <Navigate to="/drive" /> : <Home />} />
-                            <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
                             <Route path="/auth/login" element={user ? <Navigate to="/drive" /> : <Login />} />
                             <Route path="/auth/register" element={user ? <Navigate to="/drive" /> : <Register />} />
-                            <Route
-                                path="/auth/forgot-password"
-                                element={user ? <Navigate to="/drive" /> : <ForgotPassword />}
-                            />
-                            <Route
-                                path="/auth/reset-password"
-                                element={user ? <Navigate to="/drive" /> : <ResetPassword />}
-                            />
-                            <Route
-                                path="/profile/settings"
-                                element={user ? <ProfileSettings /> : <Navigate to="/auth/login" />}
-                            />
+                            <Route path="/auth/forgot-password" element={user ? <Navigate to="/drive" /> : <ForgotPassword />}  />
+                            <Route path="/auth/reset-password" element={user ? <Navigate to="/drive" /> : <ResetPassword />} />
+
+                            {/* private routes */}
+                            <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
+                            <Route element={user ? <Sidebar /> : <Navigate to="/auth/login" />}>
+                                <Route path="/profile/settings" element={<ProfileSettings />} />
+                            </Route>
                         </Route>
+
                     </Routes>
                 </AnimatePresence>
             </VerifyToken>
