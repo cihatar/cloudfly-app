@@ -68,6 +68,18 @@
   }
 }
 
+@layer components {
+  .min-h-screendefault {
+    @apply min-h-[calc(100vh-48px)];
+  }
+  .h-screendefault {
+    @apply h-[calc(100vh-48px)];
+  }
+  .screen-with-sidebar {
+    @apply lg:grid lg:grid-cols-[280px,1fr];
+  }
+}
+
 .active {
   @apply bg-blackdefault/5;
 }

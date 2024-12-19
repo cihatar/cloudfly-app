@@ -28,7 +28,7 @@ export default function Sidebar() {
     const user = useAppSelector((state) => state.user.user);
 
     return (
-        <div className="lg:grid lg:grid-cols-[280px,1fr] h-[calc(100vh-48px)] overflow-auto">
+        <div className="screen-with-sidebar h-screendefault overflow-auto">
 
             <div className="lg:hidden absolute top-3 left-3 cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}>
                 <AlignJustify className="scale-75 text-whitedefault"/>

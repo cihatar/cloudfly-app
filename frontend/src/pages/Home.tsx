@@ -19,7 +19,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="min-h-[calc(100vh-48px)] flex flex-col items-center justify-center overflow-hidden relative bg-blackdefault text-whitedefault">
+        <div className="min-h-screendefault flex flex-col items-center justify-center overflow-hidden relative bg-blackdefault text-whitedefault">
             <Animate className="flex-1 w-[1200px] flex flex-col lg:flex-row items-center justify-center gap-8 px-12">
                 <img
                     src={logo}

@@ -12,10 +12,8 @@ export default function ResetPassword() {
     }
 
     return (
-        <Animate>
-            <div className="min-h-[calc(100vh-56px)] flex items-center justify-center">
-                <ResetPasswordForm token={token} />
-            </div>
+        <Animate className="min-h-screendefault flex items-center justify-center">
+            <ResetPasswordForm token={token} />
         </Animate>
     );
 }

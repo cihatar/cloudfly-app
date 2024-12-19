@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function NoPage() {
     return (
-        <div className="min-h-[calc(100vh-48px)] flex items-center justify-center bg-blackdefault text-whitedefault relative overflow-hidden">
+        <div className="min-h-screendefault flex items-center justify-center bg-blackdefault text-whitedefault relative overflow-hidden">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
