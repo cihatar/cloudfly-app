@@ -14,7 +14,6 @@ const folderSchema = new mongoose.Schema(
         },
         name: {
             type: String,
-            unique: true,
             required: [true, "Please provide folder name"],
             maxlength: [50, "Your folder name must be maximum 50 characters"],
         },
@@ -29,5 +28,8 @@ const folderSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+folderSchema.index({ owner: 1, parent: null, name: 1 }, { unique: true });
+folderSchema.index({ owner: 1, parent: 1, name: 1 }, { unique: true });
 
 module.exports = mongoose.model("folder", folderSchema);

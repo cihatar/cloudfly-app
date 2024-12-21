@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
+const MAX_STORAGE = 1024 * 1024 * 128; // 128 MB
+
 const userSchema = new mongoose.Schema(
     {
         firstName: {
@@ -37,9 +39,16 @@ const userSchema = new mongoose.Schema(
                 return `${process.env.BASE_URL}/images/default-profile-image.jpg`;
             },
         },
+        currentStorage: {
+            type: Number,
+            default: 0,
+            min: 0,
+            max: MAX_STORAGE,
+        },
         maxStorage: {
             type: Number,
-            default: 250,
+            default: MAX_STORAGE,
+            min: 0,
         },
     },
     { timestamps: true }
