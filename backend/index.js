@@ -16,6 +16,7 @@ require("./config/passport.js");
 const errorHandlerMiddleware = require("./middlewares/error.handler.js");
 const authRoute = require("./routes/auth.route.js");
 const userRoute = require("./routes/user.route.js");
+const driveRoute = require("./routes/drive.route.js");
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -45,6 +46,7 @@ app.use(passport.session());
 // routes
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
+app.use("/api/drive", driveRoute);
 
 // error handling
 app.use(errorHandlerMiddleware);
