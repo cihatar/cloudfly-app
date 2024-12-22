@@ -23,10 +23,7 @@ const fileSchema = new mongoose.Schema(
         },
         size: {
             type: Number,
-            validate: {
-                validator: (v) => v <= 10000000,
-                message: "Please upload a file smaller than 10 MB",
-            },
+            required: true,
         },
         mimeType: {
             type: String,
