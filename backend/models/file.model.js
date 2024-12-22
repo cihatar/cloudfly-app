@@ -42,7 +42,6 @@ const fileSchema = new mongoose.Schema(
         },
         publicKey: {
             type: String,
-            unique: true,
             default: null,
         },
     },
