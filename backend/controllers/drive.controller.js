@@ -1,5 +1,6 @@
 const CustomAPIError = require("../errors/custom.error.js");
 const File = require("../models/file.model.js");
+const Folder = require("../models/folder.model.js");
 const path = require("path");
 const fs = require("fs").promises;
 const moment = require("moment");
@@ -65,6 +66,7 @@ const uploadFile = async (req, res) => {
             name: encryptedFileName,
             size: file.size,
             mimeType: file.mimetype,
+            type: mime.extension(file.mimetype),
         }).save();
         await user.save();
 
@@ -78,9 +80,27 @@ const uploadFile = async (req, res) => {
     res.status(201).json({ message: "File uploaded successfully" });
 };
 
+// get all files and folders
+const getFilesAndFolders = async (req, res) => {
+    let parent = req.params.id;
+    parent = isValidObjectId(parent) ? parent : null;
+    const user = req.user;
+
+    let files = await File.find({ owner: user._id, parent })
+        .select("_id parent originalName type isStarred");
+    let folders = await Folder.find({ owner: user._id, parent })
+        .select("_id parent name isStarred");
+
+    files = files.length === 0 ? null : files;
+    folders = folders.length === 0 ? null : folders;
+
+    res.status(200).json({ files, folders });
+} 
+
 // get file information
 const getFileInformation = async (req, res) => {
-    const _id = req.params.id;
+    let _id = req.params.id;
+    _id = isValidObjectId(_id) ? _id : null;
     const user = req.user;
 
     const file = await File.findOne({ _id, owner: user._id })
@@ -88,9 +108,8 @@ const getFileInformation = async (req, res) => {
         throw new CustomAPIError("File not found", 404);
     }
     
-    const { originalName, isStarred, publicKey } = file;
+    const { originalName, type, isStarred, publicKey } = file;
     const size = bytesToSize(file.size);
-    const type = mime.extension(file.mimeType);
     const createdAt = moment(file.createdAt).format("LLLL");
     const updatedAt = moment(file.updatedAt).format("LLLL");
 
@@ -99,7 +118,8 @@ const getFileInformation = async (req, res) => {
 
 // download file
 const downloadFile = async (req, res) => {
-    const _id = req.params.id;
+    let _id = req.params.id;
+    _id = isValidObjectId(_id) ? _id : null;
     const user = req.user;
 
     const file = await File.findOne({ _id, owner: user._id })
@@ -121,4 +141,20 @@ const downloadFile = async (req, res) => {
     res.status(200).send(buffer);
 }
 
-module.exports = { uploadFile, getFileInformation, downloadFile };
+// create folder
+const createFolder = async (req, res) => {
+    const user = req.user;
+    let { name, parent } = req.body;
+    parent = isValidObjectId(parent) ? parent : null;
+
+    // if there is a folder with the same name then throw an error
+    const existingFolder = await Folder.findOne({ parent, name });
+    if (existingFolder) {
+        throw new CustomAPIError("There is already a folder with the same name in this directory", 400);
+    }
+    
+    await Folder.create({ owner: user._id, parent, name });
+    res.status(201).json({ message: "Folder created successfully" });
+}
+
+module.exports = { uploadFile, getFilesAndFolders, getFileInformation, downloadFile, createFolder };
