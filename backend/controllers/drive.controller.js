@@ -20,13 +20,13 @@ const uploadFile = async (req, res) => {
 
     let files = req.files.files;
 
-    // if one file is uploaded then add it into array and sort by size
+    // if one file is uploaded then add it into array
     if (!Array.isArray(files)) {
         files = Array.of(files);
     
     }
     // sort by size
-    files.sort((a, b) => a.size - b.size)
+    files.sort((a, b) => a.size - b.size);
     
     const uploadPath = path.join(__dirname, `../private/${user._id}/`);
     try {
@@ -91,10 +91,34 @@ const getFileInformation = async (req, res) => {
     const { originalName, isStarred, publicKey } = file;
     const size = bytesToSize(file.size);
     const type = mime.extension(file.mimeType);
-    const createdAt = moment(file.createdAt).format("YYYY MMMM DD HH:mm");
-    const updatedAt = moment(file.updatedAt).format("YYYY MMMM DD HH:mm");
+    const createdAt = moment(file.createdAt).format("LLLL");
+    const updatedAt = moment(file.updatedAt).format("LLLL");
 
     res.status(200).json({ originalName, size, type, isStarred, publicKey, createdAt, updatedAt });
 }
 
-module.exports = { uploadFile, getFileInformation };
+// download file
+const downloadFile = async (req, res) => {
+    const _id = req.params.id;
+    const user = req.user;
+
+    const file = await File.findOne({ _id, owner: user._id })
+    if (!file) {
+        throw new CustomAPIError("File not found", 404);
+    }
+
+    const uploadPath = path.join(__dirname, `../private/${user._id}/`);
+    const encryptedFilePath = path.join(uploadPath, file.name);
+    let buffer;
+    try {
+        buffer = await decryptFile(encryptedFilePath);
+    } catch (err) {
+        throw new CustomAPIError("Something went wrong", 500);
+    }
+    
+    res.setHeader("Content-Disposition", `attachment; filename="${file.originalName}"`);
+    res.type(file.mimeType);
+    res.status(200).send(buffer);
+}
+
+module.exports = { uploadFile, getFileInformation, downloadFile };
