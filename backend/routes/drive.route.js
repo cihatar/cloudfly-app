@@ -9,6 +9,8 @@ const {
     getFileInformation,
     downloadFile,
     createFolder,
+    renameFile,
+    renameFolder,
 } = require("../controllers/drive.controller.js");
 
 router.post("/upload", authenticateUser, fileUpload(), uploadFile);
@@ -16,5 +18,7 @@ router.get("/get/:id", authenticateUser, getFilesAndFolders);
 router.get("/get-file/:id", authenticateUser, getFileInformation);
 router.get("/download/:id", authenticateUser, downloadFile);
 router.post("/create-folder", authenticateUser, createFolder);
+router.put("/rename-file", authenticateUser, renameFile);
+router.put("/rename-folder", authenticateUser, renameFolder);
 
 module.exports = router;
