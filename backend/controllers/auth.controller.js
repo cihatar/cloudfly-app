@@ -36,13 +36,13 @@ const loginUser = async (req, res) => {
     // check if the user exists
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-        throw new CustomAPIError("There is no user with this email", 404);
+        throw new CustomAPIError("Invalid credentials", 404);
     }
 
     // compare password
     const isPasswordCorrect = await existingUser.comparePassword(password);
     if (!isPasswordCorrect) {
-        throw new CustomAPIError("Wrong password", 400);
+        throw new CustomAPIError("Invalid credentials", 400);
     }
 
     // set cookie
@@ -53,6 +53,7 @@ const loginUser = async (req, res) => {
         lastName: existingUser.lastName,
         email: existingUser.email,
         profileImage: existingUser.profileImage,
+        currentStorage: existingUser.currentStorage,
         maxStorage: existingUser.maxStorage,
     });
 };
@@ -143,12 +144,14 @@ const resetPassword = async (req, res) => {
 }
 
 const verifyToken = async (req, res) => {
+    const user = req.user;
     return res.status(200).json({
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        email: req.user.email,
-        profileImage: req.user.profileImage,
-        maxStorage: req.user.maxStorage,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profileImage: user.profileImage,
+        currentStorage: user.currentStorage,
+        maxStorage: user.maxStorage,
     });
 }
 

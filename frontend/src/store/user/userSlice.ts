@@ -6,8 +6,9 @@ export interface User {
     firstName?: string;
     lastName?: string;
     email?: string;
-    maxStorage?: number;
     profileImage?: string;
+    currentStorage?: number;
+    maxStorage?: number;
 }
 
 // user state interface
