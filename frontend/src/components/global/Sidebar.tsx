@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAppSelector } from "@/store/hooks";
 import {
     AlignJustify,
@@ -16,9 +17,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Progress } from "../ui/progress";
 import LogoutButton from "../auth/LogoutButton";
-import { useState } from "react";
+import { bytesToSize, convertToPercentage } from "@/utils/convert";
 
 export default function Sidebar() {
     // show sidebar 
@@ -34,7 +37,7 @@ export default function Sidebar() {
                 <AlignJustify className="scale-75 text-whitedefault"/>
             </div>
             
-            <div className={`w-full bg-blackdefault/5 text-blackdefault px-6 py-4 flex flex-col justify-between z-10 lg:block ${!showSidebar && 'hidden'}`}>
+            <div className={`w-full bg-blackdefault/5 text-blackdefault px-6 py-4 flex flex-col justify-between z-10 lg:flex ${!showSidebar && 'hidden'}`}>
                 <div>
                     {/* header */}
                     <DropdownMenu>
@@ -132,8 +135,26 @@ export default function Sidebar() {
                 </div>
 
                 {/* footer */}
-                <div></div>
-
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                        <div className="text-xs bg-blackdefault/5 select-none flex flex-col justify-center items-center gap-2 p-2 mt-2">
+                            {bytesToSize(user?.currentStorage)}
+                            {" / "}
+                            {bytesToSize(user?.maxStorage)}
+                            <Progress value={convertToPercentage(user?.currentStorage, user?.maxStorage)} className="bg-whitedefault h-1" />
+                        </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p className="text-xs">
+                                {bytesToSize((user?.maxStorage || 0) - (user?.currentStorage || 0))}
+                                {" "}of free memory out of{" "}
+                                {bytesToSize(user?.maxStorage)}
+                            </p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                
             </div>
 
             {/* outlet */}
