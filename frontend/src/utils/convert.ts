@@ -1,11 +1,11 @@
 export const bytesToSize = (bytes: number = 0): string => {
     if (bytes < 1024 ** 3) {
-        return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
+        return `${(bytes / 1024 ** 2).toFixed(2)} MB`;
     } else {
-        return `${(bytes / 1024 ** 3).toFixed(1)} GB`;
+        return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
     }
 };
 
-export const convertToPercentage = (minVal: number = 0, maxVal: number = 0): number => {
-    return (minVal * 100) / maxVal;
+export const convertToPercentage = (value: number = 0, total: number = 0): number => {
+    return (value * 100) / total;
 };
