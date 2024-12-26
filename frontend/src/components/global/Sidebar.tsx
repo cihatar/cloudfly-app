@@ -18,7 +18,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Progress } from "../ui/progress";
 import LogoutButton from "../auth/LogoutButton";
 import { bytesToSize, convertToPercentage } from "@/utils/convert";
@@ -44,15 +43,8 @@ export default function Sidebar() {
                         <DropdownMenuTrigger className="w-full flex justify-between items-center mb-4 p-2 rounded cursor-pointer hover:bg-blackdefault/5">
                             <div className="w-full flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <Avatar className="rounded w-8 h-8">
-                                        <AvatarImage
-                                            src={user?.profileImage}
-                                            alt={user?.firstName}
-                                        />
-                                        <AvatarFallback className="rounded">
-                                            {`${user?.firstName}`.slice(0, 1)}
-                                        </AvatarFallback>
-                                    </Avatar>
+
+                                    <img src={user?.profileImage} alt={user?.firstName} className="rounded w-8 h-8"/>
 
                                     <div className="text-start">
                                         <h2 className="font-semibold text-sm">
@@ -100,7 +92,7 @@ export default function Sidebar() {
                         </h2>
 
                         <NavLink
-                            to="/"
+                            to="/drive"
                             className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
                         >
                             <div className="flex items-center gap-2">
@@ -158,7 +150,7 @@ export default function Sidebar() {
             </div>
 
             {/* outlet */}
-            <div className="w-full lg:h-full p-8 lg:p-12 lg:overflow-y-auto">
+            <div className="w-full lg:h-full p-6 lg:p-12 lg:overflow-y-auto">
                 <Outlet />
             </div>
             
