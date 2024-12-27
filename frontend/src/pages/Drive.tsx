@@ -2,6 +2,7 @@ import Animate from "@/components/global/Animate";
 import folderIcon from "@/assets/folder_icon.svg";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Subtitle, Title } from "@/components/global/Titles";
 import { EllipsisVertical } from "lucide-react";
 
 export default function Drive() {
@@ -10,9 +11,7 @@ export default function Drive() {
 
         {/* title & buttons*/}
         <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">My Drive</h1>
-          </div>
+            <Title title="My Drive" />
             <div className="flex gap-2">
                 <Button className="rounded bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md" variant="default">Upload File</Button>
                 <Button className="rounded border w-24 h-8 text-xs
@@ -21,7 +20,7 @@ export default function Drive() {
         </div>
 
         {/* folders */}
-        <h2 className="text-blackdefault/75 text-xs mb-2 mt-8">Folders</h2>
+        <Subtitle title="Folders" className="mt-8 text-sm text-blackdefault/75"/>
         <Separator className="mb-4" />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 text-xs">
@@ -45,7 +44,7 @@ export default function Drive() {
         </div>
 
         {/* files */}
-        <h2 className="text-blackdefault/75 text-xs mb-2 mt-8">Files</h2>
+        <Subtitle title="Files" className="mt-8 text-sm text-blackdefault/75"/>
         <Separator className="mb-4" />
 
         <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-4 text-xs">

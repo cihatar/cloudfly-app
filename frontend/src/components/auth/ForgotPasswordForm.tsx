@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { CustomButton, InputField } from "../global/FormElements";
+import { Title } from "../global/Titles";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { forgotPassword } from "@/store/user/userSlice";
@@ -59,9 +60,8 @@ export default function ForgotPasswordForm() {
             onSubmit={handleSubmit}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
         >
-            <h1 className="text-center text-4xl m-2 font-bold text-gray-700">
-                Forgot your password?
-            </h1>
+            <Title title="Forgot your password?" className="text-center mb-2"/>
+
             <div>
                 <InputField 
                     type="email" 

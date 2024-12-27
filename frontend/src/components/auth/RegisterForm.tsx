@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CustomButton, InputWithLabel } from "../global/FormElements";
+import { Title } from "../global/Titles";
 import GoogleSign from "./GoogleSign";
 import { registerUser } from "@/store/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -77,14 +78,13 @@ export default function RegisterForm() {
             onSubmit={handleSubmit}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
         >
-            <h1 className="text-center text-4xl m-2 font-bold text-gray-700">
-                Register
-            </h1>
+            <Title title="Register" className="text-center mb-2"/>
+
             <GoogleSign />
             <div className="flex w-full items-center gap-2 text-xs text-blackdefault">
-                <div className="h-px w-full bg-blackdefault/25"></div>
+                <div className="h-px w-full bg-[#E4E4E7]"></div>
                 OR
-                <div className="h-px w-full bg-blackdefault/25"></div>
+                <div className="h-px w-full bg-[#E4E4E7]"></div>
             </div>
             <div className="flex gap-2">
                 <div>

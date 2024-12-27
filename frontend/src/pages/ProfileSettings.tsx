@@ -1,4 +1,5 @@
 import Animate from "@/components/global/Animate";
+import { Subtitle, Title } from "@/components/global/Titles";
 import ChangePassword from "@/components/profile/settings/ChangePassword";
 import ChangeProfilePicture from "@/components/profile/settings/ChangeProfilePicture";
 import DeleteUser from "@/components/profile/settings/DeleteUser";
@@ -14,21 +15,14 @@ export default function ProfileSettings() {
         <Animate>
 
             {/* title */}
-            <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-bold">Settings</h1>
-                <p className="text-blackdefault/75 text-xs">
-                    Update and customize your profile information
-                </p>
-            </div>
+            <Title title="Settings" subtitle="Update and customize your profile information"/>
 
 
             <Separator className="mt-4 mb-14" />
 
 
             {/* change profile image */}
-            <h2 className="text-xl font-semibold mb-4">
-                Change Your Profile Image
-            </h2>
+            <Subtitle title="Change Your Profile Image" />
             <div className="flex items-center gap-x-4">
             <ChangeProfilePicture user={user}/>
             </div>
@@ -41,9 +35,7 @@ export default function ProfileSettings() {
 
 
             {/* update information */}
-            <h2 className="text-xl font-semibold mb-4">
-                Update Your Information
-            </h2>
+            <Subtitle title="Update Your Information" />
             <div className="flex gap-x-4 justify-stretch items-stretch">
                 {/* update name */}
                 <UpdateName user={user} />

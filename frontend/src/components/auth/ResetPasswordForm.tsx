@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { CustomButton, InputField } from "../global/FormElements";
+import { Title } from "../global/Titles";
 import { resetPassword } from "@/store/user/userSlice";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -76,9 +77,8 @@ export default function ResetPasswordForm({ token }: { token: string }) {
             onSubmit={handleSubmit}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
         >
-            <h1 className="text-center text-4xl m-2 font-bold text-gray-700">
-                Reset your password
-            </h1>
+            <Title title="Reset password" className="text-center mb-2"/>
+
             <InputField 
                 type="password" 
                 placeholder="Enter your password" 
