@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { changePassword, User } from "@/store/user/userSlice";
 import {
     Dialog,
@@ -13,8 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { useAppDispatch } from "@/store/hooks";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
+import { CustomButton, InputField, InputWithLabel } from "@/components/global/FormElements";
 
 interface ChangePasswordProps {
     user: User | null;
@@ -74,33 +72,25 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
     return (
         <div className="flex flex-col gap-y-4">
             <div>
-                <Label htmlFor="email" className="text-gray-700 text-xs">
-                    Email
-                </Label>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="text"
-                    placeholder="First Name"
-                    required
-                    id="email"
-                    name="email"
+                <InputWithLabel 
+                    label="Email" 
+                    type="text" 
+                    placeholder="Email" 
+                    id="email" 
+                    name="email" 
                     defaultValue={user?.email}
-                    disabled
+                    disabled={true}
                 />
             </div>
             <div>
-                <Label htmlFor="password" className="text-gray-700 text-xs">
-                    Password
-                </Label>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="password"
-                    placeholder="First Name"
-                    required
-                    id="password"
-                    name="password"
+                <InputWithLabel 
+                    label="Password" 
+                    type="password" 
+                    placeholder="Password" 
+                    id="password" 
+                    name="password" 
                     defaultValue="******"
-                    disabled
+                    disabled={true}
                 />
             </div>
             <Dialog>
@@ -115,44 +105,29 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
                         onSubmit={handleSubmit}
                         className="flex justify-center flex-col gap-y-1 mt-4"
                     >
-                        <Input
-                            className="focus-visible:ring-offset-0 mb-4"
+                        <InputField 
+                            className="mb-4"
                             type="password"
                             placeholder="Enter your password"
-                            required
                             id="oldPassword"
                             name="oldPassword"
                         />
-                        <Input
-                            className="focus-visible:ring-offset-0 mb-4"
+                        <InputField 
+                            className="mb-4"
                             type="password"
                             placeholder="Enter your new password"
-                            required
                             id="password"
                             name="password"
                         />
-                        <Input
-                            className="focus-visible:ring-offset-0 mb-4"
+                        <InputField 
+                            className="mb-4"
                             type="password"
                             placeholder="Enter your new password again"
-                            required
                             id="password_confirmation"
                             name="password_confirmation"
                         />
                         <DialogFooter className="sm:justify-start gap-2">
-                            <Button
-                                type="submit"
-                                disabled={btnLoading ? true : false}
-                            >
-                                {btnLoading ? (
-                                    <>
-                                        <Loader2 className="animate-spin" />
-                                        Please wait
-                                    </>
-                                ) : (
-                                    "Change"
-                                )}
-                            </Button>
+                            <CustomButton disabled={btnLoading} text="Change" />
                             <DialogClose asChild>
                                 <Button type="button" variant="secondary" ref={cancelBtnRef}>
                                     Cancel

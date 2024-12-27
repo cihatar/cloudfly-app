@@ -1,12 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "@radix-ui/react-label";
+import { CustomButton, InputWithLabel } from "../global/FormElements";
 import GoogleSign from "./GoogleSign";
 import { loginUser, setUser } from "@/store/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface LoginForm {
@@ -29,6 +26,9 @@ export default function LoginForm() {
     const emailRef = useRef<null | HTMLInputElement>(null);
     const passwordRef = useRef<null | HTMLInputElement>(null);
 
+     // button loading
+    const [btnLoading, setBtnLoading] = useState(false);
+
     // handle login
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,6 +38,7 @@ export default function LoginForm() {
             formData.entries()
         ) as unknown as LoginForm;
 
+        setBtnLoading(true);
         dispatch(loginUser(data)).unwrap().then((res) => {     
             toast({
                 title: "Success",
@@ -62,6 +63,7 @@ export default function LoginForm() {
             setTimeout(() => {
                 dispatch(setUser(res));
                 navigate("/drive");
+                setBtnLoading(false);
             }, 1000);
         }).catch((err) => {
             toast({
@@ -69,6 +71,7 @@ export default function LoginForm() {
                 description: err,
                 variant: "destructive",
             });
+            setBtnLoading(false);
         });
     };
 
@@ -87,57 +90,36 @@ export default function LoginForm() {
                 <div className="h-px w-full bg-blackdefault/25"></div>
             </div>
             <div>
-                <Label htmlFor="email" className="text-gray-700 text-xs">
-                    Email
-                </Label>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="email"
-                    placeholder="Email"
-                    required
-                    id="email"
-                    name="email"
+                <InputWithLabel 
+                    label="Email" 
+                    type="email" 
+                    placeholder="Email" 
+                    id="email" 
+                    name="email" 
                     ref={emailRef}
                 />
             </div>
             <div>
-                <div className="flex justify-between text-xs mb-1">
-                    <Label htmlFor="password" className="text-gray-700">
-                        Password
-                    </Label>
-                    <Link
-                        to="/auth/forgot-password"
-                        className="text-blue-700 underline"
-                    >
-                        Forgot Password
-                    </Link>
-                </div>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="password"
-                    placeholder="Password"
-                    required
-                    id="password"
-                    name="password"
+                <InputWithLabel 
+                    label="Password" 
+                    type="password" 
+                    placeholder="Password" 
+                    id="password" name="password" 
                     ref={passwordRef}
                 />
             </div>
-            <Button type="submit" disabled={isLoading ? true : false}>
-                {isLoading ? (
-                    <>
-                        <Loader2 className="animate-spin" />
-                        Please wait
-                    </>
-                ) : (
-                    "Login"
-                )}
-            </Button>
-            <p className="text-xs">
-                Not a member yet?{" "}
-                <Link to="/auth/register" className="text-blue-700 underline">
-                    Register
+            <CustomButton disabled={btnLoading} loading={isLoading} text="Login" />
+            <div className="flex justify-between">
+                <p className="text-xs">
+                    Not a member yet?{" "}
+                    <Link to="/auth/register" className="text-blue-700 underline">
+                        Register
+                    </Link>
+                </p>
+                <Link to="/auth/forgot-password" className="text-blue-700 underline text-xs">
+                        Forgot Password
                 </Link>
-            </p>
+            </div>
         </form>
     );
 }

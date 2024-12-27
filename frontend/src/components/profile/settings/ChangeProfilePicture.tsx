@@ -1,9 +1,8 @@
+import { CustomButton } from "@/components/global/FormElements";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { removeImage, updateImage, User } from "@/store/user/userSlice";
-import { Loader2 } from "lucide-react";
 import React, { useRef, useState } from "react";
 
 interface ChangeProfilePictureProps {
@@ -136,37 +135,21 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                 />
 
                 {/* upload image button */}
-                <Button
-                    className="w-full"
+                <CustomButton 
                     disabled={uploadBtnLoading ? true : profileImage ? false : true}
-                >
-                    {uploadBtnLoading ? (
-                        <>
-                            <Loader2 className="animate-spin" />
-                            Please wait
-                        </>
-                    ) : (
-                        "Change"
-                    )}
-                </Button>
+                    loading={uploadBtnLoading}
+                    text="Change"
+                />
 
                 {/* remove image button */}
-                <Button
-                    type="button"
-                    className="w-full"
-                    variant={"secondary"}
+                <CustomButton 
+                    onClick={handleClick} 
+                    type="button" 
                     disabled={isDefaultProfileImage ? true : removeBtnLoading ? true : false}
-                    onClick={handleClick}
-                >
-                    {removeBtnLoading ? (
-                        <>
-                            <Loader2 className="animate-spin" />
-                            Please wait
-                        </>
-                    ) : (
-                        "Remove"
-                    )}
-                </Button>
+                    loading={removeBtnLoading}
+                    text="Remove"
+                    variant="secondary" 
+                />
             </form>
         </>
     );

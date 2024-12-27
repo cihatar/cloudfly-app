@@ -1,12 +1,9 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "@radix-ui/react-label";
+import { CustomButton, InputWithLabel } from "../global/FormElements";
 import GoogleSign from "./GoogleSign";
 import { registerUser } from "@/store/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface RegisterForm {
@@ -91,75 +88,47 @@ export default function RegisterForm() {
             </div>
             <div className="flex gap-2">
                 <div>
-                    <Label
-                        htmlFor="firstName"
-                        className="text-gray-700 text-xs"
-                    >
-                        First Name
-                    </Label>
-                    <Input
-                        className="focus-visible:ring-offset-0"
-                        type="text"
-                        placeholder="First Name"
-                        required
-                        id="firstName"
-                        name="firstName"
+                    <InputWithLabel 
+                        label="First Name" 
+                        type="text" 
+                        placeholder="First Name" 
+                        id="firstName" 
+                        name="firstName" 
                         ref={firstNameRef}
                     />
                 </div>
                 <div>
-                    <Label htmlFor="lastName" className="text-gray-700 text-xs">
-                        Last Name
-                    </Label>
-                    <Input
-                        className="focus-visible:ring-offset-0"
-                        type="text"
-                        placeholder="Last Name"
-                        required
-                        id="lastName"
-                        name="lastName"
+                    <InputWithLabel 
+                        label="Last Name" 
+                        type="text" 
+                        placeholder="Last Name" 
+                        id="lastName" 
+                        name="lastName" 
                         ref={lastNameRef}
                     />
                 </div>
             </div>
             <div>
-                <Label htmlFor="email" className="text-gray-700 text-xs">
-                    Email
-                </Label>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="email"
-                    placeholder="Email"
-                    required
-                    id="email"
-                    name="email"
+                <InputWithLabel 
+                    label="Email" 
+                    type="email" 
+                    placeholder="Email" 
+                    id="email" 
+                    name="email" 
                     ref={emailRef}
                 />
             </div>
             <div>
-                <Label htmlFor="password" className="text-gray-700 text-xs">
-                    Password
-                </Label>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="password"
-                    placeholder="Password"
-                    required
-                    id="password"
-                    name="password"
+                <InputWithLabel 
+                    label="Password" 
+                    type="password" 
+                    placeholder="Password" 
+                    id="password" 
+                    name="password" 
                     ref={passwordRef}
                 />
             </div>
-            <Button type="submit" disabled={isLoading ? true : false}>
-                {isLoading ? (
-                    <>
-                        <Loader2 className="animate-spin" />
-                        Please wait
-                    </>
-                ) : (
-                    "Register"
-                )}
-            </Button>
+            <CustomButton disabled={isLoading} text="Register"/>
             <p className="text-xs">
                 Do you have an account?{" "}
                 <Link to="/auth/login" className="text-blue-700 underline">

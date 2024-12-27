@@ -1,10 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { CustomButton, InputField } from "../global/FormElements";
 import { resetPassword } from "@/store/user/userSlice";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface ResetPasswordForm {
@@ -61,7 +59,6 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
             setTimeout(() => {
                 navigate("/auth/login");
-                window.location.reload();
                 setBtnLoading(false);
             }, 3000);
             }).catch((err) => {
@@ -82,36 +79,21 @@ export default function ResetPasswordForm({ token }: { token: string }) {
             <h1 className="text-center text-4xl m-2 font-bold text-gray-700">
                 Reset your password
             </h1>
-            <div>
-                <Input
-                    className="focus-visible:ring-offset-0 mb-4"
-                    type="password"
-                    placeholder="Enter your password"
-                    required
-                    id="password"
-                    name="password"
-                    ref={passwordRef}
-                />
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="password"
-                    placeholder="Enter your password again"
-                    required
-                    id="password_confirmation"
-                    name="password_confirmation"
-                    ref={passwordConfirmationRef}
-                />
-            </div>
-            <Button type="submit" disabled={btnLoading ? true : false}>
-                {isLoading ? (
-                    <>
-                        <Loader2 className="animate-spin" />
-                        Please wait
-                    </>
-                ) : (
-                    "Reset"
-                )}
-            </Button>
+            <InputField 
+                type="password" 
+                placeholder="Enter your password" 
+                id="password" 
+                name="password" 
+                ref={passwordRef}
+            />
+            <InputField
+                type="password" 
+                placeholder="Enter your password again" 
+                id="password_confirmation" 
+                name="password_confirmation" 
+                ref={passwordRef}
+            />
+            <CustomButton disabled={btnLoading} loading={isLoading} text="Reset" />
         </form>
     );
 }

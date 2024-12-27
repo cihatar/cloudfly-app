@@ -1,10 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { CustomButton, InputWithLabel } from "@/components/global/FormElements";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { updateName, User } from "@/store/user/userSlice";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 interface UpdateNameProps {
@@ -62,43 +59,26 @@ export default function UpdateName({ user }: UpdateNameProps) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
             <div>
-                <Label htmlFor="firstName" className="text-gray-700 text-xs">
-                    First Name
-                </Label>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="text"
-                    placeholder="First Name"
-                    required
-                    id="firstName"
+                <InputWithLabel 
+                    label="First Name" 
+                    type="text" 
+                    placeholder="First Name" 
+                    id="firstName" 
                     name="firstName"
-                    defaultValue={user?.firstName}
+                    defaultValue={user?.firstName} 
                 />
             </div>
             <div>
-                <Label htmlFor="lastName" className="text-gray-700 text-xs">
-                    Last Name
-                </Label>
-                <Input
-                    className="focus-visible:ring-offset-0"
-                    type="text"
-                    placeholder="Last Name"
-                    required
-                    id="lastName"
+                <InputWithLabel 
+                    label="Last Name" 
+                    type="text" 
+                    placeholder="Last Name" 
+                    id="lastName" 
                     name="lastName"
-                    defaultValue={user?.lastName}
+                    defaultValue={user?.lastName} 
                 />
             </div>
-            <Button type="submit" variant="secondary" disabled={btnLoading ? true : false}>
-            {btnLoading ? (
-                    <>
-                        <Loader2 className="animate-spin" />
-                        Please wait
-                    </>
-                ) : (
-                    "Update"
-                )}
-            </Button>
+            <CustomButton disabled={btnLoading} text="Update" variant="secondary"/>
         </form>
     );
 }

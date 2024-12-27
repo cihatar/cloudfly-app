@@ -1,3 +1,4 @@
+import { CustomButton } from "@/components/global/FormElements";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,7 +14,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/hooks";
 import { deleteUser } from "@/store/user/userSlice";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -89,20 +89,14 @@ export default function DeleteUser() {
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="sm:justify-start gap-2">
-                    <Button
-                        onClick={handleClick}
-                        variant="destructive"
+                    <CustomButton 
+                        onClick={handleClick} 
+                        type="button" 
                         disabled={btnLoading ? true : checked ? false : true}
-                    >
-                        {btnLoading ? (
-                            <>
-                                <Loader2 className="animate-spin" />
-                                Please wait
-                            </>
-                        ) : (
-                            "Confirm"
-                        )}
-                    </Button>
+                        loading={btnLoading}
+                        text="Confirm"
+                        variant="destructive" 
+                    />
                     <DialogClose asChild>
                         <Button type="button" variant="secondary">
                             Cancel
