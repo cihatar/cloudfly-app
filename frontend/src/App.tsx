@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import VerifyToken from "./components/global/VerifyToken";
 import Navbar from "./components/global/Navbar";
 import Sidebar from "./components/global/Sidebar";
@@ -43,9 +44,12 @@ function AppRoutes() {
 }
 
 export default function App() {
+    const queryClient = new QueryClient()
     return (
-        <BrowserRouter>
-            <AppRoutes />
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <AppRoutes />
+            </BrowserRouter>
+        </QueryClientProvider>
     );
 }

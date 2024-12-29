@@ -1,11 +1,48 @@
 import Animate from "@/components/global/Animate";
-import folderIcon from "@/assets/folder_icon.svg";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Subtitle, Title } from "@/components/global/Titles";
-import { EllipsisVertical } from "lucide-react";
+import { getFilesAndFolders } from "@/api/api";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import File from "@/components/drive/File";
+import Folder from "@/components/drive/Folder";
+import DriveLoading from "@/components/drive/DriveLoading";
+
+export interface FileProps {
+  _id: string; 
+  parent: string; 
+  originalName: string; 
+  mimeType: string;
+  type: string; 
+  isStarred: boolean;
+}
+
+export interface FolderProps {
+  _id: string; 
+  parent: string; 
+  name: string; 
+  isStarred: boolean;
+}
 
 export default function Drive() {
+  const [parent, setParent] = useState<string>("root");
+  const [files, setFiles] = useState<FileProps[] | null>(null);
+  const [folders, setFolders] = useState<FolderProps[] | null>(null);
+
+  const { data, isLoading } = useQuery({
+      queryKey: ["drive", parent],
+      queryFn: () => getFilesAndFolders(parent),
+      staleTime: 2 * 60 * 1000,
+  });
+  
+  useEffect(() => {
+      if (data) {
+          setFiles(data.files);
+          setFolders(data.folders);
+      }
+  }, [data]);
+  
   return (
     <Animate>
 
@@ -19,56 +56,52 @@ export default function Drive() {
             </div>
         </div>
 
-        {/* folders */}
-        <Subtitle title="Folders" className="mt-8 text-sm text-blackdefault/75"/>
-        <Separator className="mb-4" />
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 text-xs">
-
-          <div className="flex justify-between items-center bg-blackdefault/[0.02] rounded p-2 cursor-pointer group">
-            <div className="flex items-center gap-2 overflow-hidden">
-              <img src={folderIcon} className="w-8 md:w-10"/>
-              <p>test1</p>
-            </div>
-            <EllipsisVertical className="w-8 h-8 p-2 invisible rounded-full hover:bg-blackdefault/5 group-hover:visible"/>
-          </div>
-
-          <div className="flex justify-between items-center bg-blackdefault/[0.02] rounded p-2 cursor-pointer group">
-            <div className="flex items-center gap-2 overflow-hidden">
-              <img src={folderIcon} className="w-8 md:w-10"/>
-              <p>test2</p>
-            </div>
-            <EllipsisVertical className="w-8 h-8 p-2 invisible rounded-full hover:bg-blackdefault/5 group-hover:visible"/>
-          </div>
-
-        </div>
-
-        {/* files */}
-        <Subtitle title="Files" className="mt-8 text-sm text-blackdefault/75"/>
-        <Separator className="mb-4" />
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-4 text-xs">
-
-            <div className="w-full h-48 flex flex-col items-start border rounded p-2 cursor-pointer group overflow-hidden">
-                <div className="flex items-center justify-center w-full h-full p-2 bg-purple-400 font-semibold text-xl text-whitedefault rounded mb-2 relative overflow-hidden">
-                    MP3
-                    <EllipsisVertical className="w-8 h-8 p-2 invisible rounded-full hover:bg-blackdefault/5 group-hover:visible absolute top-2 right-2"/>
-                </div>
-                <p className="">testaudio.mp3</p>
-                <p className="text-blackdefault/50">mp3</p>
-            </div>
-
-            <div className="w-full h-48 flex flex-col items-start border rounded p-2 cursor-pointer group overflow-hidden">
-                <div className="flex items-center justify-center w-full h-full p-2 bg-teal-400 font-semibold text-xl text-whitedefault rounded mb-2 relative">
-                    JPG
-                    <EllipsisVertical className="w-8 h-8 p-2 invisible rounded-full hover:bg-blackdefault/5 group-hover:visible absolute top-2 right-2"/>
-                </div>
-                <p>testimage.jpg</p>
-                <p className="text-blackdefault/50">jpg</p>
-            </div>
-
-        </div>
-
+        {
+            isLoading ? <DriveLoading /> : 
+            <> 
+            {
+                folders && <>
+                    <Subtitle title="Folders" className="mt-8 text-sm text-blackdefault/75"/>
+                    <Separator className="mb-4" />
+                    <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 text-xs">
+                        {
+                            folders.map(({ _id, parent, name, isStarred }) => (
+                                <Folder 
+                                    key={_id} 
+                                    _id={_id} 
+                                    parent={parent} 
+                                    name={name}
+                                    isStarred={isStarred}
+                                />
+                            ))
+                        }
+                    </div>
+                </>
+            }
+            {
+                files && <>
+                    <Subtitle title="Files" className="mt-8 text-sm text-blackdefault/75"/>
+                    <Separator className="mb-4" />
+                    <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-4 text-xs">
+                        {
+                            files.map(({ _id, parent, originalName, mimeType, type, isStarred }) => (
+                                <File 
+                                    key={_id} 
+                                    _id={_id} 
+                                    parent={parent} 
+                                    originalName={originalName} 
+                                    mimeType={mimeType}
+                                    type={type} 
+                                    isStarred={isStarred}
+                                />
+                            ))
+                        }
+                    </div>
+                </>
+            }
+            </>
+        }
+        
     </Animate>
   )
 }
