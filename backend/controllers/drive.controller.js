@@ -153,8 +153,16 @@ const createFolder = async (req, res) => {
         throw new CustomAPIError("There is already a folder with the same name in this directory", 400);
     }
     
-    await Folder.create({ owner: user._id, parent, name });
-    res.status(201).json({ message: "Folder created successfully" });
+    const newFolder = await Folder.create({ owner: user._id, parent, name });
+    res.status(201).json({
+        folder: {
+            _id: newFolder._id,
+            parent: newFolder.parent,
+            name: newFolder.name,
+            isStarred: newFolder.isStarred,
+        },
+        message: "Folder created successfully",
+    });
 }
 
 // rename file

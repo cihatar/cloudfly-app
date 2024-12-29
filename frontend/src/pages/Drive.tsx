@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import File from "@/components/drive/File";
 import Folder from "@/components/drive/Folder";
 import DriveLoading from "@/components/drive/DriveLoading";
+import CreateFolder from "@/components/drive/CreateFolder";
 
 export interface FileProps {
   _id: string; 
@@ -52,8 +53,7 @@ export default function Drive() {
             <Title title="My Drive" />
             <div className="flex gap-2">
                 <Button className="rounded bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md" variant="default">Upload File</Button>
-                <Button className="rounded border w-24 h-8 text-xs
-                lg:w-32 lg:h-10 lg:text-sm shadow-md" variant="outline">Create Folder</Button>
+                <CreateFolder parent={parent}/>
             </div>
         </div>
 

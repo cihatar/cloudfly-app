@@ -6,4 +6,9 @@ export const getFilesAndFolders = async (parent: string) => {
     return res.data;
 }
 
+export const createFolder = async (data: { name: string, parent: string }) => {
+    const res = await customAxios.post("/api/drive/create-folder", data);
+    return res.data;
+}
+
 
