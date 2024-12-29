@@ -40,10 +40,8 @@ export default function CreateFolder({ parent }: { parent: string }) {
                 },
             });
             queryClient.setQueryData(['drive', parent], (oldData: { files: FileProps[], folders: FolderProps[] }) => {
-                if (oldData.files === null && oldData.folders === null) {
-                    return { folders: [data.folder], files: oldData.files };
-                }
-                return { ...oldData, folders: [...oldData.folders, data.folder] };
+                const foldersArr = oldData.folders === null ? [data.folder] : [...oldData.folders, data.folder];
+                return { ...oldData, folders: foldersArr };
             });
             cancelBtnRef.current?.click();
         },
