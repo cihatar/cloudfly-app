@@ -1,4 +1,5 @@
 import Animate from "@/components/global/Animate";
+import goingUp from "@/assets/going_up.svg";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Subtitle, Title } from "@/components/global/Titles";
@@ -44,7 +45,7 @@ export default function Drive() {
   }, [data]);
   
   return (
-    <Animate>
+    <Animate> 
 
         {/* title & buttons*/}
         <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
@@ -58,6 +59,15 @@ export default function Drive() {
 
         {
             isLoading ? <DriveLoading /> : 
+            !files && !folders ? 
+            <div className="flex flex-col text-center items-center justify-center gap-4 mt-36">
+                <img src={goingUp} alt="Upload file" className="w-48 lg:w-72"/>
+                <p className="text-blackdefault/75 text-sm">
+                    It looks like the space is empty. 
+                    <br /> 
+                    <span className="font-semibold">Please upload a file or create a folder to add content</span>
+                </p>
+            </div> :
             <> 
             {
                 folders && <>
