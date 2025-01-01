@@ -5,35 +5,24 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 
-interface InputProps {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     className?: string;
-    type?: string;
-    placeholder?: string;
     id?: string;
-    name?: string;
-    defaultValue?: string;
-    disabled?: boolean;
-    ref?: React.Ref<HTMLInputElement>;
 }
 
-export const InputField = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, placeholder, id, name, defaultValue, disabled }, ref) => {
+export const InputField = React.forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => {
     return (
         <Input
             className={cn(`focus-visible:ring-offset-0 ${className}`)}
-            type={type}
-            placeholder={placeholder}
             required
-            id={id}
-            name={name}
-            defaultValue={defaultValue}
-            disabled={disabled}
             ref={ref} 
+            {...props}
         />
     );
 });
 
-export const InputWithLabel = React.forwardRef<HTMLInputElement, InputProps>(({ label, className, type, placeholder, id, name, defaultValue, disabled }, ref) => {
+export const InputWithLabel = React.forwardRef<HTMLInputElement, InputProps>(({ label, className, id, ...props }, ref) => {
     return (
         <>
             <Label htmlFor={id} className="text-gray-700 text-xs">
@@ -41,39 +30,32 @@ export const InputWithLabel = React.forwardRef<HTMLInputElement, InputProps>(({ 
             </Label>
             <Input
                 className={cn(`focus-visible:ring-offset-0 ${className}`)}
-                type={type}
-                placeholder={placeholder}
                 required
                 id={id}
-                name={name}
-                defaultValue={defaultValue}
-                disabled={disabled}
                 ref={ref}
+                {...props}
             />
         </>
         
     );
 });
 
-interface ButtonProps {
-    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
-    type?: "submit" | "reset" | "button" | undefined;
     disabled?: boolean;
     loading?: boolean;
     text?: string;
     variant?: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
-    ref?: React.Ref<HTMLButtonElement>;
 }
 
-export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, onClick, type = "submit", disabled, loading = disabled, text, variant }, ref) => {
+export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, disabled, loading = disabled, text, variant, ...props }, ref) => {
     return (
         <Button 
             className={cn(`${className}`)} 
-            onClick={onClick} type={type} 
             disabled={disabled} 
             variant={variant} 
             ref={ref}
+            {...props}
         >
             {(loading) ? (<><Loader2 className="animate-spin" />Please wait</>) : (text)}
         </Button>
