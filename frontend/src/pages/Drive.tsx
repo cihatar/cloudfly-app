@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Subtitle, Title } from "@/components/global/Titles";
 import { getFilesAndFolders } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import File from "@/components/drive/File";
 import Folder from "@/components/drive/Folder";
 import DriveLoading from "@/components/drive/DriveLoading";
@@ -31,6 +31,7 @@ export interface FolderProps {
 
 export default function Drive() {
     const [parent, setParent] = useState<string>("root");
+    const [fileNames, setFileNames] = useState<string[]>([]);
     const [folderStack, setFolderStack] = useState<{_id: string, name: string}[]>([{ _id: parent, name: "My Drive"}]);
 
     const { data, isLoading } = useQuery({
@@ -38,6 +39,14 @@ export default function Drive() {
         queryFn: () => getFilesAndFolders(parent),
         staleTime: 2 * 60 * 1000,
     });
+
+    useEffect(() => {
+        setFileNames([]);
+        if (data && data.files !== null) {
+            const newFileNames = data.files.map((file: FileProps) => file.originalName);
+            setFileNames(newFileNames);
+        }
+    }, [data]);
 
     // handle folder double click
     const handleDoubleClick = (folder: FolderProps) => {
@@ -68,7 +77,7 @@ export default function Drive() {
                     <Title title={folderStack[folderStack.length - 1].name} />
                 </div>
                 <div className="flex gap-2">
-                    <UploadFile  parent={parent} />
+                    <UploadFile  parent={parent} fileNames={fileNames} />
                     <CreateFolder parent={parent} />
                 </div>
             </div>
