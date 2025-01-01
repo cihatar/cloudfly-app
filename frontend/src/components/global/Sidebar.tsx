@@ -20,6 +20,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Progress } from "../ui/progress";
 import LogoutButton from "../auth/LogoutButton";
+import UploadProgress from "./UploadProgress";
 import { bytesToSize, convertToPercentage } from "@/utils/convert";
 
 export default function Sidebar() {
@@ -153,6 +154,8 @@ export default function Sidebar() {
             <div className="w-full lg:h-full p-6 lg:p-12 lg:overflow-y-auto">
                 <Outlet />
             </div>
+
+            <UploadProgress />
             
         </div>
     );
