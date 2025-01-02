@@ -21,44 +21,59 @@ const uploadFile = async (req, res) => {
 
     let files = req.files.files;
 
-    // if one file is uploaded then add it into array
+    // if only one file is uploaded then convert to array
     if (!Array.isArray(files)) {
         files = Array.of(files);
-    
     }
-    // sort by size
-    files.sort((a, b) => a.size - b.size);
+
+    // get existing files with the same name in db
+    const existingFiles = await File.find({ owner: user._id, parent, originalName: { $in: files.map(file => file.name) } });
+
+    // calculate total size for replaced files
+    const existingFileSizes = existingFiles.reduce((sum, f) => sum + f.size, 0);    
     
+    // check size
+    const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+    
+    const totalStorage = user.currentStorage + totalSize - existingFileSizes;
+    if (totalStorage > user.maxStorage) {
+        const message = files.length > 1 
+                            ? "The size of the files exceeds your storage limit" 
+                            : "The size of the file exceeds your storage limit"
+        throw new CustomAPIError(message, 400);
+    }
+
     const uploadPath = path.join(__dirname, `../private/${user._id}/`);
+    
+    // delete existing files if any
+    if (existingFiles.length > 0) {
+        await File.deleteMany({ owner: user._id, parent, originalName: { $in: files.map(file => file.name) } });
+        await Promise.all(existingFiles.map(async (existingFile) => {
+            try {
+                await fs.rm(uploadPath + existingFile.name, { recursive: true, force: true });
+            } catch (err) {
+                throw new CustomAPIError("Something went wrong", 500);
+            }
+        }));
+    }
+    
     try {
         await fs.mkdir(uploadPath, { recursive: true });
     } catch (err) {
         throw new CustomAPIError("Something went wrong", 500);
     }
 
-    for (const file of files) {
-        // if file name is same then remove the existing one and upload new one
-        const existingFile = await File.findOneAndDelete({ parent, originalName: file.name });
-        if (existingFile) {
-            user.currentStorage -= existingFile.size;            
-            try {
-                await fs.rm(uploadPath + existingFile.name, { recursive: true, force: true });
-            } catch (err) {
-                throw new CustomAPIError("Something went wrong", 500);
-            }
-        }
-
-        // check size
-        const totalStorage = user.currentStorage + file.size;   
-        if (totalStorage > user.maxStorage) { 
-            throw new CustomAPIError(`You have reached the storage limit`, 400);
-        }
-        user.currentStorage = totalStorage;
-
+    await Promise.all(files.map(async (file) => {
         const encryptedFileName = uuid() + ".enc";
         const encryptedFilePath = path.join(uploadPath, encryptedFileName);
 
-        // save file and user to db
+        try {
+            await encryptFile(file.data, encryptedFilePath);
+        } catch (err) {
+            throw new CustomAPIError("Something went wrong", 500);
+        }
+
+        // save file
         await new File({
             owner: user._id,
             parent: parent,
@@ -68,14 +83,11 @@ const uploadFile = async (req, res) => {
             mimeType: file.mimetype,
             type: mime.extension(file.mimetype),
         }).save();
-        await user.save();
+    }));
 
-        try {
-            await encryptFile(file.data, encryptedFilePath);
-        } catch (err) {
-            throw new CustomAPIError("Something went wrong", 500);
-        }
-    }
+    // save user
+    user.currentStorage = totalStorage;
+    await user.save();
 
     res.status(201).json({ message: "File uploaded successfully" });
 };
