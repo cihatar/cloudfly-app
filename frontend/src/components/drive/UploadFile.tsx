@@ -13,10 +13,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import customAxios from "@/config/axios";
 import { CustomButton } from "../global/FormElements";
 import { useToast } from "@/hooks/use-toast";
+import { useUploadContext } from "@/context/UploadContext";
+import { v4 as uuid } from 'uuid';
 
 export default function UploadFile({ parent, fileNames }: { parent: string, fileNames: string[] }) {
     const [sameFiles, setSameFiles] = useState<string[]>([]);
     const [filesFormData, setFilesFormData] =  useState<FormData>(new FormData());
+
+    // context
+    const { updateUploadedFiles, updateUploadedFilesProgress } = useUploadContext();
 
     // toast
     const { toast } = useToast();
@@ -30,13 +35,33 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
 
     const { mutate } = useMutation({
         mutationFn: async (formData: FormData) =>  {
+            const id = uuid();
+            const files = formData.getAll("files") as File[];
+
+            // add files to uploaded files array to show upload progress component
+            updateUploadedFiles({ id, files, progress: 0 });
+            
             const res = await customAxios.post("/api/drive/upload", formData, { onUploadProgress(progressEvent) {
                 const { loaded, total } = progressEvent;
-                console.log(((loaded / total!) * 100).toFixed(0));
+                if (total) {
+                    const progress = ((loaded / total) * 100).toFixed(0);
+                    // update uploaded file progress bar
+                    updateUploadedFilesProgress(id, parseInt(progress));
+                }
             },});
             return res.data;
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            toast({
+                title: "Success",
+                description: data.message,
+                variant: "default",
+                duration: 3000,
+                style: {
+                    color: "#fafafa",
+                    backgroundColor: "#5cb85c",
+                },
+            });
             queryClient.invalidateQueries({ queryKey: ["drive", parent]});
         },
         onError: (data: any) => {
@@ -75,7 +100,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
             formData.append("files", file);
         }
         formData.append("parent", parent);
-        
+
         // if there is a conflict show dialog otherwise upload files immediately
         if (filesWithConflicts.length > 0) {
             setSameFiles(filesWithConflicts);
