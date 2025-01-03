@@ -85,7 +85,7 @@ export default function Drive() {
             {
                 isLoading ? <DriveLoading /> : 
                 !data.files && !data.folders ? 
-                <div className="flex flex-col text-center items-center justify-center gap-4 mt-36">
+                <div className="flex flex-col text-center items-center justify-center gap-4 mt-36 select-none pointer-events-none">
                     <img src={goingUp} alt="Upload file" className="w-48 lg:w-72"/>
                     <p className="text-blackdefault/75 text-sm">
                         It looks like the space is empty. 

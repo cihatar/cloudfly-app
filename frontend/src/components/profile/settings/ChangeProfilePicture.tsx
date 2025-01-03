@@ -112,7 +112,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
     return (
         <>
             <Avatar
-                className="rounded w-24 h-24 cursor-pointer"
+                className="rounded w-24 h-24 cursor-pointer select-none"
                 onClick={() => {
                     if (fileRef.current) {
                         fileRef.current.click()
