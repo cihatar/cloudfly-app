@@ -28,23 +28,47 @@ export default function UploadProgress() {
                             </Button>
                        </div>
                     </div>
-                    <div className="max-h-[195px] overflow-y-auto text-whitedefault">
+                    <div className="max-h-[240px] overflow-y-auto text-whitedefault">
 
                         {
                             uploadedFiles.map((data) => {
                                 const file = data.files[0];
+
                                 const nameArr = data.files.map((f) => f.name);
-                                const name = nameArr.join(", ");                                
+                                const name = nameArr.join(", ");    
+                                
+                                const isProgressing = data.progress !== 100;
+                                const isSuccess = data.isSuccess === true;
+                                const isError = data.isError === true;
+
                                 return (
-                                        <div className="flex gap-2 items-center p-4 rounded border-t">
+                                        <div className="h-20 flex gap-2 items-center p-4 rounded border-t">
+
                                             <div className={`w-12 h-8 ${getColor(file.type)} rounded flex items-center justify-center text-xs uppercase select-none`}>
                                                 {name.substring(0,1)}
-                                            </div>
+                                            </div> 
+
                                             <div className="w-full flex flex-col gap-1">
                                                 <p className="text-blackdefault text-xs">
                                                     {name.length > 30 ? name.substring(0,30) + "..." : name}
                                                 </p>
-                                                <Progress value={data.progress} className="h-1" />
+
+                                                {
+                                                    isProgressing ? (
+                                                        <Progress value={data.progress} className="h-1" />
+                                                    ) : isSuccess && !isError ? (
+                                                        <p className="text-greendefault text-xs">
+                                                        {data.message}
+                                                        </p>
+                                                    ) : isError ? (
+                                                        <p className="text-red-500 text-xs">
+                                                        {data.message}
+                                                        </p>
+                                                    ) : (
+                                                        <Progress value={data.progress} className="h-1" />
+                                                    )
+                                                }
+                                                
                                             </div>
                                             <p className="text-blackdefault/75 text-xs min-w-[36px] text-center">%{data.progress}</p>
                                         </div>

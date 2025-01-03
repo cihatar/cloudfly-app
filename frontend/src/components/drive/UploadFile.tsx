@@ -12,7 +12,6 @@ import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import customAxios from "@/config/axios";
 import { CustomButton } from "../global/FormElements";
-import { useToast } from "@/hooks/use-toast";
 import { useUploadContext } from "@/context/UploadContext";
 import { v4 as uuid } from 'uuid';
 import { useAppDispatch } from "@/store/hooks";
@@ -23,13 +22,10 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
     const [filesFormData, setFilesFormData] =  useState<FormData>(new FormData());
 
     // context
-    const { updateUploadedFiles, updateUploadedFilesProgress } = useUploadContext();
+    const { updateUploadedFiles, updateUploadedFilesProgress, updateUploadStatus } = useUploadContext();
 
     // redux
     const dispatch = useAppDispatch();
-
-    // toast
-    const { toast } = useToast();
 
     // ref
     const fileRef = useRef<null | HTMLInputElement>(null);
@@ -46,36 +42,25 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
             // add files to uploaded files array to show upload progress component
             updateUploadedFiles({ id, files, progress: 0 });
             
-            const res = await customAxios.post("/api/drive/upload", formData, { onUploadProgress(progressEvent) {
-                const { loaded, total } = progressEvent;
-                if (total) {
-                    const progress = ((loaded / total) * 100).toFixed(0);
-                    // update uploaded file progress bar
-                    updateUploadedFilesProgress(id, parseInt(progress));
-                }
-            },});
-            return res.data;
+            try {
+                const res = await customAxios.post("/api/drive/upload", formData, { onUploadProgress(progressEvent) {
+                    const { loaded, total } = progressEvent;
+                    if (total) {
+                        const progress = ((loaded / total) * 100).toFixed(0);
+                        // update uploaded file progress bar
+                        updateUploadedFilesProgress(id, parseInt(progress));
+                    }
+                },});
+                updateUploadStatus(id, true, res.data.message);       
+                return res.data;
+            } catch (error: any) {
+                updateUploadStatus(id, false, error.response.data.error);
+            }
+                 
         },
         onSuccess: (data) => {
-            toast({
-                title: "Success",
-                description: data.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
             dispatch(setCurrentStorage(data.currentStorage))
             queryClient.invalidateQueries({ queryKey: ["drive", parent]});
-        },
-        onError: (data: any) => {
-            toast({
-                title: "Error",
-                description: data.response.data.error,
-                variant: "destructive",
-            });
         }
     });
 

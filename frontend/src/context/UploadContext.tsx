@@ -4,12 +4,16 @@ interface UploadedFilesProps {
     id: string;
     files: File[];
     progress: number;
+    isSuccess?: boolean;
+    isError?: boolean;
+    message?: string;
 }
 
 interface UploadContextProps {
     uploadedFiles: UploadedFilesProps[];
     updateUploadedFiles: (data: UploadedFilesProps) => void;
     updateUploadedFilesProgress: (id: string, progress: number) => void;
+    updateUploadStatus: (id: string, status: boolean, message: string) => void;
     closeUploadProgress: () => void;
     isMinimized: boolean;
     updateIsMinimized: () => void;
@@ -29,9 +33,14 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
         setUploadedFiles(prev => prev.map(file => file.id === id ? { ...file, progress} : file))
     }
 
+    // set upload status and message
+    const updateUploadStatus = (id: string, status: boolean, message: string) => {
+        setUploadedFiles(prev => prev.map(file => file.id === id ? { ...file, isSuccess: status, isError: !status, message } : file))
+    }
+
     // close upload progress component
     const closeUploadProgress = () => setUploadedFiles([]);
-    
+
     const updateIsMinimized = () => setIsMinimized(!isMinimized);
 
     return (
@@ -40,6 +49,7 @@ export const UploadProvider = ({ children }: { children: ReactNode }) => {
                 uploadedFiles, 
                 updateUploadedFiles, 
                 updateUploadedFilesProgress, 
+                updateUploadStatus,
                 closeUploadProgress, 
                 isMinimized, 
                 updateIsMinimized
