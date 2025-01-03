@@ -89,7 +89,7 @@ const uploadFile = async (req, res) => {
     user.currentStorage = totalStorage;
     await user.save();
 
-    res.status(201).json({ message: "File uploaded successfully" });
+    res.status(201).json({ currentStorage: totalStorage, message: "File uploaded successfully" });
 };
 
 // get all files and folders

@@ -15,6 +15,8 @@ import { CustomButton } from "../global/FormElements";
 import { useToast } from "@/hooks/use-toast";
 import { useUploadContext } from "@/context/UploadContext";
 import { v4 as uuid } from 'uuid';
+import { useAppDispatch } from "@/store/hooks";
+import { setCurrentStorage } from "@/store/user/userSlice";
 
 export default function UploadFile({ parent, fileNames }: { parent: string, fileNames: string[] }) {
     const [sameFiles, setSameFiles] = useState<string[]>([]);
@@ -22,6 +24,9 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
 
     // context
     const { updateUploadedFiles, updateUploadedFilesProgress } = useUploadContext();
+
+    // redux
+    const dispatch = useAppDispatch();
 
     // toast
     const { toast } = useToast();
@@ -37,7 +42,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
         mutationFn: async (formData: FormData) =>  {
             const id = uuid();
             const files = formData.getAll("files") as File[];
-
+            
             // add files to uploaded files array to show upload progress component
             updateUploadedFiles({ id, files, progress: 0 });
             
@@ -62,6 +67,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                     backgroundColor: "#5cb85c",
                 },
             });
+            dispatch(setCurrentStorage(data.currentStorage))
             queryClient.invalidateQueries({ queryKey: ["drive", parent]});
         },
         onError: (data: any) => {
@@ -70,7 +76,6 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                 description: data.response.data.error,
                 variant: "destructive",
             });
-            queryClient.invalidateQueries({ queryKey: ["drive", parent]});
         }
     });
 

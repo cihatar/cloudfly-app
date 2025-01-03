@@ -189,6 +189,12 @@ const userSlice = createSlice({
         setUser(state, action) {
             state.user = action.payload as User;
         },
+        setCurrentStorage(state, action) {
+            const user = getUser();
+            user.currentStorage = action.payload;
+            state.user = user;
+            localStorage.setItem("user", JSON.stringify(state.user));
+        }
     },
     extraReducers(builder) {
         builder
@@ -295,5 +301,5 @@ const userSlice = createSlice({
     },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setCurrentStorage } = userSlice.actions;
 export default userSlice.reducer;
