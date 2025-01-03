@@ -31,23 +31,25 @@ export default function UploadProgress() {
                     <div className="max-h-[195px] overflow-y-auto text-whitedefault">
 
                         {
-                            uploadedFiles.map((data) => (
-                                data.files.map((file) => (
-                                    <div className="flex gap-2 items-center p-4 rounded border-t">
-                                        <div className={`w-12 h-8 ${getColor(file.type)} rounded flex items-center justify-center text-xs uppercase select-none`}>
-                                            {file.name.substring(0,1)}
+                            uploadedFiles.map((data) => {
+                                const file = data.files[0];
+                                const nameArr = data.files.map((f) => f.name);
+                                const name = nameArr.join(", ");                                
+                                return (
+                                        <div className="flex gap-2 items-center p-4 rounded border-t">
+                                            <div className={`w-12 h-8 ${getColor(file.type)} rounded flex items-center justify-center text-xs uppercase select-none`}>
+                                                {name.substring(0,1)}
+                                            </div>
+                                            <div className="w-full flex flex-col gap-1">
+                                                <p className="text-blackdefault text-xs">
+                                                    {name.length > 30 ? name.substring(0,30) + "..." : name}
+                                                </p>
+                                                <Progress value={data.progress} className="h-1" />
+                                            </div>
+                                            <p className="text-blackdefault/75 text-xs min-w-[36px] text-center">%{data.progress}</p>
                                         </div>
-                                        <div className="w-full flex flex-col gap-1">
-                                            <p className="text-blackdefault text-xs">
-                                                {file.name}
-                                            </p>
-                                            <Progress value={data.progress} className="h-1" />
-                                        </div>
-                                        <p className="text-blackdefault/75 text-xs min-w-[36px] text-center">%{data.progress}</p>
-                                    </div>
-                                ))
-                                
-                            ))
+                                )
+                            })
                         }
 
                     </div>
