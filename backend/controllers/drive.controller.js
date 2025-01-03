@@ -73,6 +73,9 @@ const uploadFile = async (req, res) => {
             throw new CustomAPIError("Something went wrong", 500);
         }
 
+        const mimeType = mime.lookup(file.name);        
+        const type = mime.extension(mimeType);
+
         // save file
         await new File({
             owner: user._id,
@@ -80,8 +83,8 @@ const uploadFile = async (req, res) => {
             originalName: file.name,
             name: encryptedFileName,
             size: file.size,
-            mimeType: file.mimetype,
-            type: mime.extension(file.mimetype),
+            mimeType: mimeType,
+            type: type,
         }).save();
     }));
 
