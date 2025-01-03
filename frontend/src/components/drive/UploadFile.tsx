@@ -74,10 +74,6 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
-        // reset states
-        setSameFiles([]);
-        setFilesFormData(new FormData());
-        
         const files = e.target.files as FileList;
         const formData = new FormData();
     
@@ -97,7 +93,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
             setFilesFormData(formData);
         } else {
             handleUpload(formData);
-        }
+        }        
     };
 
     return (
@@ -116,7 +112,16 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                 type="button"
                 className="rounded bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md"
                 variant="default"
-                onClick={() => fileRef.current?.click()}
+                onClick={() => {
+                    // reset states
+                    setSameFiles([]);
+                    setFilesFormData(new FormData());
+                    
+                    if (fileRef.current) {
+                        fileRef.current.click();
+                        fileRef.current.value = "";
+                    }
+                }}
             >
                 Upload File
             </Button>

@@ -113,7 +113,12 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
         <>
             <Avatar
                 className="rounded w-24 h-24 cursor-pointer"
-                onClick={() => fileRef.current?.click()}
+                onClick={() => {
+                    if (fileRef.current) {
+                        fileRef.current.click()
+                        fileRef.current.value = "";
+                    }
+                }}
             >
                 <AvatarImage
                     src={previewImage ? previewImage : user?.profileImage}
