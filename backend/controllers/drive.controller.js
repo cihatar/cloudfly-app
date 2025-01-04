@@ -196,13 +196,15 @@ const renameFile = async (req, res) => {
         throw new CustomAPIError("File not found", 404);
     }
 
+    const newName = name + path.extname(file.originalName); 
+
     // if there is a file with the same name then throw an error
-    const existingFile = await File.findOne({ owner: user._id, parent, originalName: name});
+    const existingFile = await File.findOne({ owner: user._id, parent, originalName: newName});
     if (existingFile) {
         throw new CustomAPIError("There is already a file with the same name in this directory", 400);
     }
 
-    file.originalName = name + path.extname(file.originalName);
+    file.originalName = newName;
     await file.save();
     res.status(200).json({ message: "You have successfully renamed your file" });
 }
