@@ -11,9 +11,11 @@ import {
 import { Download, EllipsisVertical, Info, Pen, Share2, FolderHeart, Trash2 } from "lucide-react";
 import Details from "./actions-menu/Details";
 import { useState } from "react";
+import RenameFile from "./actions-menu/RenameFile";
 
 export default function File({ _id, parent, originalName, mimeType, type, isStarred }: FileProps) {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return (
         <div className="w-full h-48 flex flex-col items-start border rounded p-2 hover:bg-blackdefault/[0.02] group overflow-hidden relative">
@@ -35,7 +37,7 @@ export default function File({ _id, parent, originalName, mimeType, type, isStar
                             Details 
                         </MenubarItem>
                         <MenubarSeparator />
-                        <MenubarItem>
+                        <MenubarItem onClick={() => setIsDialogOpen(true)}>
                             <Pen className="scale-75 mr-1"/>
                             Rename 
                         </MenubarItem>
@@ -65,6 +67,9 @@ export default function File({ _id, parent, originalName, mimeType, type, isStar
 
             {/* details sheet */}
             <Details _id={_id} isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} />
+
+            {/* rename dialog */}
+            <RenameFile _id={_id} parent={parent} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
             
         </div>
     );

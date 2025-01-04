@@ -16,4 +16,9 @@ export const createFolder = async (data: { name: string, parent: string }) => {
     return res.data;
 }
 
+export const renameFile = async (data: { _id: string, parent: string, name: string }) => {
+    const res = await customAxios.put("/api/drive/rename-file", data);
+    return res.data;
+}
+
 
