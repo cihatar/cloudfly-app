@@ -42,7 +42,7 @@ export default function UploadProgress() {
                                 const isError = data.isError === true;
 
                                 return (
-                                        <div className="h-20 flex gap-2 items-center p-4 rounded border-t">
+                                        <div key={data.id} className="h-20 flex gap-2 items-center p-4 rounded border-t">
 
                                             <div className={`w-12 h-8 ${getColor(file.type)} rounded flex items-center justify-center text-xs uppercase select-none`}>
                                                 {name.substring(0,1)}

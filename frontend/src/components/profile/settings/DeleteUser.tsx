@@ -73,21 +73,19 @@ export default function DeleteUser() {
                 <DialogHeader>
                     <DialogTitle>Delete Account Request</DialogTitle>
                     <DialogDescription className="flex flex-col gap-y-4">
-                        <p className="text-sm text-muted-foreground">
-                            In case you delete your account, all the data you
-                            have uploaded will be permanently removed.
-                        </p>
-                        <div className="flex items-center gap-x-2">
-                            <Checkbox id="terms" checked={checked} onCheckedChange={() => setChecked(!checked)}/>
-                            <label
-                                htmlFor="terms"
-                                className="text-xs"
-                            >
-                                Accept terms and conditions
-                            </label>
-                        </div>
+                        In case you delete your account, all the data you
+                        have uploaded will be permanently removed.
                     </DialogDescription>
                 </DialogHeader>
+                <div className="flex items-center gap-x-2">
+                    <Checkbox id="terms" checked={checked} onCheckedChange={() => setChecked(!checked)}/>
+                    <label
+                        htmlFor="terms"
+                        className="text-xs"
+                    >
+                        Accept terms and conditions
+                    </label>
+                </div>
                 <DialogFooter className="sm:justify-start gap-2">
                     <CustomButton 
                         onClick={handleClick} 

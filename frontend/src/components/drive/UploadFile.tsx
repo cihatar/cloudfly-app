@@ -132,18 +132,16 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                         <DialogHeader>
                             <DialogTitle>File already exists</DialogTitle>
                             <DialogDescription className="flex flex-col gap-y-4">
-                                <p className="text-sm text-muted-foreground">
-                                    The file you are trying to upload already exists in this directory
-                                </p>
-                                <div className="grid grid-cols-3 gap-4 text-xs text-blackdefault max-h-48 overflow-y-auto">
-                                    {sameFiles.map((name) => (
-                                        <div key={name} className="bg-blackdefault/5 p-2 flex items-center gap-2 rounded">
-                                            {name}
-                                        </div>
-                                    ))}
-                                </div>
-                                <p className="text-xs text-red-500 border-t pt-2"> If you replace the file, the existing file will be permanently deleted</p>
+                                The file you are trying to upload already exists in this directory
                             </DialogDescription>
+                            <div className="grid grid-cols-3 gap-4 text-xs text-blackdefault max-h-48 overflow-y-auto py-2">
+                                {sameFiles.map((name) => (
+                                    <div key={name} className="bg-blackdefault/5 p-2 flex items-center gap-2 rounded">
+                                        {name}
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-xs text-red-500 border-t pt-2"> If you replace the file, the existing file will be permanently deleted</p>
                         </DialogHeader>
                         <DialogFooter className="sm:justify-start gap-2">
                             <CustomButton text="Replace" onClick={() => handleUpload(filesFormData)}/>
