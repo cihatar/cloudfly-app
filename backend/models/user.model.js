@@ -65,4 +65,11 @@ userSchema.method("comparePassword", async function comparePassword(password) {
     return await bcrypt.compare(password, this.password);
 });
 
+// delete other records
+userSchema.pre("deleteOne", { document: true }, async function () {
+    await this.model("file").deleteMany({ owner: this._id });
+    await this.model("folder").deleteMany({ owner: this._id });
+    await this.model("reset_password_token").deleteMany({ user: this._id })
+});
+
 module.exports = mongoose.model("user", userSchema);
