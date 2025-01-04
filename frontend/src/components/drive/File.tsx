@@ -9,8 +9,12 @@ import {
     MenubarTrigger,
   } from "@/components/ui/menubar"
 import { Download, EllipsisVertical, Info, Pen, Share2, FolderHeart, Trash2 } from "lucide-react";
+import Details from "./actions-menu/Details";
+import { useState } from "react";
 
 export default function File({ _id, parent, originalName, mimeType, type, isStarred }: FileProps) {
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
     return (
         <div className="w-full h-48 flex flex-col items-start border rounded p-2 hover:bg-blackdefault/[0.02] group overflow-hidden relative">
             <div className={`flex items-center justify-center w-full h-full ${getColor(mimeType)} font-semibold text-xl text-whitedefault uppercase rounded mb-2 select-none pointer-events-none`}>
@@ -26,7 +30,7 @@ export default function File({ _id, parent, originalName, mimeType, type, isStar
                         <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-blackdefault/5 group-hover:visible text-whitedefault" />
                     </MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>
+                        <MenubarItem onClick={() => setIsSheetOpen(true)}>
                             <Info className="scale-75 mr-1"/>
                             Details 
                         </MenubarItem>
@@ -58,6 +62,9 @@ export default function File({ _id, parent, originalName, mimeType, type, isStar
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
+
+            {/* details sheet */}
+            <Details _id={_id} isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} />
             
         </div>
     );

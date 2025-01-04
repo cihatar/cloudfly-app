@@ -123,12 +123,12 @@ const getFileInformation = async (req, res) => {
         throw new CustomAPIError("File not found", 404);
     }
     
-    const { originalName, type, isStarred, publicKey } = file;
+    const { originalName, mimeType, type, isStarred, publicKey } = file;
     const size = bytesToSize(file.size);
     const createdAt = moment(file.createdAt).format("LLLL");
     const updatedAt = moment(file.updatedAt).format("LLLL");
 
-    res.status(200).json({ originalName, size, type, isStarred, publicKey, createdAt, updatedAt });
+    res.status(200).json({ originalName, size, mimeType, type, isStarred, publicKey, createdAt, updatedAt });
 }
 
 // download file

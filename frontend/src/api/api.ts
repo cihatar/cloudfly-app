@@ -6,6 +6,11 @@ export const getFilesAndFolders = async (parent: string) => {
     return res.data;
 }
 
+export const getFileInformation = async (_id: string) => {
+    const res = await customAxios.get(`/api/drive/get-file/${_id}`);
+    return res.data;
+}
+
 export const createFolder = async (data: { name: string, parent: string }) => {
     const res = await customAxios.post("/api/drive/create-folder", data);
     return res.data;
