@@ -3,6 +3,7 @@ const File = require("../models/file.model.js");
 const Folder = require("../models/folder.model.js");
 const path = require("path");
 const fs = require("fs").promises;
+const crypto = require("crypto");
 const moment = require("moment");
 const mime = require('mime-types')
 const { isValidObjectId } = require("mongoose");
@@ -236,6 +237,23 @@ const renameFolder = async (req, res) => {
     res.status(200).json({ message: "You have successfully renamed your folder" });
 }
 
+// share file/make public
+const shareFile = async (req, res) => {
+    let { _id } = req.body;
+    _id = isValidObjectId(_id) ? _id : null;
+    const user = req.user;
+
+    const file = await File.findOne({ _id, owner: user._id })
+    if (!file) {
+        throw new CustomAPIError("File not found", 404);
+    }
+
+    const uniqueId = crypto.randomBytes(16).toString('hex');
+    file.publicKey = uniqueId;
+    await file.save();
+    res.status(200).json({ link: `${process.env.FRONTEND_URL}/download/${uniqueId}`, message: "Your file is public" });
+}
+
 module.exports = {
     uploadFile,
     getFilesAndFolders,
@@ -244,4 +262,5 @@ module.exports = {
     createFolder,
     renameFile,
     renameFolder,
+    shareFile,
 };
