@@ -8,17 +8,18 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FileProps } from "@/pages/Drive";
-import { EllipsisVertical, FolderHeart, Info, Pen, Share2, Trash2 } from "lucide-react";
+import { EllipsisVertical, FolderHeart, Info, Lock, Pen, Share2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Details from "./Details";
 import RenameFile from "./RenameFile";
 import DownloadFile from "./DownloadFile";
 import ShareFile from "./ShareFile";
 
-export default function FileActionsMenu({ _id, parent, originalName }: FileProps) {
+export default function FileActionsMenu({ _id, parent, originalName, publicKey }: FileProps) {
     const [isDetailsSheetOpen, setDetailsSheetOpen] = useState(false);
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
     const [isShareDialogOpen, setShareDialogOpen] = useState(false);
+    const [isPrivateDialogOpen, setPrivateDialogOpen] = useState(false);
 
     return (
         <>
@@ -59,14 +60,24 @@ export default function FileActionsMenu({ _id, parent, originalName }: FileProps
 
                         <MenubarSeparator />
 
-                        {/* share */}
-                        <MenubarItem className="p-0">   
-                            <Button onClick={() => setShareDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
-                                <Share2 className="mr-1"/>
-                                <span>Share</span> 
-                            </Button>
-                        </MenubarItem>
-
+                        {/* share & make private */}
+                        {
+                            publicKey ? 
+                            <MenubarItem className="p-0">   
+                                <Button onClick={() => setPrivateDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                                    <Lock className="mr-1"/>
+                                    <span>Make private</span> 
+                                </Button>
+                            </MenubarItem>
+                            :  
+                            <MenubarItem className="p-0">   
+                                <Button onClick={() => setShareDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                                    <Share2 className="mr-1"/>
+                                    <span>Share</span> 
+                                </Button>
+                            </MenubarItem>
+                        }
+                       
                         <MenubarSeparator />
 
                         {/* download */}

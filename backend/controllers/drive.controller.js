@@ -103,7 +103,7 @@ const getFilesAndFolders = async (req, res) => {
     const user = req.user;
 
     let files = await File.find({ owner: user._id, parent })
-        .select("_id parent originalName mimeType type isStarred");
+        .select("_id parent originalName mimeType type isStarred publicKey");
     let folders = await Folder.find({ owner: user._id, parent })
         .select("_id parent name isStarred");
 

@@ -20,6 +20,7 @@ export interface FileProps {
     mimeType: string;
     type: string; 
     isStarred: boolean;
+    publicKey: string | null;
 }
 
 export interface FolderProps {
@@ -129,6 +130,7 @@ export default function Drive() {
                                         mimeType={file.mimeType}
                                         type={file.type} 
                                         isStarred={file.isStarred}
+                                        publicKey={file.publicKey}
                                     />
                                 ))
                             }
