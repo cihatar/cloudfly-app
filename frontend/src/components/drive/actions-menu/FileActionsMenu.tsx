@@ -8,10 +8,11 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FileProps } from "@/pages/Drive";
-import { Download, EllipsisVertical, FolderHeart, Info, Pen, Share2, Trash2 } from "lucide-react";
+import { EllipsisVertical, FolderHeart, Info, Pen, Share2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Details from "./Details";
 import RenameFile from "./RenameFile";
+import DownloadFile from "./DownloadFile";
 
 export default function FileActionsMenu({ _id, parent, originalName }: FileProps) {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -68,10 +69,7 @@ export default function FileActionsMenu({ _id, parent, originalName }: FileProps
 
                         {/* download */}
                         <MenubarItem className="p-0">
-                            <Button variant="secondary" className="w-full justify-start bg-transparent cursor-default">
-                                <Download className="mr-1"/>
-                                <span>Download</span>
-                            </Button>
+                            <DownloadFile _id={_id} originalName={originalName} />
                         </MenubarItem>
 
                         <MenubarSeparator />
