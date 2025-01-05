@@ -12,7 +12,7 @@ import { getColor } from "@/utils/color";
 import { useQuery } from "@tanstack/react-query";
 import { Globe, Loader2, Lock } from "lucide-react";
 
-export default function Details({ _id, isSheetOpen, setIsSheetOpen }: { _id: string, isSheetOpen: boolean; setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function Details({ _id, originalName, isSheetOpen, setIsSheetOpen }: { _id: string; originalName: string; isSheetOpen: boolean; setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     const { data, isLoading } = useQuery({
         queryKey: ["file-details", _id],
         queryFn: () => getFileInformation(_id),
@@ -23,9 +23,15 @@ export default function Details({ _id, isSheetOpen, setIsSheetOpen }: { _id: str
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetContent>
                 {isLoading ? 
-                <div className="w-full h-full flex items-center justify-center">
-                    <Loader2 className="animate-spin" />
-                </div>
+                <>
+                    <SheetHeader>
+                        <SheetTitle className="text-center">{originalName}</SheetTitle>
+                        <SheetDescription className="text-center">Loading details about your file...</SheetDescription>
+                    </SheetHeader>
+                    <div className="w-full h-full flex items-center justify-center">
+                        <Loader2 className="animate-spin" />
+                    </div>
+                </>
                 :
                 <Animate>
                     <SheetHeader>
@@ -35,7 +41,7 @@ export default function Details({ _id, isSheetOpen, setIsSheetOpen }: { _id: str
                         </div>
                         <SheetTitle className="text-center">{data?.originalName}</SheetTitle>
                     </div>
-                    <SheetDescription className="text-center">Information about your file</SheetDescription>
+                    <SheetDescription className="text-center">Details about your file</SheetDescription>
                     <Separator />
                     </SheetHeader>
                     <div className="mt-4 flex flex-col items-start space-y-2 rounded text-muted-foreground text-sm">

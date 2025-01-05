@@ -66,7 +66,7 @@ export default function File({ _id, parent, originalName, mimeType, type, isStar
             </Menubar>
 
             {/* details sheet */}
-            <Details _id={_id} isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} />
+            <Details _id={_id} originalName={originalName} isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} />
 
             {/* rename dialog */}
             <RenameFile _id={_id} parent={parent} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
