@@ -1,75 +1,18 @@
 import { FileProps } from "@/pages/Drive";
 import { getColor } from "@/utils/color";
-import {
-    Menubar,
-    MenubarContent,
-    MenubarItem,
-    MenubarMenu,
-    MenubarSeparator,
-    MenubarTrigger,
-  } from "@/components/ui/menubar"
-import { Download, EllipsisVertical, Info, Pen, Share2, FolderHeart, Trash2 } from "lucide-react";
-import Details from "./actions-menu/Details";
-import { useState } from "react";
-import RenameFile from "./actions-menu/RenameFile";
+import FileActionsMenu from "./actions-menu/FileActionsMenu";
 
-export default function File({ _id, parent, originalName, mimeType, type, isStarred }: FileProps) {
-    const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+export default function File(file: FileProps) {
     return (
         <div className="w-full h-48 flex flex-col items-start border rounded p-2 hover:bg-blackdefault/[0.02] group overflow-hidden relative">
-            <div className={`flex items-center justify-center w-full h-full ${getColor(mimeType)} font-semibold text-xl text-whitedefault uppercase rounded mb-2 select-none pointer-events-none`}>
-                {type}
+            <div className={`flex items-center justify-center w-full h-full ${getColor(file.mimeType)} font-semibold text-xl text-whitedefault uppercase rounded mb-2 select-none pointer-events-none`}>
+                {file.type}
             </div>
-            <p>{originalName}</p>
-            <p className="text-blackdefault/50">{type}</p>
+            <p>{file.originalName}</p>
+            <p className="text-blackdefault/50">{file.type}</p>
 
             {/* overflow menu */}
-            <Menubar className="absolute top-4 right-4 invisible">
-                <MenubarMenu>
-                    <MenubarTrigger className="p-0">
-                        <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-blackdefault/5 group-hover:visible text-whitedefault" />
-                    </MenubarTrigger>
-                    <MenubarContent>
-                        <MenubarItem onClick={() => setIsSheetOpen(true)}>
-                            <Info className="scale-75 mr-1"/>
-                            Details 
-                        </MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem onClick={() => setIsDialogOpen(true)}>
-                            <Pen className="scale-75 mr-1"/>
-                            Rename 
-                        </MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem>
-                            <FolderHeart className="scale-75 mr-1"/>
-                            Add to Starred 
-                        </MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem>
-                            <Share2 className="scale-75 mr-1"/>
-                            Share 
-                        </MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem>
-                            <Download className="scale-75 mr-1"/>
-                            Download 
-                        </MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem>
-                            <Trash2 className="scale-75 mr-1"/>
-                            Move to Trash 
-                        </MenubarItem>
-                    </MenubarContent>
-                </MenubarMenu>
-            </Menubar>
-
-            {/* details sheet */}
-            <Details _id={_id} originalName={originalName} isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} />
-
-            {/* rename dialog */}
-            <RenameFile _id={_id} parent={parent} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
+            <FileActionsMenu {...file} />
             
         </div>
     );
