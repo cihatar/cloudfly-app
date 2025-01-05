@@ -12,15 +12,15 @@ import { getColor } from "@/utils/color";
 import { useQuery } from "@tanstack/react-query";
 import { Globe, Loader2, Lock } from "lucide-react";
 
-export default function Details({ _id, originalName, isSheetOpen, setIsSheetOpen }: { _id: string; originalName: string; isSheetOpen: boolean; setIsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function Details({ _id, originalName, isDetailsSheetOpen, setDetailsSheetOpen }: { _id: string; originalName: string; isDetailsSheetOpen: boolean; setDetailsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     const { data, isLoading } = useQuery({
         queryKey: ["file-details", _id],
         queryFn: () => getFileInformation(_id),
-        enabled: isSheetOpen
+        enabled: isDetailsSheetOpen
     });
     
     return (
-        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <Sheet open={isDetailsSheetOpen} onOpenChange={setDetailsSheetOpen}>
             <SheetContent>
                 {isLoading ? 
                 <>

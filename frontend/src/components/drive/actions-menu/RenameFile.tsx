@@ -14,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
-export default function RenameFile({ _id, parent, isDialogOpen, setIsDialogOpen }: { _id: string; parent: string; isDialogOpen: boolean; setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function RenameFile({ _id, parent, isRenameDialogOpen, setRenameDialogOpen }: { _id: string; parent: string; isRenameDialogOpen: boolean; setRenameDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     // toast
     const { toast } = useToast();
 
@@ -58,7 +58,7 @@ export default function RenameFile({ _id, parent, isDialogOpen, setIsDialogOpen 
     };
 
     return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isRenameDialogOpen} onOpenChange={setRenameDialogOpen}>
             <DialogContent className="sm:max-w-md">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>

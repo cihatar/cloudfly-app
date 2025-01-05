@@ -13,10 +13,12 @@ import { useState } from "react";
 import Details from "./Details";
 import RenameFile from "./RenameFile";
 import DownloadFile from "./DownloadFile";
+import ShareFile from "./ShareFile";
 
 export default function FileActionsMenu({ _id, parent, originalName }: FileProps) {
-    const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDetailsSheetOpen, setDetailsSheetOpen] = useState(false);
+    const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
+    const [isShareDialogOpen, setShareDialogOpen] = useState(false);
 
     return (
         <>
@@ -29,7 +31,7 @@ export default function FileActionsMenu({ _id, parent, originalName }: FileProps
 
                         {/* details */}
                         <MenubarItem className="p-0">
-                            <Button onClick={() => setIsSheetOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <Button onClick={() => setDetailsSheetOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Info className="mr-1"/>
                                 <span>Details</span>
                             </Button>
@@ -39,7 +41,7 @@ export default function FileActionsMenu({ _id, parent, originalName }: FileProps
 
                         {/* rename */}
                         <MenubarItem className="p-0">
-                            <Button onClick={() => setIsDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <Button onClick={() => setRenameDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Pen className="mr-1"/>
                                 <span>Rename</span> 
                             </Button>
@@ -59,7 +61,7 @@ export default function FileActionsMenu({ _id, parent, originalName }: FileProps
 
                         {/* share */}
                         <MenubarItem className="p-0">   
-                            <Button variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <Button onClick={() => setShareDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Share2 className="mr-1"/>
                                 <span>Share</span> 
                             </Button>
@@ -87,10 +89,13 @@ export default function FileActionsMenu({ _id, parent, originalName }: FileProps
             </Menubar>
 
             {/* details sheet */}
-            <Details _id={_id} originalName={originalName} isSheetOpen={isSheetOpen} setIsSheetOpen={setIsSheetOpen} />
+            <Details _id={_id} originalName={originalName} isDetailsSheetOpen={isDetailsSheetOpen} setDetailsSheetOpen={setDetailsSheetOpen} />
 
             {/* rename dialog */}
-            <RenameFile _id={_id} parent={parent} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
+            <RenameFile _id={_id} parent={parent} isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
+
+            {/* share dialog */}
+            <ShareFile _id={_id} isShareDialogOpen={isShareDialogOpen} setShareDialogOpen={setShareDialogOpen} />
         </>
   )
 }
