@@ -9,8 +9,12 @@ import {
     MenubarTrigger,
   } from "@/components/ui/menubar"
 import { EllipsisVertical, Pen, FolderHeart, Trash2 } from "lucide-react";
+import { useState } from "react";
+import RenameFolder from "./actions-menu/RenameFolder";
 
 export default function Folder({ _id, parent, name, isStarred }: FolderProps) {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
     return (
         <div className="flex justify-between items-center bg-blackdefault/[0.02] hover:bg-blackdefault/[0.05] rounded p-2 group">
             <div className="flex items-center gap-2 overflow-hidden">
@@ -25,7 +29,7 @@ export default function Folder({ _id, parent, name, isStarred }: FolderProps) {
                         <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-blackdefault/5 group-hover:visible" />
                     </MenubarTrigger>
                     <MenubarContent>
-                        <MenubarItem>
+                        <MenubarItem onClick={() => setIsDialogOpen(true)}>
                             <Pen className="scale-75 mr-1"/>
                             Rename 
                         </MenubarItem>
@@ -42,6 +46,9 @@ export default function Folder({ _id, parent, name, isStarred }: FolderProps) {
                     </MenubarContent>
                 </MenubarMenu>
             </Menubar>
+
+             {/* rename dialog */}
+            <RenameFolder _id={_id} parent={parent} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
             
         </div>
     );
