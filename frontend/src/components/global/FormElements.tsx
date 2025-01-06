@@ -60,7 +60,7 @@ export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ 
         const y = e.clientY - rect.top - size / 2;
 
         const ripple = document.createElement('span');
-        ripple.classList.add('absolute', 'bg-whitedefault/75', 'rounded-full', 'animate-ripple');
+        ripple.classList.add('absolute', 'bg-white/50', 'dark:bg-black/50', 'rounded-full', 'animate-ripple');
         ripple.style.width = `${size}px`;
         ripple.style.height = `${size}px`;
         ripple.style.left = `${x}px`;
