@@ -113,7 +113,7 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
                             name="password_confirmation"
                         />
                         <DialogFooter className="sm:justify-start gap-2">
-                            <CustomButton disabled={btnLoading}>Change</CustomButton>
+                            <CustomButton loading={btnLoading}>Change</CustomButton>
                             <DialogClose asChild>
                                 <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
                                     Cancel

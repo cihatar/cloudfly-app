@@ -73,7 +73,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter className="sm:justify-start gap-2">
-                        <CustomButton type="submit" disabled={isPending}>Create</CustomButton>
+                        <CustomButton type="submit" loading={isPending}>Create</CustomButton>
                         <DialogClose asChild>
                             <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
                                 Cancel

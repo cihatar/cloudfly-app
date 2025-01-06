@@ -54,7 +54,7 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
                         <DialogFooter className="sm:justify-start gap-2 mt-4">
                             <CustomButton
                                 type="submit"
-                                disabled={isPending}
+                                loading={isPending}
                             >
                                 Make this file private
                             </CustomButton>

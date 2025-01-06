@@ -43,14 +43,13 @@ export const InputWithLabel = React.forwardRef<HTMLInputElement, InputProps>(({ 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children?: React.ReactNode;
     className?: string;
-    disabled?: boolean;
     loading?: boolean;
     variant?: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
     asChild?: boolean;
     effect?: boolean;
 }
 
-export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, disabled, loading = disabled, variant, asChild = false, effect = true, ...props }, ref) => {
+export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, loading, variant, asChild = false, effect = true, ...props }, ref) => {
     const rippleEffect = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!effect) return;
         const button = e.target as HTMLButtonElement;
@@ -75,7 +74,7 @@ export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ 
     return (
         <Button 
             className={cn(`relative overflow-hidden ${className}`)} 
-            disabled={disabled} 
+            disabled={loading} 
             variant={variant} 
             ref={ref}
             onClick={rippleEffect}

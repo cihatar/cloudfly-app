@@ -61,7 +61,7 @@ export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpe
                     <DialogFooter className="sm:justify-start gap-2">
                         <CustomButton
                             type="submit"
-                            disabled={isPending}
+                            loading={isPending}
                         >
                             Rename
                         </CustomButton>

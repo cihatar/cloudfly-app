@@ -100,7 +100,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                         <DialogFooter className="sm:justify-start gap-2 mt-4">
                             <CustomButton
                                 type="submit"
-                                disabled={isLoading}
+                                loading={isLoading}
                                 className="bg-bluedefault hover:bg-bluedefault/95"
                             >
                                 Share my file

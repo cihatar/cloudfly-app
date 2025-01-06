@@ -65,7 +65,7 @@ export default function UpdateName({ user }: UpdateNameProps) {
                     defaultValue={user?.lastName} 
                 />
             </div>
-            <CustomButton disabled={btnLoading} variant="secondary">Update</CustomButton>
+            <CustomButton loading={btnLoading} variant="secondary">Update</CustomButton>
         </form>
     );
 }
