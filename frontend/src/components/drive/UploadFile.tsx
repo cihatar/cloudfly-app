@@ -1,4 +1,3 @@
-import { Button } from "../ui/button";
 import {
     Dialog,
     DialogClose,
@@ -108,7 +107,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                 ref={fileRef}
                 onChange={handleChange}
             />
-            <Button
+            <CustomButton
                 type="button"
                 className="rounded bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md"
                 variant="default"
@@ -124,7 +123,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                 }}
             >
                 Upload File
-            </Button>
+            </CustomButton>
 
             {sameFiles.length !== 0 && 
                 <Dialog defaultOpen>
@@ -144,11 +143,11 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                             <p className="text-xs text-red-500 border-t pt-2"> If you replace the file, the existing file will be permanently deleted</p>
                         </DialogHeader>
                         <DialogFooter className="sm:justify-start gap-2">
-                            <CustomButton text="Replace" onClick={() => handleUpload(filesFormData)}/>
+                            <CustomButton onClick={() => handleUpload(filesFormData)}>Replace</CustomButton>
                             <DialogClose asChild>
-                                <Button type="button" variant="secondary" ref={cancelBtnRef}>
+                                <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
                                     Cancel
-                                </Button>
+                                </CustomButton>
                             </DialogClose>
                         </DialogFooter>
                     </DialogContent>

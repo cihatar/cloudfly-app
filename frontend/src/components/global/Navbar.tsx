@@ -1,7 +1,7 @@
 import { Cloudy } from "lucide-react";
-import { Button } from "../ui/button";
 import { Link, Outlet } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
+import { CustomButton } from "./FormElements";
 
 export default function Navbar() {
     const user = useAppSelector((state) => state.user.user);
@@ -9,8 +9,9 @@ export default function Navbar() {
     return (
         <>
             <nav className="bg-blackdefault min-h-5 flex items-center justify-center text-white p-1">
-                <Button
+                <CustomButton
                     variant={"link"}
+                    effect={false}
                     className="select-none flex items-center justify-center text-whitedefault text-sm gap-1"
                     asChild
                 >
@@ -18,7 +19,7 @@ export default function Navbar() {
                         <Cloudy />
                         Cloudfly
                     </Link>
-                </Button>
+                </CustomButton>
             </nav>
             <Outlet />
         </>

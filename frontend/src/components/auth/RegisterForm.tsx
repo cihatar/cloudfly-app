@@ -116,7 +116,7 @@ export default function RegisterForm() {
                     ref={passwordRef}
                 />
             </div>
-            <CustomButton disabled={isLoading} text="Register"/>
+            <CustomButton disabled={isLoading}>Register</CustomButton>
             <p className="text-xs">
                 Do you have an account?{" "}
                 <Link to="/auth/login" className="text-blue-700 underline">

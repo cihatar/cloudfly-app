@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import customAxios from "@/config/axios";
 import useCustomToast from "@/hooks/useCustomToast";
+import { CustomButton } from "@/components/global/FormElements";
 
 export default function DownloadFile({ _id, originalName }: { _id: string; originalName: string; }) {
     // toast
@@ -26,9 +26,9 @@ export default function DownloadFile({ _id, originalName }: { _id: string; origi
     }
 
     return (
-        <Button onClick={handleDownload} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+        <CustomButton onClick={handleDownload} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
             <Download className="mr-1"/>
             <span>Download</span>
-        </Button>
+        </CustomButton>
     );
 }

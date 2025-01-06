@@ -1,5 +1,5 @@
 import Animate from "@/components/global/Animate";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/global/FormElements";
 import { Link } from "react-router-dom";
 
 export default function NoPage() {
@@ -44,13 +44,13 @@ export default function NoPage() {
                 <p className="text-center text-whitedefault/50 text-sm mb-6">
                     The page you are trying to access doesn&#39;t exist
                 </p>
-                <Button
+                <CustomButton
                     asChild
                     className="h-12 w-40 rounded-full"
                     variant="secondary"
                 >
                     <Link to="/drive">Return drive</Link>
-                </Button>
+                </CustomButton>
             </Animate>
         </div>
     );

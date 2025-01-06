@@ -10,7 +10,7 @@ import { FolderProps } from "@/pages/Drive";
 import { EllipsisVertical, Pen, FolderHeart, Trash2 } from "lucide-react";
 import { useState } from "react";
 import RenameFolder from "./RenameFolder";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent }: FolderProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -26,30 +26,30 @@ export default function FileActionsMenu({ _id, parent }: FolderProps) {
 
                         {/* rename */}
                         <MenubarItem className="p-0">
-                            <Button onClick={() => setIsDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton onClick={() => setIsDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Pen className="mr-1"/>
                                 <span>Rename</span> 
-                            </Button>
+                            </CustomButton>
                         </MenubarItem>
 
                         <MenubarSeparator />
 
                         {/* add to starred */}
                         <MenubarItem className="p-0">
-                            <Button variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <FolderHeart className="mr-1"/>
                                 <span>Add to Starred</span>
-                            </Button>
+                            </CustomButton>
                         </MenubarItem>
 
                         <MenubarSeparator />
                         
                         {/* move to trash */}
                         <MenubarItem className="p-0">
-                            <Button variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Trash2 className="mr-1"/>
                                 <span>Move to Trash</span>
-                            </Button>
+                            </CustomButton>
                         </MenubarItem>
 
                     </MenubarContent>

@@ -1,6 +1,5 @@
 import { makeFilePrivate } from "@/api/api";
 import { CustomButton } from "@/components/global/FormElements";
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogClose,
@@ -55,17 +54,18 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
                         <DialogFooter className="sm:justify-start gap-2 mt-4">
                             <CustomButton
                                 type="submit"
-                                text="Make this file private"
                                 disabled={isPending}
-                            />
+                            >
+                                Make this file private
+                            </CustomButton>
                             <DialogClose asChild>
-                                <Button
+                                <CustomButton
                                     type="button"
                                     variant="secondary"
                                     ref={cancelBtnRef}
                                 >
                                     Cancel
-                                </Button>
+                                </CustomButton>
                             </DialogClose>
                         </DialogFooter>
                     </form>

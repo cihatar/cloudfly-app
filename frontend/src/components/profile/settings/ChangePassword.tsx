@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { changePassword, User } from "@/store/user/userSlice";
 import {
     Dialog,
@@ -82,7 +81,7 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
             </div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="secondary">Change Password</Button>
+                    <CustomButton variant="secondary">Change Password</CustomButton>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
@@ -114,11 +113,11 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
                             name="password_confirmation"
                         />
                         <DialogFooter className="sm:justify-start gap-2">
-                            <CustomButton disabled={btnLoading} text="Change" />
+                            <CustomButton disabled={btnLoading}>Change</CustomButton>
                             <DialogClose asChild>
-                                <Button type="button" variant="secondary" ref={cancelBtnRef}>
+                                <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
                                     Cancel
-                                </Button>
+                                </CustomButton>
                             </DialogClose>
                         </DialogFooter>
                     </form>

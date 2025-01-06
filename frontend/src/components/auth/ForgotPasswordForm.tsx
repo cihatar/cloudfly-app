@@ -59,7 +59,7 @@ export default function ForgotPasswordForm() {
                     ref={emailRef}
                 />
             </div>
-            <CustomButton disabled={isLoading} text="Send reset password link" />
+            <CustomButton disabled={isLoading}>Send reset password link</CustomButton>
             <Link to="/auth/login" className="text-blue-700 underline text-xs">
                 Go back
             </Link>

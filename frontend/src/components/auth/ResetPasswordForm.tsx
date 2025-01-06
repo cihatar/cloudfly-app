@@ -81,7 +81,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
                 name="password_confirmation" 
                 ref={passwordRef}
             />
-            <CustomButton disabled={btnLoading} loading={isLoading} text="Reset" />
+            <CustomButton disabled={btnLoading} loading={isLoading}>Reset</CustomButton>
         </form>
     );
 }

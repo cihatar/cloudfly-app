@@ -41,23 +41,48 @@ export const InputWithLabel = React.forwardRef<HTMLInputElement, InputProps>(({ 
 });
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    children?: React.ReactNode;
     className?: string;
     disabled?: boolean;
     loading?: boolean;
-    text?: string;
     variant?: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
+    asChild?: boolean;
+    effect?: boolean;
 }
 
-export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, disabled, loading = disabled, text, variant, ...props }, ref) => {
+export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, disabled, loading = disabled, variant, asChild = false, effect = true, ...props }, ref) => {
+    const rippleEffect = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (!effect) return;
+        const button = e.target as HTMLButtonElement;
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+
+        const ripple = document.createElement('span');
+        ripple.classList.add('absolute', 'bg-whitedefault/75', 'rounded-full', 'animate-ripple');
+        ripple.style.width = `${size}px`;
+        ripple.style.height = `${size}px`;
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        ripple.style.pointerEvents = 'none'; 
+
+        button.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600); 
+    };
+
     return (
         <Button 
-            className={cn(`${className}`)} 
+            className={cn(`relative overflow-hidden ${className}`)} 
             disabled={disabled} 
             variant={variant} 
             ref={ref}
+            onClick={rippleEffect}
+            asChild={asChild}
             {...props}
         >
-            {(loading) ? (<><Loader2 className="animate-spin" />Please wait</>) : (text)}
+            {(loading) ? (<><Loader2 className="animate-spin" />Please wait</>) : (children)}
         </Button>
     )
 });

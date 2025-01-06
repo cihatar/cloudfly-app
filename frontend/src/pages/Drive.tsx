@@ -1,6 +1,5 @@
 import Animate from "@/components/global/Animate";
 import goingUp from "@/assets/going_up.svg";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Subtitle, Title } from "@/components/global/Titles";
 import { getFilesAndFolders } from "@/api/api";
@@ -12,6 +11,7 @@ import DriveLoading from "@/components/drive/DriveLoading";
 import CreateFolder from "@/components/drive/CreateFolder";
 import { ChevronLeft } from "lucide-react";
 import UploadFile from "@/components/drive/UploadFile";
+import { CustomButton } from "@/components/global/FormElements";
 
 export interface FileProps {
     _id: string; 
@@ -71,9 +71,9 @@ export default function Drive() {
                 <div className="flex items-center justify-start gap-2">
                     {
                         folderStack[folderStack.length - 1].name !== "My Drive" && 
-                        <Button type="button" variant={"ghost"} className="rounded-full p-0 h-8 w-8" onClick={handleGoBack}>
+                        <CustomButton type="button" variant={"ghost"} effect={false} className="rounded-full p-0 h-8 w-8" onClick={handleGoBack}>
                             <ChevronLeft />
-                        </Button>
+                        </CustomButton>
                     }
                     <Title title={folderStack[folderStack.length - 1].name} />
                 </div>

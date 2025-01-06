@@ -1,9 +1,9 @@
 import Animate from "./Animate";
 import { Progress } from "../ui/progress";
-import { Button } from "../ui/button";
 import { CloudDownload, Minus, X } from "lucide-react";
 import { getColor } from "@/utils/color";
 import { useUploadContext } from "@/context/UploadContext";
+import { CustomButton } from "./FormElements";
 
 export default function UploadProgress() {
     const { uploadedFiles, closeUploadProgress, isMinimized, updateIsMinimized } = useUploadContext();
@@ -12,20 +12,20 @@ export default function UploadProgress() {
         <>
             {
                 uploadedFiles.length === 0 ? <></> : isMinimized ? 
-                <Button onClick={updateIsMinimized} className="fixed bottom-6 right-6 z-50 bg-bluedefault hover:bg-bluedefault/95 rounded-full shadow-md w-12 h-12">
+                <CustomButton onClick={updateIsMinimized} effect={false} className="fixed bottom-6 right-6 z-50 bg-bluedefault hover:bg-bluedefault/95 rounded-full shadow-md w-12 h-12">
                     <CloudDownload />
-                </Button> 
+                </CustomButton> 
                 :  
                 <Animate className="fixed bottom-0 lg:bottom-6 lg:right-6 z-50 bg-slate-100 rounded w-full lg:w-80 border-2 shadow-md">
                     <div className="font-semibold text-lg p-4 flex items-center justify-between">
                         <h2 className="">Uploads</h2>
                        <div className="flex gap-4">
-                            <Button onClick={updateIsMinimized} className="bg-transparent text-blackdefault p-0 hover:bg-transparent">
+                            <CustomButton onClick={updateIsMinimized} effect={false} className="bg-transparent text-blackdefault p-0 hover:bg-transparent">
                                 <Minus />
-                            </Button>
-                            <Button onClick={closeUploadProgress} className="bg-transparent text-blackdefault p-0 hover:bg-transparent">
+                            </CustomButton>
+                            <CustomButton onClick={closeUploadProgress} effect={false} className="bg-transparent text-blackdefault p-0 hover:bg-transparent">
                                 <X />
-                            </Button>
+                            </CustomButton>
                        </div>
                     </div>
                     <div className="max-h-[240px] overflow-y-auto text-whitedefault">

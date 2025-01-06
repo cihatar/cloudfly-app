@@ -1,6 +1,5 @@
 import { renameFile } from "@/api/api";
 import { CustomButton, InputField } from "@/components/global/FormElements";
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogClose,
@@ -62,17 +61,18 @@ export default function RenameFile({ _id, parent, isRenameDialogOpen, setRenameD
                     <DialogFooter className="sm:justify-start gap-2">
                         <CustomButton
                             type="submit"
-                            text="Rename"
                             disabled={isPending}
-                        />
+                        >
+                            Rename
+                        </CustomButton>
                         <DialogClose asChild>
-                            <Button
+                            <CustomButton
                                 type="button"
                                 variant="secondary"
                                 ref={cancelBtnRef}
                             >
                                 Cancel
-                            </Button>
+                            </CustomButton>
                         </DialogClose>
                     </DialogFooter>
                 </form>

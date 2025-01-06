@@ -1,5 +1,4 @@
 import { CustomButton } from "@/components/global/FormElements";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
@@ -52,9 +51,9 @@ export default function DeleteUser() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button type="submit" variant="destructive">
+                <CustomButton type="submit" variant="destructive">
                     Delete Your Account
-                </Button>
+                </CustomButton>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -79,13 +78,14 @@ export default function DeleteUser() {
                         type="button" 
                         disabled={btnLoading ? true : checked ? false : true}
                         loading={btnLoading}
-                        text="Confirm"
                         variant="destructive" 
-                    />
+                    >
+                        Confirm
+                    </CustomButton>
                     <DialogClose asChild>
-                        <Button type="button" variant="secondary">
+                        <CustomButton type="button" variant="secondary">
                             Cancel
-                        </Button>
+                        </CustomButton>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

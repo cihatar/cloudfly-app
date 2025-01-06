@@ -1,6 +1,5 @@
 import { shareFile } from "@/api/api";
 import { CustomButton, InputField } from "@/components/global/FormElements";
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogClose,
@@ -75,18 +74,18 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter className="sm:justify-start gap-2">
-                            <Button onClick={() => copyLinkToClipboard(data.link)}
+                            <CustomButton onClick={() => copyLinkToClipboard(data.link)}
                                 disabled={isCopied}
                                 className={`${isCopied && 'bg-greendefault hover:bg-greendefault/95'}`}>
                                 {isCopied ? "Copied" : "Copy to Clipboard"}
-                            </Button>
+                            </CustomButton>
                             <DialogClose asChild>
-                                <Button
+                                <CustomButton
                                     type="button"
                                     variant="secondary"
                                 >
                                     OK
-                                </Button>
+                                </CustomButton>
                             </DialogClose>
                         </DialogFooter>
                     </> 
@@ -101,17 +100,18 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                         <DialogFooter className="sm:justify-start gap-2 mt-4">
                             <CustomButton
                                 type="submit"
-                                text="Share my file"
                                 disabled={isLoading}
                                 className="bg-bluedefault hover:bg-bluedefault/95"
-                            />
+                            >
+                                Share my file
+                            </CustomButton>
                             <DialogClose asChild>
-                                <Button
+                                <CustomButton
                                     type="button"
                                     variant="secondary"
                                 >
                                     Cancel
-                                </Button>
+                                </CustomButton>
                             </DialogClose>
                         </DialogFooter>
                     </form>

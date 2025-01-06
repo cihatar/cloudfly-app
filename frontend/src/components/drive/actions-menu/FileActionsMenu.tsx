@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
     Menubar,
     MenubarContent,
@@ -15,6 +14,7 @@ import RenameFile from "./RenameFile";
 import DownloadFile from "./DownloadFile";
 import ShareFile from "./ShareFile";
 import MakeFilePrivate from "./MakeFilePrivate";
+import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, originalName, publicKey }: FileProps) {
     const [isDetailsSheetOpen, setDetailsSheetOpen] = useState(false);
@@ -33,30 +33,30 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
 
                         {/* details */}
                         <MenubarItem className="p-0">
-                            <Button onClick={() => setDetailsSheetOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton onClick={() => setDetailsSheetOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                 <Info className="mr-1"/>
                                 <span>Details</span>
-                            </Button>
+                            </CustomButton>
                         </MenubarItem>
 
                         <MenubarSeparator />
 
                         {/* rename */}
                         <MenubarItem className="p-0">
-                            <Button onClick={() => setRenameDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton onClick={() => setRenameDialogOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                 <Pen className="mr-1"/>
                                 <span>Rename</span> 
-                            </Button>
+                            </CustomButton>
                         </MenubarItem>
 
                         <MenubarSeparator />
 
                         {/* add to starred */}
                         <MenubarItem className="p-0">
-                            <Button variant="secondary" className="w-full justify-start bg-transparent cursor-default" >
+                            <CustomButton variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default" >
                                 <FolderHeart className="mr-1"/>
                                 <span>Add to Starred</span> 
-                            </Button>
+                            </CustomButton>
                         </MenubarItem>
 
                         <MenubarSeparator />
@@ -65,17 +65,17 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
                         {
                             publicKey ? 
                             <MenubarItem className="p-0">   
-                                <Button onClick={() => setPrivateDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                                <CustomButton onClick={() => setPrivateDialogOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Lock className="mr-1"/>
                                     <span>Make private</span> 
-                                </Button>
+                                </CustomButton>
                             </MenubarItem>
                             :  
                             <MenubarItem className="p-0">   
-                                <Button onClick={() => setShareDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                                <CustomButton onClick={() => setShareDialogOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Share2 className="mr-1"/>
                                     <span>Share</span> 
-                                </Button>
+                                </CustomButton>
                             </MenubarItem>
                         }
                        
@@ -90,10 +90,10 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
 
                         {/* move to trash */}
                         <MenubarItem className="p-0">
-                            <Button variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                 <Trash2 className="mr-1"/>
                                <span>Move to Trash</span>
-                            </Button>
+                            </CustomButton>
                         </MenubarItem>
 
                     </MenubarContent>

@@ -1,9 +1,9 @@
 import Animate from "@/components/global/Animate";
 import logo from "@/assets/my_files.svg";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { CustomButton } from "@/components/global/FormElements";
 
 export default function Home() {
     const [index, setIndex] = useState(0);
@@ -47,13 +47,13 @@ export default function Home() {
                         </AnimatePresence>
                         <br /> application
                     </h2>
-                    <Button
+                    <CustomButton
                         asChild
                         className="h-12 w-40 rounded-full"
                         variant="secondary"
                     >
                         <Link to="/auth/login">Login/Register</Link>
-                    </Button>
+                    </CustomButton>
                 </div>
             </Animate>
 

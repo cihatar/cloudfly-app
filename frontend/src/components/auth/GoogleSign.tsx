@@ -1,4 +1,4 @@
-import { Button } from "../ui/button";
+import { CustomButton } from "../global/FormElements";
 
 export default function GoogleSign() {
     const handleGoogle = () => {
@@ -6,7 +6,7 @@ export default function GoogleSign() {
     }
 
     return (
-        <Button
+        <CustomButton
             variant="secondary"
             className="hover:bg-bluedefault hover:text-whitedefault"
             type="button"
@@ -31,6 +31,6 @@ export default function GoogleSign() {
                 ></path>
             </svg>
             Continue with Google
-        </Button>
+        </CustomButton>
     );
 }

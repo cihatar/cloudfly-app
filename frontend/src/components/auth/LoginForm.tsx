@@ -95,7 +95,7 @@ export default function LoginForm() {
                     ref={passwordRef}
                 />
             </div>
-            <CustomButton disabled={btnLoading} loading={isLoading} text="Login" />
+            <CustomButton disabled={btnLoading} loading={isLoading}>Login</CustomButton>
             <div className="flex justify-between">
                 <p className="text-xs">
                     Not a member yet?{" "}

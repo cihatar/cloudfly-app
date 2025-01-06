@@ -8,7 +8,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
 import { CustomButton, InputField } from "../global/FormElements";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFolder } from "@/api/api";
@@ -52,13 +51,13 @@ export default function CreateFolder({ parent }: { parent: string }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button
+                <CustomButton
                     className="rounded border w-24 h-8 text-xs
                     lg:w-32 lg:h-10 lg:text-sm shadow-md"
                     variant="outline"
                 >
                     Create Folder
-                </Button>
+                </CustomButton>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <form onSubmit={handleSubmit}>
@@ -74,11 +73,11 @@ export default function CreateFolder({ parent }: { parent: string }) {
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter className="sm:justify-start gap-2">
-                        <CustomButton type="submit" text="Create" disabled={isPending} />
+                        <CustomButton type="submit" disabled={isPending}>Create</CustomButton>
                         <DialogClose asChild>
-                            <Button type="button" variant="secondary" ref={cancelBtnRef}>
+                            <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
                                 Cancel
-                            </Button>
+                            </CustomButton>
                         </DialogClose>
                     </DialogFooter>
                 </form>

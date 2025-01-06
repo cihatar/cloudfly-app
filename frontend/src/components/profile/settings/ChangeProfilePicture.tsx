@@ -117,8 +117,9 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                 <CustomButton 
                     disabled={uploadBtnLoading ? true : profileImage ? false : true}
                     loading={uploadBtnLoading}
-                    text="Change"
-                />
+                >
+                    Change
+                </CustomButton>
 
                 {/* remove image button */}
                 <CustomButton 
@@ -126,9 +127,10 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                     type="button" 
                     disabled={isDefaultProfileImage ? true : removeBtnLoading ? true : false}
                     loading={removeBtnLoading}
-                    text="Remove"
                     variant="secondary" 
-                />
+                >
+                    Remove
+                </CustomButton>
             </form>
         </>
     );

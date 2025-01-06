@@ -1,9 +1,9 @@
 import React from "react";
-import { Button } from "../ui/button";
 import useCustomToast from "@/hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/user/userSlice";
+import { CustomButton } from "../global/FormElements";
 
 export default function LogoutButton() {
     // redux
@@ -31,12 +31,13 @@ export default function LogoutButton() {
     };
 
     return (
-        <Button
+        <CustomButton
             variant="secondary"
+            effect={false}
             className="h-5 bg-transparent p-0 font-normal"
             onClick={handleClick}
         >
                 Logout
-        </Button>
+        </CustomButton>
     );
 }
