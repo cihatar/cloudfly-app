@@ -10,13 +10,13 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
 export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setPrivateDialogOpen }: { _id: string; parent: string; isPrivateDialogOpen: boolean; setPrivateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // ref
     const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
@@ -27,25 +27,12 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
     const { mutate, isPending } = useMutation({
         mutationFn: (data: { _id: string }) => makeFilePrivate(data),
         onSuccess: (data) => {
-            toast({
-                title: "Success",
-                description: data.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+            showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
             cancelBtnRef.current?.click();
         },
         onError: (data: any) => {
-            toast({
-                title: "Error",
-                description: data.response.data.error,
-                variant: "destructive",
-            });
+            showToast(data.response.data.error, false);
         }
     });
     

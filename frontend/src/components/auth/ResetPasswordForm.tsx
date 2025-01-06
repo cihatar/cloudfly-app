@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { CustomButton, InputField } from "../global/FormElements";
 import { Title } from "../global/Titles";
 import { resetPassword } from "@/store/user/userSlice";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     const dispatch = useAppDispatch();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // navigate
     const navigate = useNavigate();
@@ -40,15 +40,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
         setBtnLoading(true);
         dispatch(resetPassword({ token, password, password_confirmation })).unwrap().then((res) => {
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+            showToast(res.message);
     
             // clear inputs
             if (passwordRef.current && passwordConfirmationRef.current) {
@@ -63,11 +55,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
                 setBtnLoading(false);
             }, 3000);
             }).catch((err) => {
-                toast({
-                    title: "Error",
-                    description: err,
-                    variant: "destructive",
-                });
+                showToast(err, false);
                 setBtnLoading(false);
             });
     };

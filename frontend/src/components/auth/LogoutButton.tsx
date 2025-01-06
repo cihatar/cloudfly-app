@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/user/userSlice";
@@ -13,7 +13,7 @@ export default function LogoutButton() {
     const navigate = useNavigate();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // handle logout
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,24 +22,11 @@ export default function LogoutButton() {
         dispatch(logout())
             .unwrap()
             .then((res) => {
-                toast({
-                    title: "Success",
-                    description: res.message,
-                    variant: "default",
-                    duration: 3000,
-                    style: {
-                        color: "#fafafa",
-                        backgroundColor: "#5cb85c",
-                    },
-                });
+                showToast(res.message);
                 navigate("/");
             })
             .catch((err) => {
-                toast({
-                    title: "Error",
-                    description: err,
-                    variant: "destructive",
-                });
+                showToast(err, false);
             });
     };
 

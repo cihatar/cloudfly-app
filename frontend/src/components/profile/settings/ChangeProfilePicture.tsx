@@ -1,6 +1,6 @@
 import { CustomButton } from "@/components/global/FormElements";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useAppDispatch } from "@/store/hooks";
 import { removeImage, updateImage, User } from "@/store/user/userSlice";
 import React, { useRef, useState } from "react";
@@ -28,7 +28,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
     const [removeBtnLoading, setRemoveBtnLoading] = useState(false);
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
 
 
@@ -56,25 +56,12 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
         const formData = new FormData();
         formData.append("profileImage", image);
 
-        dispatch(updateImage(formData)).unwrap().then((res) => {     
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+        dispatch(updateImage(formData)).unwrap().then((res) => {    
+            showToast(res.message);
             setProfileImage(null);
             setPreviewImage(null); 
         }).catch((err) => {
-            toast({
-                title: "Error",
-                description: err,
-                variant: "destructive",
-            });
+            showToast(err, false);
         }).finally(() => setUploadBtnLoading(false));
     };
 
@@ -86,25 +73,12 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
 
         setRemoveBtnLoading(true);
 
-        dispatch(removeImage()).unwrap().then((res) => {     
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+        dispatch(removeImage()).unwrap().then((res) => {
+            showToast(res.message);
             setProfileImage(null);
             setPreviewImage(null); 
         }).catch((err) => {
-            toast({
-                title: "Error",
-                description: err,
-                variant: "destructive",
-            });
+            showToast(err, false);
         }).finally(() => setRemoveBtnLoading(false));
     };
 

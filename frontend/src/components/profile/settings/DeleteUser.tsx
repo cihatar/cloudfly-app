@@ -11,7 +11,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useAppDispatch } from "@/store/hooks";
 import { deleteUser } from "@/store/user/userSlice";
 import { useState } from "react";
@@ -28,7 +28,7 @@ export default function DeleteUser() {
     const navigate = useNavigate();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // button loading
     const [btnLoading, setBtnLoading] = useState(false);
@@ -41,24 +41,11 @@ export default function DeleteUser() {
         dispatch(deleteUser())
             .unwrap()
             .then((res) => {
-                toast({
-                    title: "Success",
-                    description: res.message,
-                    variant: "default",
-                    duration: 3000,
-                    style: {
-                        color: "#fafafa",
-                        backgroundColor: "#5cb85c",
-                    },
-                });
+                showToast(res.message);
                 navigate("/auth/login");
             })
             .catch((err) => {
-                toast({
-                    title: "Error",
-                    description: err,
-                    variant: "destructive",
-                });
+                showToast(err, false);
             }).finally(() => setBtnLoading(false));
     };
 

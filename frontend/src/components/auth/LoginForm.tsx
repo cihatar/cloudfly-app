@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { CustomButton, InputWithLabel } from "../global/FormElements";
 import { Title } from "../global/Titles";
 import GoogleSign from "./GoogleSign";
+import useCustomToast from "@/hooks/useCustomToast";
 import { loginUser, setUser } from "@/store/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useToast } from "@/hooks/use-toast";
 
 interface LoginForm {
     email: string;
@@ -21,7 +21,7 @@ export default function LoginForm() {
     const navigate = useNavigate();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // ref
     const emailRef = useRef<null | HTMLInputElement>(null);
@@ -41,16 +41,7 @@ export default function LoginForm() {
 
         setBtnLoading(true);
         dispatch(loginUser(data)).unwrap().then((res) => {     
-            toast({
-                title: "Success",
-                description: `Welcome, ${res?.firstName}!`,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+            showToast(`Welcome, ${res?.firstName}!`);
             
             // clear inputs
             if (emailRef.current && passwordRef.current) {
@@ -67,11 +58,7 @@ export default function LoginForm() {
                 setBtnLoading(false);
             }, 1000);
         }).catch((err) => {
-            toast({
-                title: "Error",
-                description: err,
-                variant: "destructive",
-            });
+            showToast(err, false);
             setBtnLoading(false);
         });
     };

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { CustomButton, InputField } from "../global/FormElements";
 import { Title } from "../global/Titles";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { forgotPassword } from "@/store/user/userSlice";
 import { useRef } from "react";
@@ -16,7 +16,7 @@ export default function ForgotPasswordForm() {
     const dispatch = useAppDispatch();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // ref
     const emailRef = useRef<null | HTMLInputElement>(null);
@@ -31,28 +31,16 @@ export default function ForgotPasswordForm() {
         ) as unknown as ForgotPasswordForm;
 
         dispatch(forgotPassword(data)).unwrap().then((res) => {
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+            showToast(res.message);
 
             // clear input
             if (emailRef.current) {
                 emailRef.current.value = "";
             }
-
-            }).catch((err) => {
-                toast({
-                    title: "Error",
-                    description: err,
-                    variant: "destructive",
-                });
-            });
+            
+        }).catch((err) => {
+            showToast(err, false);
+        });
     };
 
     return (

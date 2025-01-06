@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import customAxios from "@/config/axios";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 
 export default function DownloadFile({ _id, originalName }: { _id: string; originalName: string; }) {
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // handle download
     const handleDownload = async () => {
@@ -21,12 +21,7 @@ export default function DownloadFile({ _id, originalName }: { _id: string; origi
             link.click();
             window.URL.revokeObjectURL(url);
         } catch (err) {
-            toast({
-                title: "Error",
-                description: 'Something went wrong',
-                duration: 3000,
-                variant: "destructive",
-            });
+            showToast("Something went wrong", false);
         }
     }
 

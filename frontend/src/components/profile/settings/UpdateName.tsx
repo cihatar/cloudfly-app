@@ -1,5 +1,5 @@
 import { CustomButton, InputWithLabel } from "@/components/global/FormElements";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useAppDispatch } from "@/store/hooks";
 import { updateName, User } from "@/store/user/userSlice";
 import { useState } from "react";
@@ -18,7 +18,7 @@ export default function UpdateName({ user }: UpdateNameProps) {
     const dispatch = useAppDispatch();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
     
     // button loading
     const [btnLoading, setBtnLoading] = useState(false);
@@ -36,23 +36,10 @@ export default function UpdateName({ user }: UpdateNameProps) {
             data.lastName === user?.lastName) return;
 
         setBtnLoading(true);
-        dispatch(updateName(data)).unwrap().then((res) => {     
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+        dispatch(updateName(data)).unwrap().then((res) => {
+            showToast(res.message);
         }).catch((err) => {
-            toast({
-                title: "Error",
-                description: err,
-                variant: "destructive",
-            });
+            showToast(err, false);
         }).finally(() => setBtnLoading(false));
     };
 

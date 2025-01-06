@@ -13,12 +13,12 @@ import { CustomButton, InputField } from "../global/FormElements";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFolder } from "@/api/api";
 import { useRef } from "react";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { FileProps, FolderProps } from "@/pages/Drive";
 
 export default function CreateFolder({ parent }: { parent: string }) {
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // ref
     const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
@@ -29,16 +29,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
     const { mutate, isPending } = useMutation({
         mutationFn: ({ name, parent }: { name: string; parent: string }) => createFolder({ name, parent }),
         onSuccess: (data) => {
-            toast({
-                title: "Success",
-                description: data.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+            showToast(data.message);
             queryClient.setQueryData(['drive', parent], (oldData: { files: FileProps[], folders: FolderProps[] }) => {
                 const foldersArr = oldData.folders === null ? [data.folder] : [...oldData.folders, data.folder];
                 return { ...oldData, folders: foldersArr };
@@ -46,11 +37,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
             cancelBtnRef.current?.click();
         },
         onError: (data: any) => {
-            toast({
-                title: "Error",
-                description: data.response.data.error,
-                variant: "destructive",
-            });
+            showToast(data.response.data.error, false);
         }
     });
 

@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { useAppDispatch } from "@/store/hooks";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useRef, useState } from "react";
 import { CustomButton, InputField, InputWithLabel } from "@/components/global/FormElements";
 
@@ -29,7 +29,7 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
     const dispatch = useAppDispatch();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // ref
     const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
@@ -48,24 +48,11 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
 
         setBtnLoading(true);
         dispatch(changePassword(data)).unwrap().then((res) => {     
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                duration: 3000,
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+            showToast(res.message);
             // close dialog after changing password
             cancelBtnRef.current?.click();
         }).catch((err) => {
-            toast({
-                title: "Error",
-                description: err,
-                variant: "destructive",
-            });
+            showToast(err, false);
         }).finally(() => setBtnLoading(false));
     };
 

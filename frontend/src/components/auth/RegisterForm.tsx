@@ -5,7 +5,7 @@ import { Title } from "../global/Titles";
 import GoogleSign from "./GoogleSign";
 import { registerUser } from "@/store/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 
 interface RegisterForm {
     firstName: string;
@@ -23,7 +23,7 @@ export default function RegisterForm() {
     const navigate = useNavigate();
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // ref
     const firstNameRef = useRef<null | HTMLInputElement>(null);
@@ -41,15 +41,7 @@ export default function RegisterForm() {
         ) as unknown as RegisterForm;
 
         dispatch(registerUser(data)).unwrap().then((res) => {
-            toast({
-                title: "Success",
-                description: res.message,
-                variant: "default",
-                style: {
-                    color: "#fafafa",
-                    backgroundColor: "#5cb85c",
-                },
-            });
+            showToast(res.message);
 
             // clear inputs
             if (firstNameRef.current && lastNameRef.current && emailRef.current && passwordRef.current) {
@@ -65,11 +57,7 @@ export default function RegisterForm() {
 
             navigate("/auth/login");
         }).catch((err) => {
-            toast({
-                title: "Error",
-                description: err,
-                variant: "destructive",
-            });
+            showToast(err, false);
         });
     };
 

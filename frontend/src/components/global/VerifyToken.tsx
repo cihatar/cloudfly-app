@@ -3,7 +3,7 @@ import { User, verifyToken } from '@/store/user/userSlice';
 import { Location } from 'react-router-dom';
 import { Cloudy, Loader2 } from 'lucide-react';
 import React from 'react'
-import { useToast } from '@/hooks/use-toast';
+import useCustomToast from '@/hooks/useCustomToast';
 
 interface Props {
     children: React.ReactNode;
@@ -17,22 +17,13 @@ export default function VerifyToken({ children, user, location }: Props) {
     
     const dispatch = useAppDispatch();
 
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     React.useEffect(() => {
         const authenticateUser = async () => {
             setLoading(true);
             dispatch(verifyToken()).unwrap().then((res) => {
-                toast({
-                    title: "Success",
-                    description: `Welcome, ${res?.firstName}!`,
-                    variant: "default",
-                    duration: 3000,
-                    style: {
-                        color: "#fafafa",
-                        backgroundColor: "#5cb85c",
-                    },
-                });
+                showToast(`Welcome, ${res?.firstName}!`);
             }).finally(() => {
                 setLogoScale(true);
                 setTimeout(() => setLoading(false), 1000);

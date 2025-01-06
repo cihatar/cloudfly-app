@@ -10,7 +10,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import useCustomToast from "@/hooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
     const [isCopied, setCopied] = useState(false);
 
     // toast
-    const { toast } = useToast();
+    const showToast = useCustomToast();
 
     // query
     const queryClient = useQueryClient();
@@ -35,11 +35,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                 })
         },
         onError: (data: any) => {
-            toast({
-                title: "Error",
-                description: data.response.data.error,
-                variant: "destructive",
-            });
+            showToast(data.response.data.error, false);
         }
     });
 
