@@ -48,11 +48,11 @@ export default function Sidebar() {
                                     <img src={user?.profileImage} alt={user?.firstName} className="rounded w-8 h-8"/>
 
                                     <div className="text-start">
-                                        <h2 className="font-semibold text-sm">
+                                        <p className="font-semibold text-sm">
                                             {`${user?.firstName} ${user?.lastName}`.length > 15
                                                 ? `${user?.firstName} ${user?.lastName}`.substring(0,12) + "..."
                                                 : `${user?.firstName} ${user?.lastName}`}
-                                        </h2>
+                                        </p>
                                         <p className="text-blackdefault/80 text-xs">
                                             {user?.email}
                                         </p>
@@ -87,44 +87,49 @@ export default function Sidebar() {
                     </DropdownMenu>
 
                     {/* body */}
-                    <div>
-                        <h2 className="font-bold text-xs text-blackdefault/50 p-2">
-                            Tabs
-                        </h2>
+                    <p className="font-bold text-xs text-blackdefault/50 p-2">
+                        Tabs
+                    </p>
+                    <ul>
+                        <li>
+                            <NavLink
+                                to="/drive"
+                                className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
+                                >
+                                <div className="flex items-center gap-2">
+                                    <HardDrive className="scale-75" />
+                                    <p className="text-sm">My Drive</p>
+                                </div>
+                                <ChevronRight className="scale-50" />
+                            </NavLink>
+                        </li>
 
-                        <NavLink
-                            to="/drive"
-                            className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
-                        >
-                            <div className="flex items-center gap-2">
-                                <HardDrive className="scale-75" />
-                                <h2 className="text-sm">My Drive</h2>
-                            </div>
-                            <ChevronRight className="scale-50" />
-                        </NavLink>
+                        <li>
+                            <NavLink
+                                to="/starred"
+                                className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
+                                >
+                                <div className="flex items-center gap-2">
+                                    <FolderHeart className="scale-75" />
+                                    <p className="text-sm">Starred</p>
+                                </div>
+                                <ChevronRight className="scale-50" />
+                            </NavLink>
+                        </li>
 
-                        <NavLink
-                            to="/starred"
-                            className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
-                        >
-                            <div className="flex items-center gap-2">
-                                <FolderHeart className="scale-75" />
-                                <h2 className="text-sm">Starred</h2>
-                            </div>
-                            <ChevronRight className="scale-50" />
-                        </NavLink>
-
-                        <NavLink
-                            to="/trash"
-                            className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
-                        >
-                            <div className="flex items-center gap-2">
-                                <Trash2 className="scale-75" />
-                                <h2 className="text-sm">Trash</h2>
-                            </div>
-                            <ChevronRight className="scale-50" />
-                        </NavLink>
-                    </div>
+                        <li>
+                            <NavLink
+                                to="/trash"
+                                className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
+                                >
+                                <div className="flex items-center gap-2">
+                                    <Trash2 className="scale-75" />
+                                    <p className="text-sm">Trash</p>
+                                </div>
+                                <ChevronRight className="scale-50" />
+                            </NavLink>
+                        </li>
+                    </ul>
                 </div>
 
                 {/* footer */}

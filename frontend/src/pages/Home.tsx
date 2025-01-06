@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CustomButton } from "@/components/global/FormElements";
+import { Title } from "@/components/global/Titles";
 
 export default function Home() {
     const [index, setIndex] = useState(0);
@@ -28,7 +29,7 @@ export default function Home() {
                     className="w-72 lg:w-[500px]"
                 />
                 <div className="flex flex-col items-center text-center justify-center gap-y-8">
-                    <h2 className="font-semibold text-4xl lg:text-5xl">
+                    <Title className="font-semibold text-4xl lg:text-5xl">
                         <span className="text-bluedefault text-4xl lg:text-6xl">
                             Cloud-based
                         </span>
@@ -46,7 +47,7 @@ export default function Home() {
                             </motion.p>
                         </AnimatePresence>
                         <br /> application
-                    </h2>
+                    </Title>
                     <CustomButton
                         asChild
                         className="h-12 w-40 rounded-full"

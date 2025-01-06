@@ -68,7 +68,7 @@ export default function LoginForm() {
             onSubmit={handleSubmit}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
         >
-            <Title title="Login" className="text-center mb-2"/>
+            <Title className="text-center mb-2">Login</Title>
             
             <GoogleSign />
             <div className="flex w-full items-center gap-2 text-xs text-blackdefault">

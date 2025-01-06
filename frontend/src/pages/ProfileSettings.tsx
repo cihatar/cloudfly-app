@@ -15,14 +15,16 @@ export default function ProfileSettings() {
         <Animate>
 
             {/* title */}
-            <Title title="Settings" subtitle="Update and customize your profile information"/>
+            <Title subtitle="Update and customize your profile information">
+                Settings
+            </Title>
 
 
             <Separator className="mt-4 mb-14" />
 
 
             {/* change profile image */}
-            <Subtitle title="Change Your Profile Image" />
+            <Subtitle>Change Your Profile Image</Subtitle>
             <div className="flex items-center gap-x-4">
             <ChangeProfilePicture user={user}/>
             </div>
@@ -35,7 +37,7 @@ export default function ProfileSettings() {
 
 
             {/* update information */}
-            <Subtitle title="Update Your Information" />
+            <Subtitle>Update Your Information</Subtitle>
             <div className="flex gap-x-4 justify-stretch items-stretch">
                 {/* update name */}
                 <UpdateName user={user} />

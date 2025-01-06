@@ -18,17 +18,17 @@ export default function UploadProgress() {
                 :  
                 <Animate className="fixed bottom-0 lg:bottom-6 lg:right-6 z-50 bg-slate-100 rounded w-full lg:w-80 border-2 shadow-md">
                     <div className="font-semibold text-lg p-4 flex items-center justify-between">
-                        <h2 className="">Uploads</h2>
-                       <div className="flex gap-4">
+                        <p className="">Uploads</p>
+                        <div className="flex gap-4">
                             <CustomButton onClick={updateIsMinimized} effect={false} className="bg-transparent text-blackdefault p-0 hover:bg-transparent">
                                 <Minus />
                             </CustomButton>
                             <CustomButton onClick={closeUploadProgress} effect={false} className="bg-transparent text-blackdefault p-0 hover:bg-transparent">
                                 <X />
                             </CustomButton>
-                       </div>
+                        </div>
                     </div>
-                    <div className="max-h-[240px] overflow-y-auto text-whitedefault">
+                    <ul className="max-h-[240px] overflow-y-auto text-whitedefault">
 
                         {
                             uploadedFiles.map((data) => {
@@ -42,7 +42,7 @@ export default function UploadProgress() {
                                 const isError = data.isError === true;
 
                                 return (
-                                        <div key={data.id} className="h-20 flex gap-2 items-center p-4 rounded border-t">
+                                        <li key={data.id} className="h-20 flex gap-2 items-center p-4 rounded border-t">
 
                                             <div className={`w-12 h-8 ${getColor(file.type)} rounded flex items-center justify-center text-xs uppercase select-none`}>
                                                 {name.substring(0,1)}
@@ -71,12 +71,12 @@ export default function UploadProgress() {
                                                 
                                             </div>
                                             <p className="text-blackdefault/75 text-xs min-w-[36px] text-center">%{data.progress}</p>
-                                        </div>
+                                        </li>
                                 )
                             })
                         }
 
-                    </div>
+                    </ul>
                 </Animate>
             }
         </>

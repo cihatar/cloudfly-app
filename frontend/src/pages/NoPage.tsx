@@ -1,5 +1,6 @@
 import Animate from "@/components/global/Animate";
 import { CustomButton } from "@/components/global/FormElements";
+import { Title } from "@radix-ui/react-toast";
 import { Link } from "react-router-dom";
 
 export default function NoPage() {
@@ -40,7 +41,7 @@ export default function NoPage() {
                 </defs>
             </svg>
             <Animate className="w-96 flex flex-col items-center justify-center z-10">
-                <h1 className="text-9xl font-bold">404</h1>
+                <Title className="text-9xl font-bold">404</Title>
                 <p className="text-center text-whitedefault/50 text-sm mb-6">
                     The page you are trying to access doesn&#39;t exist
                 </p>

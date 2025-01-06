@@ -75,7 +75,7 @@ export default function Drive() {
                             <ChevronLeft />
                         </CustomButton>
                     }
-                    <Title title={folderStack[folderStack.length - 1].name} />
+                    <Title>{folderStack[folderStack.length - 1].name}</Title>
                 </div>
                 <div className="flex gap-2">
                     <UploadFile  parent={parent} fileNames={fileNames} />
@@ -97,7 +97,7 @@ export default function Drive() {
                 <> 
                 {
                     data.folders && <>
-                        <Subtitle title="Folders" className="mt-8 text-sm text-blackdefault/75"/>
+                        <Subtitle className="mt-8 text-sm text-blackdefault/75">Folders</Subtitle>
                         <Separator className="mb-4" />
                         <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 text-xs">
                             {
@@ -117,7 +117,7 @@ export default function Drive() {
                 }
                 {
                     data.files && <>
-                        <Subtitle title="Files" className="mt-8 text-sm text-blackdefault/75"/>
+                        <Subtitle className="mt-8 text-sm text-blackdefault/75">Files</Subtitle>
                         <Separator className="mb-4" />
                         <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-4 text-xs">
                             {

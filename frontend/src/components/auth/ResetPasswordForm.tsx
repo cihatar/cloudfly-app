@@ -65,8 +65,8 @@ export default function ResetPasswordForm({ token }: { token: string }) {
             onSubmit={handleSubmit}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
         >
-            <Title title="Reset password" className="text-center mb-2"/>
-
+            <Title className="text-center mb-2">Reset password</Title>
+            
             <InputField 
                 type="password" 
                 placeholder="Enter your password" 
