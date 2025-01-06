@@ -46,7 +46,7 @@ export default function ForgotPasswordForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
+            className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Forgot your password?</Title>
 
@@ -60,7 +60,7 @@ export default function ForgotPasswordForm() {
                 />
             </div>
             <CustomButton loading={isLoading}>Send reset password link</CustomButton>
-            <Link to="/auth/login" className="text-blue-700 underline text-xs">
+            <Link to="/auth/login" className="text-bluedefault underline text-xs">
                 Go back
             </Link>
         </form>

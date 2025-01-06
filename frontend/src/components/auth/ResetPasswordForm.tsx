@@ -63,7 +63,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
+            className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Reset password</Title>
             

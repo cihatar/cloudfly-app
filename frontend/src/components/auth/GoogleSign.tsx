@@ -8,7 +8,7 @@ export default function GoogleSign() {
     return (
         <CustomButton
             variant="secondary"
-            className="hover:bg-bluedefault hover:text-whitedefault"
+            className="hover:bg-bluedefault hover:text-white"
             type="button"
             onClick={handleGoogle}
         >

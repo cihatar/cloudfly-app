@@ -88,7 +88,7 @@ export default function Drive() {
                 !data.files && !data.folders ? 
                 <div className="flex flex-col text-center items-center justify-center gap-4 mt-36 select-none pointer-events-none">
                     <img src={goingUp} alt="Upload file" className="w-48 lg:w-72"/>
-                    <p className="text-blackdefault/75 text-sm">
+                    <p className="text-zinc-800 dark:text-zinc-200 text-sm">
                         It looks like the space is empty. 
                         <br /> 
                         <span className="font-semibold">Please upload a file or create a folder to add content</span>
@@ -97,7 +97,7 @@ export default function Drive() {
                 <> 
                 {
                     data.folders && <>
-                        <Subtitle className="mt-8 text-sm text-blackdefault/75">Folders</Subtitle>
+                        <Subtitle className="mt-8 text-sm text-zinc-800 dark:text-zinc-200">Folders</Subtitle>
                         <Separator className="mb-4" />
                         <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 text-xs">
                             {
@@ -117,7 +117,7 @@ export default function Drive() {
                 }
                 {
                     data.files && <>
-                        <Subtitle className="mt-8 text-sm text-blackdefault/75">Files</Subtitle>
+                        <Subtitle className="mt-8 text-sm text-zinc-800 dark:text-zinc-200">Files</Subtitle>
                         <Separator className="mb-4" />
                         <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-4 text-xs">
                             {

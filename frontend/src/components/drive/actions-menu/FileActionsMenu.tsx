@@ -27,7 +27,7 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
             <Menubar className="absolute top-4 right-4 invisible">
                 <MenubarMenu>
                     <MenubarTrigger className="p-0">
-                        <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-blackdefault/5 group-hover:visible text-whitedefault" />
+                        <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-zinc-800/5 dark:hover:bg-zinc-200/5 group-hover:visible text-white" />
                     </MenubarTrigger>
                     <MenubarContent>
 

@@ -47,7 +47,7 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
                     <form onSubmit={handleSubmit}>
                         <DialogHeader>
                             <DialogTitle>Make private</DialogTitle>
-                            <DialogDescription className="text-blackdefault">
+                            <DialogDescription>
                                 Once you make this file private, the public link will become invalid, and only you will have access to it
                             </DialogDescription>
                         </DialogHeader>
@@ -69,7 +69,6 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
                             </DialogClose>
                         </DialogFooter>
                     </form>
-                
             </DialogContent>
         </Dialog>
     )

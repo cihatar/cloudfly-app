@@ -36,7 +36,7 @@ export default function Details({ _id, originalName, isDetailsSheetOpen, setDeta
                 <Animate>
                     <SheetHeader>
                     <div>
-                        <div className={`mx-auto flex items-center justify-center w-36 h-36 ${getColor(data?.mimeType)} font-semibold text-xl text-whitedefault uppercase rounded my-4 select-none pointer-events-none`}>
+                        <div className={`mx-auto flex items-center justify-center w-36 h-36 ${getColor(data?.mimeType)} font-semibold text-xl text-white uppercase rounded-md my-4 select-none pointer-events-none`}>
                             {data?.type}
                         </div>
                         <SheetTitle className="text-center">{data?.originalName}</SheetTitle>
@@ -44,26 +44,38 @@ export default function Details({ _id, originalName, isDetailsSheetOpen, setDeta
                     <SheetDescription className="text-center">Details about your file</SheetDescription>
                     <Separator />
                     </SheetHeader>
-                    <div className="mt-4 flex flex-col items-start space-y-2 rounded text-muted-foreground text-sm">
-                        <p>
-                            File name: <span className="text-blackdefault/75 font-semibold">{data?.originalName}</span>
-                        </p>
-                        <p>
-                            Size: <span className="text-blackdefault/75 font-semibold">{data?.size}</span>
-                        </p>
-                        <p>
-                            Type: <span className="text-blackdefault/75 font-semibold uppercase">{data?.type}</span>
-                        </p>
-                        <p>
-                            Starred: <span className="text-blackdefault/75 font-semibold">{data?.isStarred ? "This file is starred" : "This file is not starred"}</span>
-                        </p>
-                        <p>
-                            Created on: <span className="text-blackdefault/75 font-semibold">{data?.createdAt}</span>
-                        </p>
-                        <p>
-                            Updated on: <span className="text-blackdefault/75 font-semibold">{data?.updatedAt}</span>
-                        </p>
-                    </div>
+                    <ul className="mt-4 flex flex-col items-start space-y-2 text-muted-foreground text-sm">
+                        <li>
+                            <p>
+                                File name: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{data?.originalName}</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Size: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{data?.size}</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Type: <span className="text-zinc-800 dark:text-zinc-200 font-semibold uppercase">{data?.type}</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Starred: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{data?.isStarred ? "This file is starred" : "This file is not starred"}</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Created on: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{data?.createdAt}</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                Updated on: <span className="text-zinc-800 dark:text-zinc-200 font-semibold">{data?.updatedAt}</span>
+                            </p>
+                        </li>
+                    </ul>
                     <Separator className="my-4"/>
                     {
                         data?.publicKey ?

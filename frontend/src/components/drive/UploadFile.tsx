@@ -109,7 +109,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
             />
             <CustomButton
                 type="button"
-                className="rounded bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md"
+                className="bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md text-white"
                 variant="default"
                 onClick={() => {
                     // reset states
@@ -133,9 +133,9 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                             <DialogDescription className="flex flex-col gap-y-4">
                                 The file you are trying to upload already exists in this directory
                             </DialogDescription>
-                            <div className="grid grid-cols-3 gap-4 text-xs text-blackdefault max-h-48 overflow-y-auto py-2">
+                            <div className="grid grid-cols-3 gap-4 text-xs max-h-48 overflow-y-auto py-2">
                                 {sameFiles.map((name) => (
-                                    <div key={name} className="bg-blackdefault/5 p-2 flex items-center gap-2 rounded">
+                                    <div key={name} className="dark:bg-zinc-800 bg-zinc-100 p-2 flex items-center gap-2 rounded-md">
                                         {name}
                                     </div>
                                 ))}

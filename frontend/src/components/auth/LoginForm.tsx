@@ -66,15 +66,15 @@ export default function LoginForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
+            className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Login</Title>
             
             <GoogleSign />
-            <div className="flex w-full items-center gap-2 text-xs text-blackdefault">
-                <div className="h-px w-full bg-[#E4E4E7]"></div>
+            <div className="flex w-full items-center gap-2 text-xs">
+                <div className="h-px w-full bg-[#E4E4E7] dark:bg-[#353535]"></div>
                 OR
-                <div className="h-px w-full bg-[#E4E4E7]"></div>
+                <div className="h-px w-full bg-[#E4E4E7] dark:bg-[#353535]"></div>
             </div>
             <div>
                 <InputWithLabel 
@@ -99,11 +99,11 @@ export default function LoginForm() {
             <div className="flex justify-between">
                 <p className="text-xs">
                     Not a member yet?{" "}
-                    <Link to="/auth/register" className="text-blue-700 underline">
+                    <Link to="/auth/register" className="text-bluedefault underline">
                         Register
                     </Link>
                 </p>
-                <Link to="/auth/forgot-password" className="text-blue-700 underline text-xs">
+                <Link to="/auth/forgot-password" className="text-bluedefault underline text-xs">
                         Forgot Password
                 </Link>
             </div>

@@ -86,7 +86,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
     return (
         <>
             <Avatar
-                className="rounded w-24 h-24 cursor-pointer select-none"
+                className="rounded-md w-24 h-24 cursor-pointer select-none"
                 onClick={() => {
                     if (fileRef.current) {
                         fileRef.current.click()
@@ -98,7 +98,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                     src={previewImage ? previewImage : user?.profileImage}
                     alt={user?.firstName}
                 />
-                <AvatarFallback className="rounded">
+                <AvatarFallback className="rounded-md">
                     {`${user?.firstName}`.slice(0, 1)}
                 </AvatarFallback>
             </Avatar>

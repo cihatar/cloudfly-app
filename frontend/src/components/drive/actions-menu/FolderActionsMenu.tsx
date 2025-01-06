@@ -20,7 +20,7 @@ export default function FileActionsMenu({ _id, parent }: FolderProps) {
             <Menubar className="invisible">
                 <MenubarMenu>
                     <MenubarTrigger className="p-0">
-                        <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-blackdefault/5 group-hover:visible" />
+                        <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-zinc-800/5 dark:hover:bg-zinc-200/5 group-hover:visible" />
                     </MenubarTrigger>
                     <MenubarContent>
 

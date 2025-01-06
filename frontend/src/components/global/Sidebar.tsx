@@ -34,18 +34,18 @@ export default function Sidebar() {
         <div className="screen-with-sidebar h-screendefault overflow-auto">
 
             <div className="lg:hidden absolute top-3 left-3 cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}>
-                <AlignJustify className="scale-75 text-whitedefault"/>
+                <AlignJustify className="scale-75"/>
             </div>
             
-            <div className={`w-full bg-blackdefault/5 text-blackdefault px-6 py-4 flex flex-col justify-between z-10 lg:flex ${!showSidebar && 'hidden'}`}>
+            <div className={`w-full bg-zinc-100 dark:bg-zinc-900 px-6 py-4 flex flex-col justify-between z-10 lg:flex ${!showSidebar && 'hidden'}`}>
                 <div>
                     {/* header */}
                     <DropdownMenu>
-                        <DropdownMenuTrigger className="w-full flex justify-between items-center mb-4 p-2 rounded cursor-pointer hover:bg-blackdefault/5">
+                        <DropdownMenuTrigger className="w-full flex justify-between items-center mb-4 p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800">
                             <div className="w-full flex items-center justify-between">
                                 <div className="flex items-center gap-2">
 
-                                    <img src={user?.profileImage} alt={user?.firstName} className="rounded w-8 h-8"/>
+                                    <img src={user?.profileImage} alt={user?.firstName} className="rounded-md w-8 h-8"/>
 
                                     <div className="text-start">
                                         <p className="font-semibold text-sm">
@@ -53,7 +53,7 @@ export default function Sidebar() {
                                                 ? `${user?.firstName} ${user?.lastName}`.substring(0,12) + "..."
                                                 : `${user?.firstName} ${user?.lastName}`}
                                         </p>
-                                        <p className="text-blackdefault/80 text-xs">
+                                        <p className="text-zinc-500 text-xs">
                                             {user?.email}
                                         </p>
                                     </div>
@@ -87,14 +87,14 @@ export default function Sidebar() {
                     </DropdownMenu>
 
                     {/* body */}
-                    <p className="font-bold text-xs text-blackdefault/50 p-2">
+                    <p className="font-bold text-xs text-muted-foreground p-2">
                         Tabs
                     </p>
                     <ul>
                         <li>
                             <NavLink
                                 to="/drive"
-                                className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
+                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                 >
                                 <div className="flex items-center gap-2">
                                     <HardDrive className="scale-75" />
@@ -107,7 +107,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 to="/starred"
-                                className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
+                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                 >
                                 <div className="flex items-center gap-2">
                                     <FolderHeart className="scale-75" />
@@ -120,7 +120,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 to="/trash"
-                                className="flex justify-between p-2 text-blackdefault rounded cursor-pointer hover:bg-blackdefault/5"
+                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                 >
                                 <div className="flex items-center gap-2">
                                     <Trash2 className="scale-75" />
@@ -136,7 +136,7 @@ export default function Sidebar() {
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger>
-                        <div className="text-xs bg-blackdefault/5 select-none flex flex-col justify-center items-center gap-2 p-2 mt-2">
+                        <div className="text-xs border rounded-md select-none flex flex-col justify-center items-center gap-2 p-2 mt-2">
                             {bytesToSize(user?.currentStorage)}
                             {" / "}
                             {bytesToSize(user?.maxStorage)}

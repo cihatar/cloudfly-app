@@ -52,7 +52,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
         <Dialog>
             <DialogTrigger asChild>
                 <CustomButton
-                    className="rounded border w-24 h-8 text-xs
+                    className="border w-24 h-8 text-xs
                     lg:w-32 lg:h-10 lg:text-sm shadow-md"
                     variant="outline"
                 >
@@ -63,7 +63,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Create Folder</DialogTitle>
-                        <DialogDescription className="text-blackdefault">
+                        <DialogDescription>
                             <InputField
                                 className="mt-2 mb-4"
                                 placeholder="Enter folder name"

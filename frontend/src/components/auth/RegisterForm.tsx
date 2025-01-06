@@ -64,15 +64,15 @@ export default function RegisterForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="w-96 flex justify-center flex-col gap-y-4 p-8 shadow-2xl bg-whitedefault"
+            className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Register</Title>
 
             <GoogleSign />
-            <div className="flex w-full items-center gap-2 text-xs text-blackdefault">
-                <div className="h-px w-full bg-[#E4E4E7]"></div>
+            <div className="flex w-full items-center gap-2 text-xs">
+                <div className="h-px w-full bg-[#E4E4E7] dark:bg-[#353535]"></div>
                 OR
-                <div className="h-px w-full bg-[#E4E4E7]"></div>
+                <div className="h-px w-full bg-[#E4E4E7] dark:bg-[#353535]"></div>
             </div>
             <div className="flex gap-2">
                 <div>
@@ -119,7 +119,7 @@ export default function RegisterForm() {
             <CustomButton loading={isLoading}>Register</CustomButton>
             <p className="text-xs">
                 Do you have an account?{" "}
-                <Link to="/auth/login" className="text-blue-700 underline">
+                <Link to="/auth/login" className="text-bluedefault underline">
                     Login
                 </Link>
             </p>

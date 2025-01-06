@@ -14,7 +14,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const InputField = React.forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => {
     return (
         <Input
-            className={cn(`focus-visible:ring-offset-0 ${className}`)}
+            className={cn(`focus-visible:ring-offset-0 text-black dark:text-white ${className}`)}
             required
             ref={ref} 
             {...props}
@@ -25,11 +25,11 @@ export const InputField = React.forwardRef<HTMLInputElement, InputProps>(({ clas
 export const InputWithLabel = React.forwardRef<HTMLInputElement, InputProps>(({ label, className, id, ...props }, ref) => {
     return (
         <>
-            <Label htmlFor={id} className="text-gray-700 text-xs">
+            <Label htmlFor={id} className="text-xs">
                 {label}
             </Label>
             <Input
-                className={cn(`focus-visible:ring-offset-0 ${className}`)}
+                className={cn(`focus-visible:ring-offset-0 text-black dark:text-white ${className}`)}
                 required
                 id={id}
                 ref={ref}
@@ -45,11 +45,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
     loading?: boolean;
     variant?: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
+    size?: "default" | "sm" | "lg" | "icon" | null;
     asChild?: boolean;
     effect?: boolean;
 }
 
-export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, loading, variant, asChild = false, effect = true, ...props }, ref) => {
+export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, loading, variant, size, asChild = false, effect = true, ...props }, ref) => {
     const rippleEffect = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!effect) return;
         const button = e.target as HTMLButtonElement;
@@ -76,6 +77,7 @@ export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ 
             className={cn(`relative overflow-hidden ${className}`)} 
             disabled={loading} 
             variant={variant} 
+            size={size}
             ref={ref}
             onClick={rippleEffect}
             asChild={asChild}

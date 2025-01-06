@@ -11,7 +11,7 @@ export const Title = ({ children, subtitle, className, ...props }: TitleProps) =
         <>
             <h1 className={cn(`text-3xl font-bold ${subtitle && "mb-1"} ${className}`)} {...props}>{children}</h1>
             {subtitle && (
-                <p className="text-blackdefault/75 text-xs">{subtitle}</p>
+                <p className="dark:text-zinc-200 text-zinc-800 text-xs">{subtitle}</p>
             )}
         </>
     );
@@ -22,7 +22,7 @@ export const Subtitle = ({ children, subtitle, className, ...props }: TitleProps
         <>
             <h2 className={cn(`text-xl font-semibold ${subtitle ? "mb-1" : "mb-4"} ${className}`)} {...props}>{children}</h2>
             {subtitle && (
-                <p className="text-blackdefault/75 text-xs mb-4">{subtitle}</p>
+                <p className="dark:text-zinc-200 text-zinc-800 text-xs mb-4">{subtitle}</p>
             )}
         </>
     );

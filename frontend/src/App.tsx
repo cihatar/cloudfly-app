@@ -13,33 +13,36 @@ import Drive from "./pages/Drive";
 import ProfileSettings from "./pages/ProfileSettings";
 import { AnimatePresence } from "framer-motion";
 import { useAppSelector } from "./store/hooks";
+import { ThemeProvider } from "./context/theme-provider";
 
 function AppRoutes() {
     const location = useLocation();    
     const user = useAppSelector((state) => state.user.user);
 
     return <VerifyToken user={user} location={location}>
-                <AnimatePresence mode="wait">
-                    <Routes location={location} key={location.pathname}>
-                        
-                        <Route path="/" element={<Navbar />}>
-                            {/* public routes */}
-                            <Route index element={user ? <Navigate to="/drive" /> : <Home />} />
-                            <Route path="/auth/login" element={user ? <Navigate to="/drive" /> : <Login />} />
-                            <Route path="/auth/register" element={user ? <Navigate to="/drive" /> : <Register />} />
-                            <Route path="/auth/forgot-password" element={user ? <Navigate to="/drive" /> : <ForgotPassword />}  />
-                            <Route path="/auth/reset-password" element={user ? <Navigate to="/drive" /> : <ResetPassword />} />
+                <ThemeProvider defaultTheme="dark" storageKey="theme"> 
+                    <AnimatePresence mode="wait">
+                        <Routes location={location} key={location.pathname}>
+                            
+                            <Route path="/" element={<Navbar />}>
+                                {/* public routes */}
+                                <Route index element={user ? <Navigate to="/drive" /> : <Home />} />
+                                <Route path="/auth/login" element={user ? <Navigate to="/drive" /> : <Login />} />
+                                <Route path="/auth/register" element={user ? <Navigate to="/drive" /> : <Register />} />
+                                <Route path="/auth/forgot-password" element={user ? <Navigate to="/drive" /> : <ForgotPassword />}  />
+                                <Route path="/auth/reset-password" element={user ? <Navigate to="/drive" /> : <ResetPassword />} />
 
-                            {/* private routes */}
-                            <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
-                            <Route element={user ? <Sidebar /> : <Navigate to="/auth/login" />}>
-                                <Route path="/drive" element={<Drive />} />
-                                <Route path="/profile/settings" element={<ProfileSettings />} />
+                                {/* private routes */}
+                                <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
+                                <Route element={user ? <Sidebar /> : <Navigate to="/auth/login" />}>
+                                    <Route path="/drive" element={<Drive />} />
+                                    <Route path="/profile/settings" element={<ProfileSettings />} />
+                                </Route>
                             </Route>
-                        </Route>
 
-                    </Routes>
-                </AnimatePresence>
+                        </Routes>
+                    </AnimatePresence>
+                </ThemeProvider>
             </VerifyToken>
 }
 

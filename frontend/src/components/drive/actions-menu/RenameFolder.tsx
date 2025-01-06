@@ -49,7 +49,7 @@ export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpe
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Rename Folder</DialogTitle>
-                        <DialogDescription className="text-blackdefault">
+                        <DialogDescription>
                             <InputField
                                 className="mt-2 mb-4"
                                 placeholder="Enter folder name"

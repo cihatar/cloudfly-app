@@ -28,7 +28,7 @@ export default function ProfileSettings() {
             <div className="flex items-center gap-x-4">
             <ChangeProfilePicture user={user}/>
             </div>
-            <p className="text-blackdefault/75 text-xs mt-4">
+            <p className="text-xs mt-4">
                 Recommended size is <b>256x256px</b>
             </p>
 

@@ -65,7 +65,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                     <>
                         <DialogHeader>
                             <DialogTitle>{data.message}</DialogTitle>
-                            <DialogDescription className="text-blackdefault">
+                            <DialogDescription>
                                 <InputField
                                     className="mt-2 text-sm"
                                     readOnly
@@ -76,7 +76,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                         <DialogFooter className="sm:justify-start gap-2">
                             <CustomButton onClick={() => copyLinkToClipboard(data.link)}
                                 disabled={isCopied}
-                                className={`${isCopied && 'bg-greendefault hover:bg-greendefault/95'}`}>
+                                className={`${isCopied && 'bg-greendefault hover:bg-greendefault/95 text-white'}`}>
                                 {isCopied ? "Copied" : "Copy to Clipboard"}
                             </CustomButton>
                             <DialogClose asChild>
@@ -93,7 +93,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                     <form onSubmit={handleSubmit}>
                         <DialogHeader>
                             <DialogTitle>Share</DialogTitle>
-                            <DialogDescription className="text-blackdefault">
+                            <DialogDescription>
                                 Once you share your file, a unique link will be generated. You can share this link with others, and they will be able to download and access your file
                             </DialogDescription>
                         </DialogHeader>
@@ -101,7 +101,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                             <CustomButton
                                 type="submit"
                                 loading={isLoading}
-                                className="bg-bluedefault hover:bg-bluedefault/95"
+                                className="bg-bluedefault hover:bg-bluedefault/95 text-white"
                             >
                                 Share my file
                             </CustomButton>

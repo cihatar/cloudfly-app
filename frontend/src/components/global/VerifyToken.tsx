@@ -41,9 +41,9 @@ export default function VerifyToken({ children, user, location }: Props) {
 
     if (loading) {
         return (
-            <div className={`bg-blackdefault h-screen flex items-center justify-center text-white p-1`}>
+            <div className={`h-screen flex items-center justify-center p-1`}>
                 <div
-                    className={`font-medium [&_svg]:size-4 select-none flex items-center justify-center text-whitedefault text-sm gap-1 transition-transform duration-1000 ${logoScale && "scale-150"}`}
+                    className={`font-medium [&_svg]:size-4 select-none flex items-center justify-center text-sm gap-1 transition-transform duration-1000 ${logoScale && "scale-150"}`}
                 >
                     <Cloudy />
                     Cloudfly

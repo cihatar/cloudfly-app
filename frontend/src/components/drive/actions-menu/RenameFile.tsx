@@ -49,7 +49,7 @@ export default function RenameFile({ _id, parent, isRenameDialogOpen, setRenameD
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Rename File</DialogTitle>
-                        <DialogDescription className="text-blackdefault">
+                        <DialogDescription>
                             <InputField
                                 className="mt-2 mb-4"
                                 placeholder="Enter file name"
