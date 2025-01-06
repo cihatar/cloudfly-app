@@ -31,4 +31,9 @@ export const shareFile = async (data: { _id: string }) => {
     return res.data;
 }
 
+export const makeFilePrivate = async (data: { _id: string }) => {
+    const res = await customAxios.post("/api/drive/make-file-private", data);
+    return res.data;
+}
+
 

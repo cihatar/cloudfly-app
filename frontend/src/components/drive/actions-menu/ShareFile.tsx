@@ -11,25 +11,28 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-interface ResponseDataProps {
-    link: string;
-    message: string;
-}
-
-export default function ShareFile({ _id, isShareDialogOpen, setShareDialogOpen }: { _id: string; isShareDialogOpen: boolean; setShareDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
-    const [data, setData] = useState<ResponseDataProps | null>(null);
+export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, setShareDialogOpen }: { _id: string; parent: string; publicKey: string | null; isShareDialogOpen: boolean; setShareDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+    const [isLoading, setLoading] = useState(false);
     const [isCopied, setCopied] = useState(false);
 
     // toast
     const { toast } = useToast();
 
-    const { mutate, isPending } = useMutation({
+    // query
+    const queryClient = useQueryClient();
+
+    const { mutate, data } = useMutation({
+        mutationKey: ["share-file", _id],
         mutationFn: (data: { _id: string }) => shareFile(data),
-        onSuccess: (data) => {
-            setData(data);
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]} )
+                .finally(() => {
+                    setLoading(false);
+                    setCopied(false);
+                })
         },
         onError: (data: any) => {
             toast({
@@ -39,10 +42,11 @@ export default function ShareFile({ _id, isShareDialogOpen, setShareDialogOpen }
             });
         }
     });
-    
+
     // handle share 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
         mutate({ _id });
     }
 
@@ -62,7 +66,7 @@ export default function ShareFile({ _id, isShareDialogOpen, setShareDialogOpen }
         <Dialog open={isShareDialogOpen} onOpenChange={setShareDialogOpen}>
             <DialogContent className="sm:max-w-md">
                 {
-                    data ? 
+                    (data && publicKey) ? 
                     <>
                         <DialogHeader>
                             <DialogTitle>{data.message}</DialogTitle>
@@ -76,6 +80,7 @@ export default function ShareFile({ _id, isShareDialogOpen, setShareDialogOpen }
                         </DialogHeader>
                         <DialogFooter className="sm:justify-start gap-2">
                             <Button onClick={() => copyLinkToClipboard(data.link)}
+                                disabled={isCopied}
                                 className={`${isCopied && 'bg-greendefault hover:bg-greendefault/95'}`}>
                                 {isCopied ? "Copied" : "Copy to Clipboard"}
                             </Button>
@@ -94,10 +99,6 @@ export default function ShareFile({ _id, isShareDialogOpen, setShareDialogOpen }
                         <DialogHeader>
                             <DialogTitle>Share</DialogTitle>
                             <DialogDescription className="text-blackdefault">
-                                {/* <InputField
-                                    className="mt-2 mb-4"
-                                    readOnly
-                                /> */}
                                 Once you share your file, a unique link will be generated. You can share this link with others, and they will be able to download and access your file
                             </DialogDescription>
                         </DialogHeader>
@@ -105,7 +106,7 @@ export default function ShareFile({ _id, isShareDialogOpen, setShareDialogOpen }
                             <CustomButton
                                 type="submit"
                                 text="Share my file"
-                                disabled={isPending}
+                                disabled={isLoading}
                                 className="bg-bluedefault hover:bg-bluedefault/95"
                             />
                             <DialogClose asChild>

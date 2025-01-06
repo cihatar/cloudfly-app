@@ -14,6 +14,7 @@ import Details from "./Details";
 import RenameFile from "./RenameFile";
 import DownloadFile from "./DownloadFile";
 import ShareFile from "./ShareFile";
+import MakeFilePrivate from "./MakeFilePrivate";
 
 export default function FileActionsMenu({ _id, parent, originalName, publicKey }: FileProps) {
     const [isDetailsSheetOpen, setDetailsSheetOpen] = useState(false);
@@ -106,7 +107,10 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
             <RenameFile _id={_id} parent={parent} isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
 
             {/* share dialog */}
-            <ShareFile _id={_id} isShareDialogOpen={isShareDialogOpen} setShareDialogOpen={setShareDialogOpen} />
+            <ShareFile _id={_id} parent={parent} publicKey={publicKey} isShareDialogOpen={isShareDialogOpen} setShareDialogOpen={setShareDialogOpen} />
+
+            {/* private dialog */}
+            <MakeFilePrivate _id={_id} parent={parent} isPrivateDialogOpen={isPrivateDialogOpen} setPrivateDialogOpen={setPrivateDialogOpen} />
         </>
   )
 }

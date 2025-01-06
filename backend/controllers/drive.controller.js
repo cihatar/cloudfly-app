@@ -254,6 +254,22 @@ const shareFile = async (req, res) => {
     res.status(200).json({ link: `${process.env.FRONTEND_URL}/download/${uniqueId}`, message: "Your file is public" });
 }
 
+// make file private
+const makeFilePrivate = async (req, res) => {
+    let { _id } = req.body;
+    _id = isValidObjectId(_id) ? _id : null;
+    const user = req.user;
+
+    const file = await File.findOne({ _id, owner: user._id })
+    if (!file) {
+        throw new CustomAPIError("File not found", 404);
+    }
+
+    file.publicKey = null;
+    await file.save();
+    res.status(200).json({ message: "Your file has been set to private" });
+}
+
 module.exports = {
     uploadFile,
     getFilesAndFolders,
@@ -263,4 +279,5 @@ module.exports = {
     renameFile,
     renameFolder,
     shareFile,
+    makeFilePrivate
 };
