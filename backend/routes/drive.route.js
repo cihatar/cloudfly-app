@@ -13,6 +13,7 @@ const {
     renameFolder,
     shareFile,
     makeFilePrivate,
+    getFilePreviewPublic,
 } = require("../controllers/drive.controller.js");
 
 router.post("/upload", authenticateUser, fileUpload(), uploadFile);
@@ -24,5 +25,6 @@ router.put("/rename-file", authenticateUser, trimRequest.all, renameFile);
 router.put("/rename-folder", authenticateUser, trimRequest.all, renameFolder);
 router.post("/share-file", authenticateUser, shareFile);
 router.post("/make-file-private", authenticateUser, makeFilePrivate);
+router.get("/file-preview-public/:key", getFilePreviewPublic);
 
 module.exports = router;
