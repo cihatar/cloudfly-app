@@ -81,8 +81,8 @@ export default function Details({ _id, originalName, isDetailsSheetOpen, setDeta
                         data?.publicKey ?
                         <div className="w-full text-muted-foreground text-sm">
                             <p><Globe className="scale-75 inline-block" /> This file is public</p>
-                            <a className="text-bluedefault break-words" href={import.meta.env.VITE_BASE_URL + `/download/${data?.publicKey}`} target="_blank">
-                                {import.meta.env.VITE_BASE_URL + `/download/${data?.publicKey}`}
+                            <a className="text-bluedefault break-words" href={import.meta.env.VITE_BASE_URL + `/file/d/${data?.publicKey}`} target="_blank">
+                                {import.meta.env.VITE_BASE_URL + `/file/d/${data?.publicKey}`}
                             </a>
                         </div>
                         :

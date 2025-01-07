@@ -2,7 +2,7 @@ import Animate from "@/components/global/Animate";
 import { CustomButton } from "@/components/global/FormElements";
 import { DownloadIcon } from "lucide-react";
 
-export default function Download() {
+export default function FileDownload() {
     return (
         <div className="h-screendefault lg:grid lg:grid-cols-[1fr,400px] flex flex-col">
             

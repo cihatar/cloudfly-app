@@ -35,7 +35,7 @@ export default function VerifyToken({ children, user, location }: Props) {
             location.pathname !== "/auth/register" && 
             location.pathname !== "/auth/forgot-password" && 
             location.pathname !== "/auth/reset-password" &&
-            !location.pathname.startsWith("/download/"))
+            !location.pathname.startsWith("/file/d/"))
         ) {
             authenticateUser();
         }

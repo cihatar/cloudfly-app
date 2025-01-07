@@ -252,7 +252,7 @@ const shareFile = async (req, res) => {
     const uniqueId = crypto.randomBytes(16).toString('hex');
     file.publicKey = uniqueId;
     await file.save();
-    res.status(200).json({ link: `${process.env.FRONTEND_URL}/download/${uniqueId}`, message: "Your file is public" });
+    res.status(200).json({ link: `${process.env.FRONTEND_URL}/file/d/${uniqueId}`, message: "Your file is public" });
 }
 
 // make file private
