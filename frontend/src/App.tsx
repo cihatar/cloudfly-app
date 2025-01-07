@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Download from "./pages/Download";
 import Drive from "./pages/Drive";
 import ProfileSettings from "./pages/ProfileSettings";
 import { AnimatePresence } from "framer-motion";
@@ -31,6 +32,7 @@ function AppRoutes() {
                                 <Route path="/auth/register" element={user ? <Navigate to="/drive" /> : <Register />} />
                                 <Route path="/auth/forgot-password" element={user ? <Navigate to="/drive" /> : <ForgotPassword />}  />
                                 <Route path="/auth/reset-password" element={user ? <Navigate to="/drive" /> : <ResetPassword />} />
+                                <Route path="/download/:key" element={<Download />} />
 
                                 {/* private routes */}
                                 <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
