@@ -32,6 +32,7 @@
     "nodemailer": "^6.9.16",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "sharp": "^0.33.5",
     "trim-request": "^1.0.6",
     "uuid": "^11.0.3"
   },

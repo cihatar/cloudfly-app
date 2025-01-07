@@ -9,6 +9,7 @@ const mime = require('mime-types')
 const { isValidObjectId } = require("mongoose");
 const { v4: uuid } = require('uuid');
 const { encryptFile, decryptFile, bytesToSize } = require("../utils/drive.js");
+const { previewFile } = require("../utils/preview.js");
 
 // upload file
 const uploadFile = async (req, res) => {
@@ -273,10 +274,15 @@ const makeFilePrivate = async (req, res) => {
 const getFilePreviewPublic = async (req, res) => {
     const publicKey = req.params.key;
 
-    const file = await File.findOne({ publicKey });
+    const file = await File.findOne({ publicKey })
     if (!file) {
         throw new CustomAPIError("File not found", 404);
     }
+
+    const MAX_SIZE = 1024 * 1024 * 20; // 20 MB
+    if (file.size > MAX_SIZE) {
+        throw new CustomAPIError("This file is too big to preview", 413);
+    } 
 
     const uploadPath = path.join(__dirname, `../private/${file.owner}/`);
     const encryptedFilePath = path.join(uploadPath, file.name);
@@ -286,10 +292,11 @@ const getFilePreviewPublic = async (req, res) => {
     } catch (err) {
         throw new CustomAPIError("Something went wrong", 500);
     }
-    
-    res.setHeader("Content-Disposition", `attachment; filename="${file.originalName}"`);
-    res.type(file.mimeType);
-    res.status(200).send(buffer);
+
+    const mimeType = file.mimeType;
+    const originalName = file.originalName;
+    const size = file.size;
+    await previewFile(res, buffer, mimeType, originalName, size);
 }
 
 module.exports = {
