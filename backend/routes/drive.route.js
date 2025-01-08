@@ -15,6 +15,7 @@ const {
     makeFilePrivate,
     getFilePreviewPublic,
     getFileDetailsPublic,
+    downloadFilePublic,
 } = require("../controllers/drive.controller.js");
 
 router.post("/upload", authenticateUser, fileUpload(), uploadFile);
@@ -28,5 +29,6 @@ router.post("/share-file", authenticateUser, shareFile);
 router.post("/make-file-private", authenticateUser, makeFilePrivate);
 router.get("/file-preview-public/:key", getFilePreviewPublic);
 router.get("/get-file-public/:key", getFileDetailsPublic);
+router.get("/download-public/:key", downloadFilePublic);
 
 module.exports = router;

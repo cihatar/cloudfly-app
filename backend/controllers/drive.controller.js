@@ -315,6 +315,29 @@ const getFileDetailsPublic = async (req, res) => {
     res.status(200).json({ owner, originalName, size, type });
 }
 
+// download file (public)
+const downloadFilePublic = async (req, res) => {
+    const publicKey = req.params.key;
+
+    const file = await File.findOne({ publicKey });
+    if (!file) {
+        throw new CustomAPIError("File not found", 404);
+    }
+
+    const uploadPath = path.join(__dirname, `../private/${file.owner}/`);
+    const encryptedFilePath = path.join(uploadPath, file.name);
+    let buffer;
+    try {
+        buffer = await decryptFile(encryptedFilePath);
+    } catch (err) {
+        throw new CustomAPIError("Something went wrong", 500);
+    }
+    
+    res.setHeader("Content-Disposition", `attachment; filename="${file.originalName}"`);
+    res.type(file.mimeType);
+    res.status(200).send(buffer);
+}
+
 module.exports = {
     uploadFile,
     getFilesAndFolders,
@@ -327,4 +350,5 @@ module.exports = {
     makeFilePrivate,
     getFilePreviewPublic,
     getFileDetailsPublic,
+    downloadFilePublic,
 };

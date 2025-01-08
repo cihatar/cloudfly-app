@@ -1,9 +1,8 @@
 import { getFileDetailsPublic } from '@/api/api';
-import { CustomButton } from '@/components/global/FormElements';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQuery } from '@tanstack/react-query';
-import { DownloadIcon } from 'lucide-react';
 import { useParams } from 'react-router-dom';
+import DownloadFile from './DownloadFile';
 
 export default function Details() {
     const { key } = useParams();
@@ -65,10 +64,7 @@ export default function Details() {
                             </p>
                         </li>
                     </ul>
-                    <CustomButton className="w-full mt-4 bg-bluedefault hover:bg-bluedefault/95 text-white">
-                        <DownloadIcon />
-                        Download
-                    </CustomButton>
+                   <DownloadFile originalName={data.originalName} />
                 </>
             }
            
