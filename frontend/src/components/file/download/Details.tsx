@@ -1,20 +1,9 @@
-import { getFileDetailsPublic } from '@/api/api';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 import DownloadFile from './DownloadFile';
 
-export default function Details() {
-    const { key } = useParams();
-
-    const { data, isLoading } = useQuery({
-        queryKey: ["file-details", key],
-        queryFn: () => getFileDetailsPublic(key || ''),
-    });    
-
+export default function Details({ data, isLoading, error, keyProp }: { data: any, isLoading: boolean, error: string, keyProp: string }) {
     return (
         <>
-            
             {
                 isLoading ?
                 <>
@@ -32,6 +21,7 @@ export default function Details() {
                     <Skeleton className='w-full h-10 mt-4' />
                 </>
                 :
+                !error ? 
                 <>
                     <div className="flex items-center gap-2 mb-4 p-2 border rounded-md">
                         <img src={data.owner.profileImage} alt={data.owner.firstName} className="rounded-md w-8 h-8"/>
@@ -64,10 +54,13 @@ export default function Details() {
                             </p>
                         </li>
                     </ul>
-                   <DownloadFile originalName={data.originalName} />
+                   <DownloadFile originalName={data.originalName} keyProp={keyProp} />
                 </>
+                :
+                <div className='w-full h-full flex items-center justify-center text-xs text-zinc-500 select-none'>
+                    <p>{error}</p>
+                </div>
             }
-           
         </>
     )
 }

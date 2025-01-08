@@ -1,21 +1,11 @@
-import { getFilePreviewPublic } from "@/api/api";
 import { previewFile } from "@/utils/preview"
-import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
-export default function Preview() {
+export default function Preview({ data, isLoading, error }: { data: any, isLoading: boolean, error: string }) {
     const [preview, setPreview] = useState<{ type: string | null, previewData: string | undefined }>({
         type: null,
-        previewData: undefined
-    });
-
-    const { key } = useParams();
-
-    const { data, isLoading } = useQuery({
-        queryKey: ["file-preview"],
-        queryFn: () => getFilePreviewPublic(key || ''),
+        previewData: undefined,
     });
 
     useEffect(() => {
@@ -30,6 +20,8 @@ export default function Preview() {
         <>
             {
                 isLoading ? <Loader2 className="animate-spin" />
+                :
+                error ? <p className="text-xs text-zinc-500 select-none">{error}</p>
                 :
                 preview.type?.startsWith("image/") && preview?.previewData ?
                 <img src={preview.previewData} alt="" className="h-full object-cover rounded-md" />
