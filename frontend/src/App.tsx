@@ -49,7 +49,13 @@ function AppRoutes() {
 }
 
 export default function App() {
-    const queryClient = new QueryClient()
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,
+            }
+        }
+    })
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>

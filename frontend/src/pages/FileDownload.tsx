@@ -1,3 +1,4 @@
+import Preview from "@/components/file/download/Preview";
 import Animate from "@/components/global/Animate";
 import { CustomButton } from "@/components/global/FormElements";
 import { DownloadIcon } from "lucide-react";
@@ -9,7 +10,7 @@ export default function FileDownload() {
             {/* preview */}
             <div className="w-full h-full flex items-center justify-center p-6 overflow-hidden">
                 <Animate className="w-full h-full flex items-center justify-center rounded-md overflow-hidden">
-                    <p className="text-xs text-zinc-500 select-none">This file cannot be previewed</p>
+                    <Preview />
                 </Animate>
             </div>
 

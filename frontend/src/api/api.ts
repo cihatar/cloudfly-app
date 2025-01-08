@@ -36,4 +36,10 @@ export const makeFilePrivate = async (data: { _id: string }) => {
     return res.data;
 }
 
+export const getFilePreviewPublic = async (key: string) => {
+    const res = await customAxios.get(`/api/drive/file-preview-public/${key}`, {
+        responseType: "arraybuffer",
+    });
+    return res;
+}
 
