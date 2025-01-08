@@ -6,7 +6,7 @@ export const getFilesAndFolders = async (parent: string) => {
     return res.data;
 }
 
-export const getFileInformation = async (_id: string) => {
+export const getFileDetails = async (_id: string) => {
     const res = await customAxios.get(`/api/drive/get-file/${_id}`);
     return res.data;
 }
@@ -41,5 +41,10 @@ export const getFilePreviewPublic = async (key: string) => {
         responseType: "arraybuffer",
     });
     return res;
+}
+
+export const getFileDetailsPublic = async (key: string) => {
+    const res = await customAxios.get(`/api/drive/get-file-public/${key}`);
+    return res.data;
 }
 

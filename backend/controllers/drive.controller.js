@@ -115,7 +115,7 @@ const getFilesAndFolders = async (req, res) => {
 } 
 
 // get file information
-const getFileInformation = async (req, res) => {
+const getFileDetails = async (req, res) => {
     let _id = req.params.id;
     _id = isValidObjectId(_id) ? _id : null;
     const user = req.user;
@@ -271,6 +271,7 @@ const makeFilePrivate = async (req, res) => {
     res.status(200).json({ message: "Your file has been set to private" });
 }
 
+// get file preview (public)
 const getFilePreviewPublic = async (req, res) => {
     const publicKey = req.params.key;
 
@@ -299,10 +300,25 @@ const getFilePreviewPublic = async (req, res) => {
     await previewFile(res, buffer, mimeType, originalName, size);
 }
 
+// get file details (public)
+const getFileDetailsPublic = async (req, res) => {
+    const publicKey = req.params.key;
+
+    const file = await File.findOne({ publicKey }).populate("owner", "-_id firstName lastName profileImage")
+    if (!file) {
+        throw new CustomAPIError("File not found", 404);
+    }
+    
+    const { owner, originalName, type } = file;
+    const size = bytesToSize(file.size);
+
+    res.status(200).json({ owner, originalName, size, type });
+}
+
 module.exports = {
     uploadFile,
     getFilesAndFolders,
-    getFileInformation,
+    getFileDetails,
     downloadFile,
     createFolder,
     renameFile,
@@ -310,4 +326,5 @@ module.exports = {
     shareFile,
     makeFilePrivate,
     getFilePreviewPublic,
+    getFileDetailsPublic,
 };

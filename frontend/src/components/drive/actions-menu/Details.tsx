@@ -1,4 +1,4 @@
-import { getFileInformation } from "@/api/api";
+import { getFileDetails } from "@/api/api";
 import Animate from "@/components/global/Animate";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -15,7 +15,7 @@ import { Globe, Loader2, Lock } from "lucide-react";
 export default function Details({ _id, originalName, isDetailsSheetOpen, setDetailsSheetOpen }: { _id: string; originalName: string; isDetailsSheetOpen: boolean; setDetailsSheetOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     const { data, isLoading } = useQuery({
         queryKey: ["file-details", _id],
-        queryFn: () => getFileInformation(_id),
+        queryFn: () => getFileDetails(_id),
         enabled: isDetailsSheetOpen
     });
     
