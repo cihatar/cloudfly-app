@@ -35,8 +35,8 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
         }
     });
     
-    // handle share 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // handle make file private 
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         mutate({ _id });
     }
@@ -44,31 +44,29 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
     return (
         <Dialog open={isPrivateDialogOpen} onOpenChange={setPrivateDialogOpen}>
             <DialogContent className="sm:max-w-md">
-                    <form onSubmit={handleSubmit}>
-                        <DialogHeader>
-                            <DialogTitle>Make private</DialogTitle>
-                            <DialogDescription>
-                                Once you make this file private, the public link will become invalid, and only you will have access to it
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter className="sm:justify-start gap-2 mt-4">
+                    <DialogHeader>
+                        <DialogTitle>Make private</DialogTitle>
+                        <DialogDescription>
+                            Once you make this file private, the public link will become invalid, and only you will have access to it
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="sm:justify-start gap-2">
+                        <CustomButton
+                            onClick={handleClick}
+                            loading={isPending}
+                        >
+                            Make this file private
+                        </CustomButton>
+                        <DialogClose asChild>
                             <CustomButton
-                                type="submit"
-                                loading={isPending}
+                                type="button"
+                                variant="secondary"
+                                ref={cancelBtnRef}
                             >
-                                Make this file private
+                                Cancel
                             </CustomButton>
-                            <DialogClose asChild>
-                                <CustomButton
-                                    type="button"
-                                    variant="secondary"
-                                    ref={cancelBtnRef}
-                                >
-                                    Cancel
-                                </CustomButton>
-                            </DialogClose>
-                        </DialogFooter>
-                    </form>
+                        </DialogClose>
+                    </DialogFooter>
             </DialogContent>
         </Dialog>
     )

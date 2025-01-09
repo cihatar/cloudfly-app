@@ -24,7 +24,6 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
     const queryClient = useQueryClient();
 
     const { mutate, data } = useMutation({
-        mutationKey: ["share-file", _id],
         mutationFn: (data: { _id: string }) => shareFile(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]} )
@@ -39,7 +38,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
     });
 
     // handle share 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setLoading(true);
         mutate({ _id });
@@ -90,16 +89,16 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                         </DialogFooter>
                     </> 
                     : 
-                    <form onSubmit={handleSubmit}>
+                    <>
                         <DialogHeader>
                             <DialogTitle>Share</DialogTitle>
                             <DialogDescription>
                                 Once you share your file, a unique link will be generated. You can share this link with others, and they will be able to download and access your file
                             </DialogDescription>
                         </DialogHeader>
-                        <DialogFooter className="sm:justify-start gap-2 mt-4">
+                        <DialogFooter className="sm:justify-start gap-2">
                             <CustomButton
-                                type="submit"
+                                onClick={handleClick}
                                 loading={isLoading}
                                 className="bg-bluedefault hover:bg-bluedefault/95 text-white"
                             >
@@ -114,7 +113,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                                 </CustomButton>
                             </DialogClose>
                         </DialogFooter>
-                    </form>
+                    </>
                 }
             </DialogContent>
         </Dialog>
