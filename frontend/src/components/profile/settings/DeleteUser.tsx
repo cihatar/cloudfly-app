@@ -13,6 +13,7 @@ import {
 import useCustomToast from "@/hooks/useCustomToast";
 import { useAppDispatch } from "@/store/hooks";
 import { deleteUser } from "@/store/user/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,16 +33,18 @@ export default function DeleteUser() {
     // button loading
     const [btnLoading, setBtnLoading] = useState(false);
 
-    // handle delete user
-    const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    // query
+    const queryClient = useQueryClient();
 
+    // handle delete user
+    const handleDelete = () => {
         setBtnLoading(true);
         dispatch(deleteUser())
             .unwrap()
             .then((res) => {
                 showToast(res.message);
-                navigate("/auth/login");
+                queryClient.clear();
+                navigate("/");
             })
             .catch((err) => {
                 showToast(err, false);
@@ -51,7 +54,7 @@ export default function DeleteUser() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <CustomButton type="submit" variant="destructive">
+                <CustomButton variant="destructive">
                     Delete Your Account
                 </CustomButton>
             </DialogTrigger>
@@ -74,8 +77,8 @@ export default function DeleteUser() {
                 </div>
                 <DialogFooter className="sm:justify-start gap-2">
                     <CustomButton 
-                        onClick={handleClick} 
-                        type="button" 
+                        onClick={handleDelete} 
+                        type="button"
                         disabled={btnLoading ? true : checked ? false : true}
                         loading={btnLoading}
                         variant="destructive" 

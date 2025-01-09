@@ -36,7 +36,7 @@ export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpe
     });
 
     // handle rename file
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleRename = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries()) as { name: string };
@@ -46,7 +46,7 @@ export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpe
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogContent className="sm:max-w-md">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleRename}>
                     <DialogHeader>
                         <DialogTitle>Rename Folder</DialogTitle>
                         <DialogDescription>
@@ -60,7 +60,6 @@ export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpe
                     </DialogHeader>
                     <DialogFooter className="sm:justify-start gap-2">
                         <CustomButton
-                            type="submit"
                             loading={isPending}
                         >
                             Rename

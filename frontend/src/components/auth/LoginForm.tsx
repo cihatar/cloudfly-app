@@ -31,7 +31,7 @@ export default function LoginForm() {
     const [btnLoading, setBtnLoading] = useState(false);
 
     // handle login
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -65,7 +65,7 @@ export default function LoginForm() {
 
     return (
         <form
-            onSubmit={handleSubmit}
+            onSubmit={handleLogin}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Login</Title>

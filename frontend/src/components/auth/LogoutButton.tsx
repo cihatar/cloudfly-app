@@ -20,9 +20,7 @@ export default function LogoutButton() {
     const queryClient = useQueryClient();
 
     // handle logout
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
+    const handleLogout = () => {
         dispatch(logout())
             .unwrap()
             .then((res) => {
@@ -37,10 +35,11 @@ export default function LogoutButton() {
 
     return (
         <CustomButton
+            onClick={handleLogout}
+            type="button"
             variant="secondary"
             effect={false}
             className="h-5 bg-transparent p-0 font-normal"
-            onClick={handleClick}
         >
                 Logout
         </CustomButton>

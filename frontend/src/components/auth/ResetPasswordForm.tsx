@@ -30,7 +30,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     const [btnLoading, setBtnLoading] = useState(false);
 
     // handle reset password
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleResetPassword = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -62,7 +62,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
     return (
         <form
-            onSubmit={handleSubmit}
+            onSubmit={handleResetPassword}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Reset password</Title>

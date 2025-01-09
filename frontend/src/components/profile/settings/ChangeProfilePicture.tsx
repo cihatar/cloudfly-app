@@ -47,7 +47,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
 
 
     // handle profile image upload
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleUpload = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setUploadBtnLoading(true);
@@ -68,11 +68,8 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
 
 
     // handle remove image 
-    const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-
+    const handleRemove = () => {
         setRemoveBtnLoading(true);
-
         dispatch(removeImage()).unwrap().then((res) => {
             showToast(res.message);
             setProfileImage(null);
@@ -102,7 +99,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
                     {`${user?.firstName}`.slice(0, 1)}
                 </AvatarFallback>
             </Avatar>
-            <form className="w-64 flex flex-col gap-4" onSubmit={handleSubmit}>
+            <form className="w-64 flex flex-col gap-4" onSubmit={handleUpload}>
                 <input
                     type="file"
                     name="profileImage"
@@ -123,7 +120,7 @@ export default function ChangeProfilePicture({ user }: ChangeProfilePictureProps
 
                 {/* remove image button */}
                 <CustomButton 
-                    onClick={handleClick} 
+                    onClick={handleRemove} 
                     type="button" 
                     disabled={isDefaultProfileImage ? true : removeBtnLoading ? true : false}
                     loading={removeBtnLoading}

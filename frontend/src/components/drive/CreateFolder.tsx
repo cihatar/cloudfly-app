@@ -41,7 +41,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
     });
 
     // handle create folder
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleCreateFolder = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries()) as { name: string };
@@ -52,6 +52,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
         <Dialog>
             <DialogTrigger asChild>
                 <CustomButton
+                    type="button" 
                     className="border w-24 h-8 text-xs
                     lg:w-32 lg:h-10 lg:text-sm shadow-md"
                     variant="outline"
@@ -60,7 +61,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
                 </CustomButton>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleCreateFolder}>
                     <DialogHeader>
                         <DialogTitle>Create Folder</DialogTitle>
                         <DialogDescription>
@@ -73,7 +74,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter className="sm:justify-start gap-2">
-                        <CustomButton type="submit" loading={isPending}>Create</CustomButton>
+                        <CustomButton loading={isPending}>Create</CustomButton>
                         <DialogClose asChild>
                             <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
                                 Cancel

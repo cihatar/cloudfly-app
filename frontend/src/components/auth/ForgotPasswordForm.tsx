@@ -22,7 +22,7 @@ export default function ForgotPasswordForm() {
     const emailRef = useRef<null | HTMLInputElement>(null);
 
     // handle forgot password
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleForgotPassword = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -45,7 +45,7 @@ export default function ForgotPasswordForm() {
 
     return (
         <form
-            onSubmit={handleSubmit}
+            onSubmit={handleForgotPassword}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Forgot your password?</Title>

@@ -33,7 +33,7 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
 
                         {/* details */}
                         <MenubarItem className="p-0">
-                            <CustomButton onClick={() => setDetailsSheetOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton onClick={() => setDetailsSheetOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                 <Info className="mr-1"/>
                                 <span>Details</span>
                             </CustomButton>
@@ -43,7 +43,7 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
 
                         {/* rename */}
                         <MenubarItem className="p-0">
-                            <CustomButton onClick={() => setRenameDialogOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                 <Pen className="mr-1"/>
                                 <span>Rename</span> 
                             </CustomButton>
@@ -53,7 +53,7 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
 
                         {/* add to starred */}
                         <MenubarItem className="p-0">
-                            <CustomButton variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default" >
+                            <CustomButton type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default" >
                                 <FolderHeart className="mr-1"/>
                                 <span>Add to Starred</span> 
                             </CustomButton>
@@ -65,14 +65,14 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
                         {
                             publicKey ? 
                             <MenubarItem className="p-0">   
-                                <CustomButton onClick={() => setPrivateDialogOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                <CustomButton onClick={() => setPrivateDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Lock className="mr-1"/>
                                     <span>Make private</span> 
                                 </CustomButton>
                             </MenubarItem>
                             :  
                             <MenubarItem className="p-0">   
-                                <CustomButton onClick={() => setShareDialogOpen(true)} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                <CustomButton onClick={() => setShareDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Share2 className="mr-1"/>
                                     <span>Share</span> 
                                 </CustomButton>
@@ -90,7 +90,7 @@ export default function FileActionsMenu({ _id, parent, originalName, publicKey }
 
                         {/* move to trash */}
                         <MenubarItem className="p-0">
-                            <CustomButton variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                 <Trash2 className="mr-1"/>
                                <span>Move to Trash</span>
                             </CustomButton>

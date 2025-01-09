@@ -12,7 +12,7 @@ export default function UploadProgress() {
         <>
             {
                 uploadedFiles.length === 0 ? <></> : isMinimized ? 
-                <CustomButton onClick={updateIsMinimized} effect={false} className="fixed bottom-6 right-6 z-50 bg-bluedefault hover:bg-bluedefault/95 text-white rounded-full shadow-md w-12 h-12">
+                <CustomButton onClick={updateIsMinimized} type="button" effect={false} className="fixed bottom-6 right-6 z-50 bg-bluedefault hover:bg-bluedefault/95 text-white rounded-full shadow-md w-12 h-12">
                     <CloudDownload />
                 </CustomButton> 
                 :  
@@ -20,10 +20,10 @@ export default function UploadProgress() {
                     <div className="font-semibold text-lg p-4 flex items-center justify-between">
                         <p className="">Uploads</p>
                         <div className="flex gap-4">
-                            <CustomButton variant="ghost" onClick={updateIsMinimized} effect={false} className="h-8 w-8 p-0 rounded-full">
+                            <CustomButton variant="ghost" onClick={updateIsMinimized} type="button" effect={false} className="h-8 w-8 p-0 rounded-full">
                                 <Minus />
                             </CustomButton>
-                            <CustomButton variant="destructive" onClick={closeUploadProgress} effect={false} className="h-8 w-8 p-0 rounded-full">
+                            <CustomButton variant="destructive" onClick={closeUploadProgress} type="button" effect={false} className="h-8 w-8 p-0 rounded-full">
                                 <X />
                             </CustomButton>
                         </div>

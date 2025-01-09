@@ -3,6 +3,7 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -37,7 +38,7 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
     const [btnLoading, setBtnLoading] = useState(false);
 
     // handle change password
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleChangePassword= (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -81,15 +82,16 @@ export default function ChangePassword({ user }: ChangePasswordProps) {
             </div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <CustomButton variant="secondary">Change Password</CustomButton>
+                    <CustomButton type="button" variant="secondary">Change Password</CustomButton>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
                         <DialogTitle>Change Password Request</DialogTitle>
+                        <DialogDescription>Please enter your current password and choose a new one to update your password</DialogDescription>
                     </DialogHeader>
                     <form
-                        onSubmit={handleSubmit}
-                        className="flex justify-center flex-col gap-y-1 mt-4"
+                        onSubmit={handleChangePassword}
+                        className="flex justify-center flex-col gap-y-1"
                     >
                         <InputField 
                             className="mb-4"

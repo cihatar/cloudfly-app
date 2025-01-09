@@ -38,8 +38,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
     });
 
     // handle share 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleShare = () => {
         setLoading(true);
         mutate({ _id });
     }
@@ -74,6 +73,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                         </DialogHeader>
                         <DialogFooter className="sm:justify-start gap-2">
                             <CustomButton onClick={() => copyLinkToClipboard(data.link)}
+                                type="button"
                                 disabled={isCopied}
                                 className={`${isCopied && 'bg-greendefault hover:bg-greendefault/95 text-white'}`}>
                                 {isCopied ? "Copied" : "Copy to Clipboard"}
@@ -98,7 +98,8 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                         </DialogHeader>
                         <DialogFooter className="sm:justify-start gap-2">
                             <CustomButton
-                                onClick={handleClick}
+                                onClick={handleShare}
+                                type="button"
                                 loading={isLoading}
                                 className="bg-bluedefault hover:bg-bluedefault/95 text-white"
                             >

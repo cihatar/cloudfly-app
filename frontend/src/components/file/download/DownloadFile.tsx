@@ -26,7 +26,7 @@ export default function DownloadFile({ originalName, keyProp }: { originalName: 
     }
 
     return (
-        <CustomButton onClick={handleDownload} className="w-full mt-4 bg-bluedefault hover:bg-bluedefault/95 text-white">
+        <CustomButton onClick={handleDownload} type="button" className="w-full mt-4 bg-bluedefault hover:bg-bluedefault/95 text-white">
             <Download />
             <span>Download</span>
         </CustomButton>

@@ -71,7 +71,7 @@ export default function Drive() {
                 <div className="flex items-center justify-start gap-2">
                     {
                         folderStack[folderStack.length - 1].name !== "My Drive" && 
-                        <CustomButton type="button" variant={"ghost"} effect={false} className="rounded-full p-0 h-8 w-8" onClick={handleGoBack}>
+                        <CustomButton onClick={handleGoBack} type="button" variant="ghost" effect={false} className="rounded-full p-0 h-8 w-8" >
                             <ChevronLeft />
                         </CustomButton>
                     }

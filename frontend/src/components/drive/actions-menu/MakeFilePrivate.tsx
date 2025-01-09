@@ -36,8 +36,7 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
     });
     
     // handle make file private 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleMakePrivate = () => {
         mutate({ _id });
     }
 
@@ -52,7 +51,8 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
                     </DialogHeader>
                     <DialogFooter className="sm:justify-start gap-2">
                         <CustomButton
-                            onClick={handleClick}
+                            onClick={handleMakePrivate}
+                            type="button"
                             loading={isPending}
                         >
                             Make this file private

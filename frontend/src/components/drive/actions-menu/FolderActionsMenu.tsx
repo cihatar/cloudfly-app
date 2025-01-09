@@ -26,7 +26,7 @@ export default function FileActionsMenu({ _id, parent }: FolderProps) {
 
                         {/* rename */}
                         <MenubarItem className="p-0">
-                            <CustomButton onClick={() => setIsDialogOpen(true)} variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton onClick={() => setIsDialogOpen(true)} type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Pen className="mr-1"/>
                                 <span>Rename</span> 
                             </CustomButton>
@@ -36,7 +36,7 @@ export default function FileActionsMenu({ _id, parent }: FolderProps) {
 
                         {/* add to starred */}
                         <MenubarItem className="p-0">
-                            <CustomButton variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <FolderHeart className="mr-1"/>
                                 <span>Add to Starred</span>
                             </CustomButton>
@@ -46,7 +46,7 @@ export default function FileActionsMenu({ _id, parent }: FolderProps) {
                         
                         {/* move to trash */}
                         <MenubarItem className="p-0">
-                            <CustomButton variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Trash2 className="mr-1"/>
                                 <span>Move to Trash</span>
                             </CustomButton>

@@ -143,7 +143,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
                             <p className="text-xs text-red-500 border-t pt-2"> If you replace the file, the existing file will be permanently deleted</p>
                         </DialogHeader>
                         <DialogFooter className="sm:justify-start gap-2">
-                            <CustomButton onClick={() => handleUpload(filesFormData)}>Replace</CustomButton>
+                            <CustomButton onClick={() => handleUpload(filesFormData)} type="button" >Replace</CustomButton>
                             <DialogClose asChild>
                                 <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
                                     Cancel

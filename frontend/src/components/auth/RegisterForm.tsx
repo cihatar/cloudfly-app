@@ -31,8 +31,8 @@ export default function RegisterForm() {
     const emailRef = useRef<null | HTMLInputElement>(null);
     const passwordRef = useRef<null | HTMLInputElement>(null);
 
-    // handle login
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // handle register
+    const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -63,7 +63,7 @@ export default function RegisterForm() {
 
     return (
         <form
-            onSubmit={handleSubmit}
+            onSubmit={handleRegister}
             className="w-96 flex justify-center flex-col gap-y-4 p-8 border shadow-md rounded-md"
         >
             <Title className="text-center mb-2">Register</Title>

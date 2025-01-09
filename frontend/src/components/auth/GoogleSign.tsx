@@ -1,7 +1,7 @@
 import { CustomButton } from "../global/FormElements";
 
 export default function GoogleSign() {
-    const handleGoogle = () => {
+    const handleGoogleSign = () => {
         window.location.href = import.meta.env.VITE_BACKEND_URL + "/api/auth/google";
     }
 
@@ -10,7 +10,7 @@ export default function GoogleSign() {
             variant="secondary"
             className="hover:bg-bluedefault hover:text-white"
             type="button"
-            onClick={handleGoogle}
+            onClick={handleGoogleSign}
         >
             <svg
                 className="-ml-1 w-4 h-4"

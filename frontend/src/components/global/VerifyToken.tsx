@@ -20,7 +20,7 @@ export default function VerifyToken({ children, user, location }: Props) {
     const showToast = useCustomToast();
 
     React.useEffect(() => {
-        const authenticateUser = async () => {
+        const authenticateUser = () => {
             setLoading(true);
             dispatch(verifyToken()).unwrap().then((res) => {
                 showToast(`Welcome, ${res?.firstName}!`);

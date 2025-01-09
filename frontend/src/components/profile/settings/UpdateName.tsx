@@ -24,7 +24,7 @@ export default function UpdateName({ user }: UpdateNameProps) {
     const [btnLoading, setBtnLoading] = useState(false);
 
     // handle update name
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleUpdateName = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -44,7 +44,7 @@ export default function UpdateName({ user }: UpdateNameProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
+        <form onSubmit={handleUpdateName} className="flex flex-col gap-y-4">
             <div>
                 <InputWithLabel 
                     label="First Name" 
