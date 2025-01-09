@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/user/userSlice";
 import { CustomButton } from "../global/FormElements";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function LogoutButton() {
     // redux
@@ -15,6 +16,9 @@ export default function LogoutButton() {
     // toast
     const showToast = useCustomToast();
 
+    // query
+    const queryClient = useQueryClient();
+
     // handle logout
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -23,6 +27,7 @@ export default function LogoutButton() {
             .unwrap()
             .then((res) => {
                 showToast(res.message);
+                queryClient.clear();
                 navigate("/");
             })
             .catch((err) => {

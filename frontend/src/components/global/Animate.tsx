@@ -1,19 +1,18 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, MotionProps } from "framer-motion";
 
-interface Props {
+interface AnimateProps extends Omit<React.HTMLProps<HTMLDivElement>, keyof MotionProps> {
     children: React.ReactNode;
-    className?: string;
 }
 
-export default function Animate({ children, className }: Props) {
+export default function Animate({ children, ...props }: AnimateProps) {
     return (
         <motion.div
-            initial={{ opacity: 0.8, scale: 0.98 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0.8, scale: 0.98 }}
-            transition={{ duration: 0.2, ease: "circOut" }}
-            className={className}
+            exit={{ opacity: 0.5, scale: .99 }}
+            transition={{ duration: 0.3, ease: "circInOut" }}
+            {...props}
         >
             {children}
         </motion.div>
