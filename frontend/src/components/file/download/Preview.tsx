@@ -1,8 +1,9 @@
 import { previewFile } from "@/utils/preview"
+import { AxiosResponse } from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function Preview({ data, isLoading, error }: { data: any, isLoading: boolean, error: string }) {
+export default function Preview({ data, isLoading, error }: { data: AxiosResponse, isLoading: boolean, error: string }) {    
     const [preview, setPreview] = useState<{ type: string | null, previewData: string | undefined }>({
         type: null,
         previewData: undefined,
@@ -24,7 +25,7 @@ export default function Preview({ data, isLoading, error }: { data: any, isLoadi
                 error ? <p className="text-xs text-zinc-500 select-none">{error}</p>
                 :
                 preview.type?.startsWith("image/") && preview?.previewData ?
-                <img src={preview.previewData} alt="" className="h-full object-cover rounded-md" />
+                <img src={preview.previewData} alt="" className="h-full object-cover rounded-md select-none pointer-events-none" />
                 :
                 preview.type?.startsWith("video/") && preview?.previewData ?
                 <video src={preview.previewData} controls className="w-full h-full object-cover rounded-md" />

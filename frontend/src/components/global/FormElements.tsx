@@ -48,11 +48,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     size?: "default" | "sm" | "lg" | "icon" | null;
     asChild?: boolean;
     effect?: boolean;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, loading, variant, size, asChild = false, effect = true, ...props }, ref) => {
+export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, loading, variant, size, asChild = false, effect = true, onClick, ...props }, ref) => {
     const rippleEffect = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (!effect) return;
         const button = e.target as HTMLButtonElement;
         const rect = button.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
@@ -72,6 +72,11 @@ export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ 
         setTimeout(() => ripple.remove(), 600); 
     };
 
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (effect) rippleEffect(e);
+        if (onClick) onClick(e);
+    };
+
     return (
         <Button 
             className={cn(`relative overflow-hidden ${className}`)} 
@@ -79,7 +84,7 @@ export const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ 
             variant={variant} 
             size={size}
             ref={ref}
-            onClick={rippleEffect}
+            onClick={handleClick}
             asChild={asChild}
             {...props}
         >

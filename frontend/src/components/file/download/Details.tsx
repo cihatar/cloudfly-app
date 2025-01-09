@@ -1,7 +1,18 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import DownloadFile from './DownloadFile';
 
-export default function Details({ data, isLoading, error, keyProp }: { data: any, isLoading: boolean, error: string, keyProp: string }) {
+interface DetailsProps {
+    owner: {
+        firstName: string;
+        lastName: string;
+        profileImage: string;
+    };
+    originalName: string;
+    size: string;
+    type: string;
+}
+
+export default function Details({ data, isLoading, error, keyProp }: { data: DetailsProps, isLoading: boolean, error: string, keyProp: string }) {
     return (
         <>
             {
