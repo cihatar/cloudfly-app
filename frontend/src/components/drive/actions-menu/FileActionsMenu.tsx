@@ -10,7 +10,7 @@ import { FileProps } from "@/pages/Drive";
 import { EllipsisVertical, Info, Lock, Pen, Share2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Details from "./Details";
-import RenameFile from "./RenameFile";
+import Rename from "./Rename";
 import Star from "./Star";
 import Unstar from "./Unstar";
 import ShareFile from "./ShareFile";
@@ -110,7 +110,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
             <Details _id={_id} originalName={originalName} isDetailsSheetOpen={isDetailsSheetOpen} setDetailsSheetOpen={setDetailsSheetOpen} />
 
             {/* rename dialog */}
-            <RenameFile _id={_id} parent={parent} isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
+            <Rename _id={_id} parent={parent} type="file" isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
 
             {/* share dialog */}
             <ShareFile _id={_id} parent={parent} publicKey={publicKey} isShareDialogOpen={isShareDialogOpen} setShareDialogOpen={setShareDialogOpen} />

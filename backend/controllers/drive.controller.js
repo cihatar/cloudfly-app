@@ -182,60 +182,50 @@ const createFolder = async (req, res) => {
     });
 }
 
-// rename file
-const renameFile = async (req, res) => {
-    let { _id, parent, name } = req.body;
+// rename file or folder
+const rename = async (req, res) => {
+    let { _id, parent, name, type } = req.body;
     _id = isValidObjectId(_id) ? _id : null;
     parent = isValidObjectId(parent) ? parent : null;
     const user = req.user;
     
     if (!name) {
-        throw new CustomAPIError("Please provide file name", 400);
+        throw new CustomAPIError("Please provide name", 400);
     }
 
-    const file = await File.findOne({ _id, parent, owner: user._id })
-    if (!file) {
-        throw new CustomAPIError("File not found", 404);
+    let message;
+    if (type === "file") {
+        const file = await File.findOne({ _id, parent, owner: user._id })
+        if (!file) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        const newName = name + path.extname(file.originalName); 
+        // if there is a file with the same name then throw an error
+        const existingFile = await File.findOne({ owner: user._id, parent, originalName: newName});
+        if (existingFile) {
+            throw new CustomAPIError("There is already a file with the same name in this directory", 400);
+        }
+        file.originalName = newName;
+        await file.save();
+        message = "Your file has been successfully renamed";
+    } else if (type === "folder") {
+        const folder = await Folder.findOne({ _id, parent, owner: user._id })
+        if (!folder) {
+            throw new CustomAPIError("Folder not found", 404);
+        }
+        // if there is a folder with the same name then throw an error
+        const existingFolder = await Folder.findOne({ owner: user._id, parent, name });
+        if (existingFolder) {
+            throw new CustomAPIError("There is already a folder with the same name in this directory", 400);
+        }
+        folder.name = name;
+        await folder.save();
+        message = "Your folder has been successfully renamed";
+    } else {
+        throw new CustomAPIError("Invalid type provided", 400);
     }
 
-    const newName = name + path.extname(file.originalName); 
-
-    // if there is a file with the same name then throw an error
-    const existingFile = await File.findOne({ owner: user._id, parent, originalName: newName});
-    if (existingFile) {
-        throw new CustomAPIError("There is already a file with the same name in this directory", 400);
-    }
-
-    file.originalName = newName;
-    await file.save();
-    res.status(200).json({ message: "You have successfully renamed your file" });
-}
-
-// rename folder
-const renameFolder = async (req, res) => {
-    let { _id, parent, name } = req.body;
-    _id = isValidObjectId(_id) ? _id : null;
-    parent = isValidObjectId(parent) ? parent : null;
-    const user = req.user;
-
-    if (!name) {
-        throw new CustomAPIError("Please provide folder name", 400);
-    }
-
-    const folder = await Folder.findOne({ _id, parent, owner: user._id })
-    if (!folder) {
-        throw new CustomAPIError("Folder not found", 404);
-    }
-
-    // if there is a folder with the same name then throw an error
-    const existingFolder = await Folder.findOne({ owner: user._id, parent, name });
-    if (existingFolder) {
-        throw new CustomAPIError("There is already a folder with the same name in this directory", 400);
-    }
-
-    folder.name = name;
-    await folder.save();
-    res.status(200).json({ message: "You have successfully renamed your folder" });
+    res.status(200).json({ message });
 }
 
 // star file or folder
@@ -404,8 +394,7 @@ module.exports = {
     getFileDetails,
     downloadFile,
     createFolder,
-    renameFile,
-    renameFolder,
+    rename,
     star,
     unstar,
     shareFile,

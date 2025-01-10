@@ -1,4 +1,4 @@
-import { renameFolder } from "@/api/api";
+import { rename } from "@/api/api";
 import { CustomButton, InputField } from "@/components/global/FormElements";
 import {
     Dialog,
@@ -13,7 +13,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
-export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpen }: { _id: string; parent: string; isDialogOpen: boolean; setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function Rename({ _id, parent, type, isRenameDialogOpen, setRenameDialogOpen }: { _id: string; parent: string; type: string, isRenameDialogOpen: boolean; setRenameDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     // toast
     const showToast = useCustomToast();
 
@@ -24,7 +24,7 @@ export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpe
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: { _id: string, parent: string; name: string }) => renameFolder(data),
+        mutationFn: (data: { _id: string, parent: string; name: string, type: string }) => rename(data),
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
@@ -35,24 +35,24 @@ export default function RenameFolder({ _id, parent, isDialogOpen, setIsDialogOpe
         }
     });
 
-    // handle rename file
+    // handle rename 
     const handleRename = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries()) as { name: string };
-        mutate({ _id, parent, name: data.name })
+        mutate({ _id, parent, name: data.name, type })
     };
 
     return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog open={isRenameDialogOpen} onOpenChange={setRenameDialogOpen}>
             <DialogContent className="sm:max-w-md">
                 <form onSubmit={handleRename}>
                     <DialogHeader>
-                        <DialogTitle>Rename Folder</DialogTitle>
+                        <DialogTitle className="capitalize">Rename {type}</DialogTitle>
                         <DialogDescription>
                             <InputField
                                 className="mt-2 mb-4"
-                                placeholder="Enter folder name"
+                                placeholder={`Enter ${type} name`}
                                 id="name"
                                 name="name"
                             />

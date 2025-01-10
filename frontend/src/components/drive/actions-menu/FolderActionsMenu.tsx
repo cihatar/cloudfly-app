@@ -9,13 +9,13 @@ import {
 import { FolderProps } from "@/pages/Drive";
 import { EllipsisVertical, Pen, Trash2 } from "lucide-react";
 import { useState } from "react";
-import RenameFolder from "./RenameFolder";
+import Rename from "./Rename";
 import Star from "./Star";
 import Unstar from "./Unstar";
 import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps) {
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
 
     return (
         <>
@@ -28,7 +28,7 @@ export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps)
 
                         {/* rename */}
                         <MenubarItem className="p-0">
-                            <CustomButton onClick={() => setIsDialogOpen(true)} type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                            <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                 <Pen className="mr-1"/>
                                 <span>Rename</span> 
                             </CustomButton>
@@ -63,7 +63,7 @@ export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps)
             </Menubar>
 
             {/* rename dialog */}
-            <RenameFolder _id={_id} parent={parent} isDialogOpen={isDialogOpen} setIsDialogOpen={setIsDialogOpen} />
+            <Rename _id={_id} parent={parent} type="folder" isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
         </>
   )
 }

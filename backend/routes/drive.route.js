@@ -9,8 +9,7 @@ const {
     getFileDetails,
     downloadFile,
     createFolder,
-    renameFile,
-    renameFolder,
+    rename,
     shareFile,
     star,
     unstar,
@@ -25,8 +24,7 @@ router.get("/get/:id", authenticateUser, getFilesAndFolders);
 router.get("/get-file/:id", authenticateUser, getFileDetails);
 router.get("/download/:id", authenticateUser, downloadFile);
 router.post("/create-folder", authenticateUser, trimRequest.all, createFolder);
-router.put("/rename-file", authenticateUser, trimRequest.all, renameFile);
-router.put("/rename-folder", authenticateUser, trimRequest.all, renameFolder);
+router.put("/rename", authenticateUser, trimRequest.all, rename);
 router.put("/star", authenticateUser, star);
 router.put("/unstar", authenticateUser, unstar);
 router.put("/share-file", authenticateUser, shareFile);
