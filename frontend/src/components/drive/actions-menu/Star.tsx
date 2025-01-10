@@ -16,6 +16,7 @@ export default function Star({ _id, parent, type }: { _id: string, parent: strin
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['starred']});
         },
         onError: (data: any) => {
             showToast(data.response.data.error, false);

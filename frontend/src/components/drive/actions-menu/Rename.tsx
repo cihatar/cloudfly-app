@@ -28,6 +28,7 @@ export default function Rename({ _id, parent, type, isRenameDialogOpen, setRenam
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['starred']});
             cancelBtnRef.current?.click();
         },
         onError: (data: any) => {

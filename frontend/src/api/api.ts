@@ -6,6 +6,11 @@ export const getFilesAndFolders = async (parent: string) => {
     return res.data;
 }
 
+export const getStarredFilesAndFolders = async (parent: string) => {
+    const res = await customAxios.get(`/api/drive/get-starred/${parent}`);
+    return res.data;
+}
+
 export const getFileDetails = async (_id: string) => {
     const res = await customAxios.get(`/api/drive/get-file/${_id}`);
     return res.data;

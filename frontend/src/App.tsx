@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import FileDownload from "./pages/FileDownload";
 import Drive from "./pages/Drive";
+import Starred from "./pages/Starred";
 import ProfileSettings from "./pages/ProfileSettings";
 import { AnimatePresence } from "framer-motion";
 import { useAppSelector } from "./store/hooks";
@@ -38,6 +39,7 @@ function AppRoutes() {
                                 <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
                                 <Route element={user ? <Sidebar /> : <Navigate to="/auth/login" />}>
                                     <Route path="/drive" element={<Drive />} />
+                                    <Route path="/starred" element={<Starred />} />
                                     <Route path="/profile/settings" element={<ProfileSettings />} />
                                 </Route>
                             </Route>

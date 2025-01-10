@@ -28,6 +28,7 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['starred']});
             cancelBtnRef.current?.click();
         },
         onError: (data: any) => {

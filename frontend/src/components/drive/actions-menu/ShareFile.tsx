@@ -31,6 +31,7 @@ export default function ShareFile({ _id, parent, publicKey, isShareDialogOpen, s
                     setLoading(false);
                     setCopied(false);
                 })
+            queryClient.invalidateQueries({ queryKey: ['starred']});
         },
         onError: (data: any) => {
             showToast(data.response.data.error, false);
