@@ -7,12 +7,14 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FolderProps } from "@/pages/Drive";
-import { EllipsisVertical, Pen, FolderHeart, Trash2 } from "lucide-react";
+import { EllipsisVertical, Pen, Trash2 } from "lucide-react";
 import { useState } from "react";
 import RenameFolder from "./RenameFolder";
+import Star from "./Star";
+import Unstar from "./Unstar";
 import { CustomButton } from "@/components/global/FormElements";
 
-export default function FileActionsMenu({ _id, parent }: FolderProps) {
+export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     return (
@@ -34,13 +36,17 @@ export default function FileActionsMenu({ _id, parent }: FolderProps) {
 
                         <MenubarSeparator />
 
-                        {/* add to starred */}
-                        <MenubarItem className="p-0">
-                            <CustomButton type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
-                                <FolderHeart className="mr-1"/>
-                                <span>Add to Starred</span>
-                            </CustomButton>
-                        </MenubarItem>
+                        {/* star & unstar */}
+                        {
+                            isStarred ?
+                            <MenubarItem className="p-0">
+                                <Unstar _id={_id} parent={parent} type="folder" />
+                            </MenubarItem>
+                            :
+                            <MenubarItem className="p-0">
+                                <Star _id={_id} parent={parent} type="folder" />
+                            </MenubarItem>
+                        }
 
                         <MenubarSeparator />
                         

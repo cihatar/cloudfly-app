@@ -26,13 +26,23 @@ export const renameFolder = async (data: { _id: string, parent: string, name: st
     return res.data;
 }
 
+export const star = async (data: { _id: string, type: string }) => {
+    const res = await customAxios.put("/api/drive/star", data);
+    return res.data;
+}
+
+export const unstar = async (data: { _id: string, type: string }) => {
+    const res = await customAxios.put("/api/drive/unstar", data);
+    return res.data;
+}
+
 export const shareFile = async (data: { _id: string }) => {
-    const res = await customAxios.post("/api/drive/share-file", data);
+    const res = await customAxios.put("/api/drive/share-file", data);
     return res.data;
 }
 
 export const makeFilePrivate = async (data: { _id: string }) => {
-    const res = await customAxios.post("/api/drive/make-file-private", data);
+    const res = await customAxios.put("/api/drive/make-file-private", data);
     return res.data;
 }
 

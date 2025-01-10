@@ -238,6 +238,66 @@ const renameFolder = async (req, res) => {
     res.status(200).json({ message: "You have successfully renamed your folder" });
 }
 
+// star file or folder
+const star = async (req, res) => {
+    let { _id, type } = req.body;
+    _id = isValidObjectId(_id) ? _id : null;
+    const user = req.user;
+
+    let message;
+    if (type === 'file') {
+        const file = await File.findOne({ _id, owner: user._id });
+        if (!file) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        file.isStarred = true;
+        await file.save();
+        message = "Your file has been starred";
+    } else if (type === 'folder') {
+        const folder = await Folder.findOne({ _id, owner: user._id });
+        if (!folder) {
+            throw new CustomAPIError("Folder not found", 404);
+        }
+        folder.isStarred = true;
+        await folder.save();
+        message = "Your folder has been starred";
+    } else {
+        throw new CustomAPIError("Invalid type provided", 400);
+    }
+    
+    res.status(200).json({ message });
+}
+
+// unstar file or folder
+const unstar = async (req, res) => {
+    let { _id, type } = req.body;
+    _id = isValidObjectId(_id) ? _id : null;
+    const user = req.user;
+
+    let message;
+    if (type === 'file') {
+        const file = await File.findOne({ _id, owner: user._id });
+        if (!file) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        file.isStarred = false;
+        await file.save();
+        message = "Your file has been removed from starred";
+    } else if (type === 'folder') {
+        const folder = await Folder.findOne({ _id, owner: user._id });
+        if (!folder) {
+            throw new CustomAPIError("Folder not found", 404);
+        }
+        folder.isStarred = false;
+        await folder.save();
+        message = "Your folder has been removed from starred";
+    } else {
+        throw new CustomAPIError("Invalid type provided", 400);
+    }
+    
+    res.status(200).json({ message });
+}
+
 // share file/make public
 const shareFile = async (req, res) => {
     let { _id } = req.body;
@@ -346,6 +406,8 @@ module.exports = {
     createFolder,
     renameFile,
     renameFolder,
+    star,
+    unstar,
     shareFile,
     makeFilePrivate,
     getFilePreviewPublic,

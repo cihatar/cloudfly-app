@@ -12,6 +12,8 @@ const {
     renameFile,
     renameFolder,
     shareFile,
+    star,
+    unstar,
     makeFilePrivate,
     getFilePreviewPublic,
     getFileDetailsPublic,
@@ -25,8 +27,10 @@ router.get("/download/:id", authenticateUser, downloadFile);
 router.post("/create-folder", authenticateUser, trimRequest.all, createFolder);
 router.put("/rename-file", authenticateUser, trimRequest.all, renameFile);
 router.put("/rename-folder", authenticateUser, trimRequest.all, renameFolder);
-router.post("/share-file", authenticateUser, shareFile);
-router.post("/make-file-private", authenticateUser, makeFilePrivate);
+router.put("/star", authenticateUser, star);
+router.put("/unstar", authenticateUser, unstar);
+router.put("/share-file", authenticateUser, shareFile);
+router.put("/make-file-private", authenticateUser, makeFilePrivate);
 router.get("/file-preview-public/:key", getFilePreviewPublic);
 router.get("/get-file-public/:key", getFileDetailsPublic);
 router.get("/download-public/:key", downloadFilePublic);
