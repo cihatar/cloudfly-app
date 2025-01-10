@@ -1,6 +1,5 @@
 import Animate from "@/components/global/Animate";
 import goingUp from "@/assets/going_up.svg";
-import { Separator } from "@/components/ui/separator";
 import { Subtitle, Title } from "@/components/global/Titles";
 import { getFilesAndFolders } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
@@ -97,9 +96,8 @@ export default function Drive() {
                 <> 
                 {
                     data.folders && <>
-                        <Subtitle className="mt-8 text-sm text-zinc-800 dark:text-zinc-200">Folders</Subtitle>
-                        <Separator className="mb-4" />
-                        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 text-xs">
+                        <Subtitle className="mt-8 text-xs text-zinc-800 dark:text-zinc-200">Folders</Subtitle>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-2 text-xs">
                             {
                                 data.folders.map((folder: FolderProps) => (
                                     <div key={folder._id} onDoubleClick={() => handleDoubleClick(folder)}>
@@ -117,9 +115,8 @@ export default function Drive() {
                 }
                 {
                     data.files && <>
-                        <Subtitle className="mt-8 text-sm text-zinc-800 dark:text-zinc-200">Files</Subtitle>
-                        <Separator className="mb-4" />
-                        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-4 text-xs">
+                        <Subtitle className="mt-8 text-xs text-zinc-800 dark:text-zinc-200">Files</Subtitle>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-4 text-xs">
                             {
                                 data.files.map((file: FileProps) => (
                                     <File 

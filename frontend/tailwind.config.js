@@ -58,6 +58,9 @@ export default {
     				'5': 'hsl(var(--chart-5))'
     			}
     		},
+			screens: {
+				'3xl': "1921px",
+			},
 			fontFamily: {
 				sans: ['Geist', 'sans-serif'], 
 			},

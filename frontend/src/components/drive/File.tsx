@@ -8,7 +8,7 @@ export default function File(file: FileProps) {
             <div className={`flex items-center justify-center w-full h-full ${getColor(file.mimeType)} font-semibold text-xl text-white uppercase rounded-md mb-2 select-none pointer-events-none`}>
                 {file.type}
             </div>
-            <p>{file.originalName}</p>
+            <p className="font-medium">{file.originalName}</p>
             <p className="text-zinc-500">{file.type}</p>
 
             {/* overflow menu */}

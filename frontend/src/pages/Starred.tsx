@@ -1,15 +1,15 @@
 import Animate from '@/components/global/Animate'
+import stars from "@/assets/stars.svg";
 import { useState } from 'react';
-import folderIcon from "@/assets/folder_icon.svg";
 import { Subtitle, Title } from '@/components/global/Titles'
-import { Separator } from '@/components/ui/separator'
 import { ChevronLeft } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getFilesAndFolders, getStarredFilesAndFolders } from '@/api/api';
-import { getColor } from '@/utils/color';
 import { FileProps, FolderProps } from './Drive';
 import { CustomButton } from '@/components/global/FormElements';
 import DriveLoading from '@/components/drive/DriveLoading';
+import File from '@/components/drive/File';
+import Folder from '@/components/drive/Folder';
 
 export default function Starred() {
     const [parent, setParent] = useState<string>("root");
@@ -52,22 +52,30 @@ export default function Starred() {
 
             {
                 isLoading ? <DriveLoading /> : 
-                !data.files && !data.folders ? <></> : <> 
+                !data.files && !data.folders ? 
+                <div className="flex flex-col text-center items-center justify-center gap-4 mt-36 select-none pointer-events-none">
+                    <img src={stars} alt="Upload file" className="w-48 lg:w-72"/>
+                    <p className="text-zinc-800 dark:text-zinc-200 text-sm">
+                        No files or folders found. 
+                        <br /> 
+                        <span className="font-semibold">You can star a file or folder to easily access it later</span>
+                    </p>
+                </div> : 
+                <> 
                 {
                     data.folders && <>
-                        <Subtitle className="mt-8 text-sm text-zinc-800 dark:text-zinc-200">Folders</Subtitle>
-                        <Separator className="mb-4" />
-                        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-2 text-xs">
+                        <Subtitle className="mt-8 text-xs text-zinc-800 dark:text-zinc-200">Folders</Subtitle>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-2 text-xs">
                             {
                                 data.folders.map((folder: FolderProps) => (
                                     <div key={folder._id} onDoubleClick={() => handleDoubleClick(folder)}>
-                                        <div className="flex justify-between items-center dark:bg-zinc-900 dark:hover:bg-zinc-800 bg-zinc-100 hover:bg-zinc-200 rounded-md p-2 group relative">
-                                            <div className="flex items-center gap-2 overflow-hidden">
-                                                <img src={folderIcon} className="w-8 md:w-10 select-none pointer-events-none" />
-                                                <p>{folder.name}</p>
-                                        </div>
+                                        <Folder 
+                                            _id={folder._id} 
+                                            parent={folder.parent} 
+                                            name={folder.name}
+                                            isStarred={folder.isStarred}
+                                        />
                                     </div>
-                                </div>
                                 ))
                             }
                         </div>
@@ -75,18 +83,20 @@ export default function Starred() {
                 }
                 {
                     data.files && <>
-                        <Subtitle className="mt-8 text-sm text-zinc-800 dark:text-zinc-200">Files</Subtitle>
-                        <Separator className="mb-4" />
-                        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-6 gap-4 text-xs">
+                        <Subtitle className="mt-8 text-xs text-zinc-800 dark:text-zinc-200">Files</Subtitle>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-4 text-xs">
                             {
                                 data.files.map((file: FileProps) => (
-                                    <div key={file._id} className="w-full h-48 flex flex-col items-start border rounded-md p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 group overflow-hidden relative">
-                                        <div className={`flex items-center justify-center w-full h-full ${getColor(file.mimeType)} font-semibold text-xl text-white uppercase rounded-md mb-2 select-none pointer-events-none`}>
-                                            mp3
-                                        </div>
-                                        <p>{file.originalName}</p>
-                                        <p className="text-zinc-500">{file.type}</p>
-                                    </div>
+                                    <File 
+                                        key={file._id} 
+                                        _id={file._id} 
+                                        parent={file.parent} 
+                                        originalName={file.originalName} 
+                                        mimeType={file.mimeType}
+                                        type={file.type} 
+                                        isStarred={file.isStarred}
+                                        publicKey={file.publicKey}
+                                    />
                                 ))
                             }
                         </div>
