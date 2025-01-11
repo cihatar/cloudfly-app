@@ -53,7 +53,4 @@ const fileSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-fileSchema.index({ owner: 1, parent: null, originalName: 1 }, { unique: true });
-fileSchema.index({ owner: 1, parent: 1, originalName: 1 }, { unique: true });
-
 module.exports = mongoose.model("file", fileSchema);

@@ -29,7 +29,7 @@ const uploadFile = async (req, res) => {
     }
 
     // get existing files with the same name in db
-    const existingFiles = await File.find({ owner: user._id, parent, originalName: { $in: files.map(file => file.name) } });
+    const existingFiles = await File.find({ owner: user._id, parent, originalName: { $in: files.map(file => file.name) }, isDeleted: false });
 
     // calculate total size for replaced files
     const existingFileSizes = existingFiles.reduce((sum, f) => sum + f.size, 0);    
@@ -49,7 +49,7 @@ const uploadFile = async (req, res) => {
     
     // delete existing files if any
     if (existingFiles.length > 0) {
-        await File.deleteMany({ owner: user._id, parent, originalName: { $in: files.map(file => file.name) } });
+        await File.deleteMany({ owner: user._id, parent, originalName: { $in: files.map(file => file.name) }, isDeleted: false });
         await Promise.all(existingFiles.map(async (existingFile) => {
             try {
                 await fs.rm(uploadPath + existingFile.name, { recursive: true, force: true });
@@ -197,7 +197,7 @@ const createFolder = async (req, res) => {
     const user = req.user;
 
     // if there is a folder with the same name then throw an error
-    const existingFolder = await Folder.findOne({ owner: user._id, parent, name });
+    const existingFolder = await Folder.findOne({ owner: user._id, parent, name, isDeleted: false });
     if (existingFolder) {
         throw new CustomAPIError("There is already a folder with the same name in this directory", 400);
     }
@@ -233,7 +233,7 @@ const rename = async (req, res) => {
         }
         const newName = name + path.extname(file.originalName); 
         // if there is a file with the same name then throw an error
-        const existingFile = await File.findOne({ owner: user._id, parent, originalName: newName});
+        const existingFile = await File.findOne({ owner: user._id, parent, originalName: newName, isDeleted: false});
         if (existingFile) {
             throw new CustomAPIError("There is already a file with the same name in this directory", 400);
         }
@@ -246,7 +246,7 @@ const rename = async (req, res) => {
             throw new CustomAPIError("Folder not found", 404);
         }
         // if there is a folder with the same name then throw an error
-        const existingFolder = await Folder.findOne({ owner: user._id, parent, name });
+        const existingFolder = await Folder.findOne({ owner: user._id, parent, name, isDeleted: false });
         if (existingFolder) {
             throw new CustomAPIError("There is already a folder with the same name in this directory", 400);
         }
@@ -399,6 +399,14 @@ const restore = async (req, res) => {
         if (!file) {
             throw new CustomAPIError("File not found", 404);
         }
+        const parentFolder = await Folder.findOne({ _id: file.parent, owner: user._id });
+        if (!parentFolder || parentFolder?.isDeleted) {
+            file.parent = null;
+        }
+        const existingFile = await File.findOne({ owner: user._id, parent: file.parent, originalName: file.originalName, isDeleted: false });
+        if (existingFile) {
+            file.originalName = path.basename(file.originalName, path.extname(file.originalName)) + " (Restored)" + path.extname(file.originalName);
+        }
         file.isDeleted = false;
         file.deletedAt = null;
         await file.save();
@@ -407,6 +415,14 @@ const restore = async (req, res) => {
         const folder = await Folder.findOne({ _id, owner: user._id });
         if (!folder) {
             throw new CustomAPIError("Folder not found", 404);
+        }
+        const parentFolder = await Folder.findOne({ _id: folder.parent, owner: user._id });
+        if (!parentFolder || parentFolder?.isDeleted) {
+            folder.parent = null;
+        }
+        const existingFolder = await Folder.findOne({ owner: user._id, parent: folder.parent, name: folder.name, isDeleted: false });
+        if (existingFolder) {
+            folder.name += " (Restored)"
         }
         folder.isDeleted = false;
         folder.deletedAt = null;

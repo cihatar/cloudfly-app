@@ -33,7 +33,4 @@ const folderSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-folderSchema.index({ owner: 1, parent: null, name: 1 }, { unique: true });
-folderSchema.index({ owner: 1, parent: 1, name: 1 }, { unique: true });
-
 module.exports = mongoose.model("folder", folderSchema);
