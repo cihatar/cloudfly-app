@@ -103,9 +103,9 @@ const getFilesAndFolders = async (req, res) => {
     parent = isValidObjectId(parent) ? parent : null;
     const user = req.user;
 
-    let files = await File.find({ owner: user._id, parent })
+    let files = await File.find({ owner: user._id, parent, isDeleted: false })
         .select("_id parent originalName mimeType type isStarred publicKey");
-    let folders = await Folder.find({ owner: user._id, parent })
+    let folders = await Folder.find({ owner: user._id, parent, isDeleted: false })
         .select("_id parent name isStarred");
 
     files = files.length === 0 ? null : files;
@@ -120,9 +120,9 @@ const getStarredFilesAndFolders = async (req, res) => {
     parent = isValidObjectId(parent) ? parent : null;
     const user = req.user;    
     
-    let files = await File.find({ owner: user._id, isStarred: true })
+    let files = await File.find({ owner: user._id, isStarred: true, isDeleted: false })
         .select("_id parent originalName mimeType type isStarred publicKey");
-    let folders = await Folder.find({ owner: user._id, isStarred: true })
+    let folders = await Folder.find({ owner: user._id, isStarred: true, isDeleted: false })
         .select("_id parent name isStarred");
     
     files = files.length === 0 ? null : files;
@@ -338,6 +338,39 @@ const makeFilePrivate = async (req, res) => {
     res.status(200).json({ message: "Your file has been set to private" });
 }
 
+const moveToTrash = async (req, res) => {
+    let { _id, type } = req.body;
+    _id = isValidObjectId(_id) ? _id : null;
+    const user = req.user;
+
+    let message;
+    if (type === 'file') {
+        const file = await File.findOne({ _id, owner: user._id });
+        if (!file) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        file.isDeleted = true;
+        file.deletedAt = new Date(Date.now());
+        file.isStarred = false;
+        await file.save();
+        message = "Your file has been moved to trash";
+    } else if (type === 'folder') {
+        const folder = await Folder.findOne({ _id, owner: user._id });
+        if (!folder) {
+            throw new CustomAPIError("Folder not found", 404);
+        }
+        folder.isDeleted = true;
+        folder.deletedAt = new Date(Date.now());
+        folder.isStarred = false;
+        await folder.save();
+        message = "Your folder has been moved to trash";
+    } else {
+        throw new CustomAPIError("Invalid type provided", 400);
+    }
+    
+    res.status(200).json({ message });
+}
+
 // get file preview (public)
 const getFilePreviewPublic = async (req, res) => {
     const publicKey = req.params.key;
@@ -417,6 +450,7 @@ module.exports = {
     unstar,
     shareFile,
     makeFilePrivate,
+    moveToTrash,
     getFilePreviewPublic,
     getFileDetailsPublic,
     downloadFilePublic,

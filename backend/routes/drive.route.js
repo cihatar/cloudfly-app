@@ -15,6 +15,7 @@ const {
     star,
     unstar,
     makeFilePrivate,
+    moveToTrash,
     getFilePreviewPublic,
     getFileDetailsPublic,
     downloadFilePublic,
@@ -31,6 +32,7 @@ router.put("/star", authenticateUser, star);
 router.put("/unstar", authenticateUser, unstar);
 router.put("/share-file", authenticateUser, shareFile);
 router.put("/make-file-private", authenticateUser, makeFilePrivate);
+router.put("/move-to-trash", authenticateUser, moveToTrash);
 router.get("/file-preview-public/:key", getFilePreviewPublic);
 router.get("/get-file-public/:key", getFileDetailsPublic);
 router.get("/download-public/:key", downloadFilePublic);
