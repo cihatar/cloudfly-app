@@ -18,6 +18,7 @@ import MakeFilePrivate from "./MakeFilePrivate";
 import DownloadFile from "./DownloadFile";
 import MovetoTrash from "./MovetoTrash";
 import Restore from "./Restore";
+import Delete from "./Delete";
 import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, originalName, isStarred, isDeleted, publicKey }: FileProps) {
@@ -26,6 +27,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
     const [isShareDialogOpen, setShareDialogOpen] = useState(false);
     const [isPrivateDialogOpen, setPrivateDialogOpen] = useState(false);
     const [isTrashDialogOpen, setTrashDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     return (
         <>
@@ -129,7 +131,23 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                                 </CustomButton>
                             </MenubarItem>
                             :
-                            <Restore _id={_id} parent={parent} type="file" />
+                            <>
+                            <MenubarItem className="p-0">
+                                <Restore _id={_id} parent={parent} type="file" />
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                        }
+
+                        {/* delete */}
+                        {
+                            isDeleted &&
+                            <MenubarItem className="p-0">
+                                <CustomButton onClick={() => setDeleteDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <Trash2 className="mr-1"/>
+                                    <span>Delete permanently</span>
+                                </CustomButton>
+                            </MenubarItem>
                         }
 
                     </MenubarContent>
@@ -150,6 +168,9 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
 
             {/* trash dialog */}
             <MovetoTrash _id={_id} parent={parent} type="file" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
+
+            {/* delete dialog */}
+            <Delete _id={_id} type="file" isDeleteDialogOpen={isDeleteDialogOpen} setDeleteDialogOpen={setDeleteDialogOpen} />
         </>
   )
 }

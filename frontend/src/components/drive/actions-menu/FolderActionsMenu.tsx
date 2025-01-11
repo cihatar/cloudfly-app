@@ -14,11 +14,13 @@ import Star from "./Star";
 import Unstar from "./Unstar";
 import MovetoTrash from "./MovetoTrash";
 import Restore from "./Restore";
+import Delete from "./Delete";
 import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: FolderProps) {
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
     const [isTrashDialogOpen, setTrashDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     return (
         <>
@@ -71,7 +73,23 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
                                 </CustomButton>
                             </MenubarItem>
                             :
-                            <Restore _id={_id} parent={parent} type="folder" />
+                            <>
+                            <MenubarItem className="p-0">
+                                <Restore _id={_id} parent={parent} type="folder" />
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                        }
+
+                        {/* delete */}
+                        {
+                            isDeleted && 
+                            <MenubarItem className="p-0">
+                                <CustomButton onClick={() => setDeleteDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <Trash2 className="mr-1"/>
+                                    <span>Delete permanently</span>
+                                </CustomButton>
+                            </MenubarItem>
                         }
 
                     </MenubarContent>
@@ -83,6 +101,9 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
 
             {/* trash dialog */}
             <MovetoTrash _id={_id} parent={parent} type="folder" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
+
+            {/* delete dialog */}
+            <Delete _id={_id} type="folder" isDeleteDialogOpen={isDeleteDialogOpen} setDeleteDialogOpen={setDeleteDialogOpen} />
         </>
   )
 }

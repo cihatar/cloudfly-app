@@ -435,6 +435,45 @@ const restore = async (req, res) => {
     res.status(200).json({ message });
 }
 
+// delete permanently
+const deletePermanently = async (req, res) => {
+    let type = req.query.type;
+    let _id = req.params.id;
+    _id = isValidObjectId(_id) ? _id : null;
+    const user = req.user;
+
+    let message;
+    if (type === 'file') {
+        const file = await File.findOneAndDelete({ _id, owner: user._id, isDeleted: true });
+        if (!file) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        message = "Your file has been permanently deleted";
+    } else if (type === 'folder') {
+        const folder = await Folder.findOne({ _id, owner: user._id, isDeleted: true });
+        if (!folder) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        async function deleteRecursive(parent) {
+            const subFiles = await File.find({ owner: user._id, parent });    
+            for (let file of subFiles) {
+                await file.deleteOne();
+            }  
+            const subFolders = await Folder.find({ owner: user._id, parent });            
+            for (let folder of subFolders) {
+                await deleteRecursive(folder._id); 
+                await folder.deleteOne();
+            }
+        }
+        await deleteRecursive(folder._id);
+        await folder.deleteOne();
+        message = "Your folder has been permanently deleted";
+    } else {
+        throw new CustomAPIError("Invalid type provided", 400);
+    }
+    res.status(200).json({ message });
+}
+
 // get file preview (public)
 const getFilePreviewPublic = async (req, res) => {
     const publicKey = req.params.key;
@@ -517,6 +556,7 @@ module.exports = {
     makeFilePrivate,
     moveToTrash,
     restore,
+    deletePermanently,
     getFilePreviewPublic,
     getFileDetailsPublic,
     downloadFilePublic,

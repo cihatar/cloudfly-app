@@ -18,6 +18,7 @@ const {
     makeFilePrivate,
     moveToTrash,
     restore,
+    deletePermanently,
     getFilePreviewPublic,
     getFileDetailsPublic,
     downloadFilePublic,
@@ -37,6 +38,7 @@ router.put("/share-file", authenticateUser, shareFile);
 router.put("/make-file-private", authenticateUser, makeFilePrivate);
 router.put("/move-to-trash", authenticateUser, moveToTrash);
 router.put("/restore", authenticateUser, restore);
+router.delete("/delete/:id", authenticateUser, deletePermanently);
 router.get("/file-preview-public/:key", getFilePreviewPublic);
 router.get("/get-file-public/:key", getFileDetailsPublic);
 router.get("/download-public/:key", downloadFilePublic);
