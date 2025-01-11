@@ -7,11 +7,12 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FolderProps } from "@/pages/Drive";
-import { EllipsisVertical, Pen, Trash2 } from "lucide-react";
+import { EllipsisVertical, Pen } from "lucide-react";
 import { useState } from "react";
 import Rename from "./Rename";
 import Star from "./Star";
 import Unstar from "./Unstar";
+import MovetoTrash from "./MovetoTrash";
 import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps) {
@@ -52,10 +53,7 @@ export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps)
                         
                         {/* move to trash */}
                         <MenubarItem className="p-0">
-                            <CustomButton type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
-                                <Trash2 className="mr-1"/>
-                                <span>Move to Trash</span>
-                            </CustomButton>
+                            <MovetoTrash _id={_id} parent={parent} type="folder" />
                         </MenubarItem>
 
                     </MenubarContent>

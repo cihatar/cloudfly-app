@@ -131,6 +131,21 @@ const getStarredFilesAndFolders = async (req, res) => {
     res.status(200).json({ files, folders });
 } 
 
+// get trashed files and folders
+const getTrashedFilesAndFolders = async (req, res) => {
+    const user = req.user;    
+    
+    let files = await File.find({ owner: user._id, isDeleted: true })
+        .select("_id parent originalName mimeType type isStarred publicKey");
+    let folders = await Folder.find({ owner: user._id, isDeleted: true })
+        .select("_id parent name isStarred");
+    
+    files = files.length === 0 ? null : files;
+    folders = folders.length === 0 ? null : folders;
+
+    res.status(200).json({ files, folders });
+} 
+
 // get file information
 const getFileDetails = async (req, res) => {
     let _id = req.params.id;
@@ -442,6 +457,7 @@ module.exports = {
     uploadFile,
     getFilesAndFolders,
     getStarredFilesAndFolders,
+    getTrashedFilesAndFolders,
     getFileDetails,
     downloadFile,
     createFolder,

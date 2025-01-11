@@ -7,6 +7,7 @@ const {
     uploadFile,
     getFilesAndFolders,
     getStarredFilesAndFolders,
+    getTrashedFilesAndFolders,
     getFileDetails,
     downloadFile,
     createFolder,
@@ -24,6 +25,7 @@ const {
 router.post("/upload", authenticateUser, fileUpload(), uploadFile);
 router.get("/get/:id", authenticateUser, getFilesAndFolders);
 router.get("/get-starred/:id", authenticateUser, getStarredFilesAndFolders);
+router.get("/get-trashed", authenticateUser, getTrashedFilesAndFolders);
 router.get("/get-file/:id", authenticateUser, getFileDetails);
 router.get("/download/:id", authenticateUser, downloadFile);
 router.post("/create-folder", authenticateUser, trimRequest.all, createFolder);

@@ -11,6 +11,11 @@ export const getStarredFilesAndFolders = async (parent: string) => {
     return res.data;
 }
 
+export const getTrashedFilesAndFolders = async () => {
+    const res = await customAxios.get("/api/drive/get-trashed");
+    return res.data;
+}
+
 export const getFileDetails = async (_id: string) => {
     const res = await customAxios.get(`/api/drive/get-file/${_id}`);
     return res.data;
@@ -43,6 +48,11 @@ export const shareFile = async (data: { _id: string }) => {
 
 export const makeFilePrivate = async (data: { _id: string }) => {
     const res = await customAxios.put("/api/drive/make-file-private", data);
+    return res.data;
+}
+
+export const moveToTrash = async (data: { _id: string, type: string }) => {
+    const res = await customAxios.put("/api/drive/move-to-trash", data);
     return res.data;
 }
 

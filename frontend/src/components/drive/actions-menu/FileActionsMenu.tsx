@@ -7,7 +7,7 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FileProps } from "@/pages/Drive";
-import { EllipsisVertical, Info, Lock, Pen, Share2, Trash2 } from "lucide-react";
+import { EllipsisVertical, Info, Lock, Pen, Share2 } from "lucide-react";
 import { useState } from "react";
 import Details from "./Details";
 import Rename from "./Rename";
@@ -16,6 +16,7 @@ import Unstar from "./Unstar";
 import ShareFile from "./ShareFile";
 import MakeFilePrivate from "./MakeFilePrivate";
 import DownloadFile from "./DownloadFile";
+import MovetoTrash from "./MovetoTrash";
 import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, originalName, isStarred, publicKey }: FileProps) {
@@ -96,10 +97,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
 
                         {/* move to trash */}
                         <MenubarItem className="p-0">
-                            <CustomButton type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
-                                <Trash2 className="mr-1"/>
-                               <span>Move to Trash</span>
-                            </CustomButton>
+                            <MovetoTrash _id={_id} parent={parent} type="file" />
                         </MenubarItem>
 
                     </MenubarContent>
