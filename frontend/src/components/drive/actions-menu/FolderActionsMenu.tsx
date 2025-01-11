@@ -7,7 +7,7 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FolderProps } from "@/pages/Drive";
-import { EllipsisVertical, Pen } from "lucide-react";
+import { EllipsisVertical, Pen, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Rename from "./Rename";
 import Star from "./Star";
@@ -18,6 +18,7 @@ import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: FolderProps) {
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
+    const [isTrashDialogOpen, setTrashDialogOpen] = useState(false);
 
     return (
         <>
@@ -64,7 +65,10 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
                         {
                             !isDeleted ?
                             <MenubarItem className="p-0">
-                                <MovetoTrash _id={_id} parent={parent} type="folder" />
+                                 <CustomButton onClick={() => setTrashDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <Trash2 className="mr-1"/>
+                                    <span>Move to Trash</span>
+                                </CustomButton>
                             </MenubarItem>
                             :
                             <Restore _id={_id} parent={parent} type="folder" />
@@ -76,6 +80,9 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
 
             {/* rename dialog */}
             <Rename _id={_id} parent={parent} type="folder" isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
+
+            {/* trash dialog */}
+            <MovetoTrash _id={_id} parent={parent} type="folder" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
         </>
   )
 }

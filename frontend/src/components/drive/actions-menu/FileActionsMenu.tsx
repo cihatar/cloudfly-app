@@ -7,7 +7,7 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FileProps } from "@/pages/Drive";
-import { EllipsisVertical, Info, Lock, Pen, Share2 } from "lucide-react";
+import { EllipsisVertical, Info, Lock, Pen, Share2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Details from "./Details";
 import Rename from "./Rename";
@@ -25,6 +25,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
     const [isShareDialogOpen, setShareDialogOpen] = useState(false);
     const [isPrivateDialogOpen, setPrivateDialogOpen] = useState(false);
+    const [isTrashDialogOpen, setTrashDialogOpen] = useState(false);
 
     return (
         <>
@@ -122,7 +123,10 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                         {
                             !isDeleted ?
                             <MenubarItem className="p-0">
-                                <MovetoTrash _id={_id} parent={parent} type="file" />
+                                <CustomButton onClick={() => setTrashDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <Trash2 className="mr-1"/>
+                                    <span>Move to Trash</span>
+                                </CustomButton>
                             </MenubarItem>
                             :
                             <Restore _id={_id} parent={parent} type="file" />
@@ -143,6 +147,9 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
 
             {/* private dialog */}
             <MakeFilePrivate _id={_id} parent={parent} isPrivateDialogOpen={isPrivateDialogOpen} setPrivateDialogOpen={setPrivateDialogOpen} />
+
+            {/* trash dialog */}
+            <MovetoTrash _id={_id} parent={parent} type="file" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
         </>
   )
 }
