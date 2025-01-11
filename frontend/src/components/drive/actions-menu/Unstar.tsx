@@ -31,7 +31,7 @@ export default function Unstar({ _id, parent, type }: { _id: string, parent: str
     return (
         <CustomButton onClick={handleClick} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
             <StarOff className="mr-1"/>
-            <span>Remove from Starred</span> 
+            Remove from Starred
         </CustomButton>
     )
 }

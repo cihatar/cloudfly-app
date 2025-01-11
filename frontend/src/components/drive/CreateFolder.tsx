@@ -15,7 +15,7 @@ import { useRef } from "react";
 import useCustomToast from "@/hooks/useCustomToast";
 import { FileProps, FolderProps } from "@/pages/Drive";
 
-export default function CreateFolder({ parent }: { parent: string }) {
+export default function CreateFolder({ parent, isLoading }: { parent: string, isLoading: boolean }) {
     // toast
     const showToast = useCustomToast();
 
@@ -55,6 +55,7 @@ export default function CreateFolder({ parent }: { parent: string }) {
                     type="button" 
                     className="border w-24 h-8 text-xs
                     lg:w-32 lg:h-10 lg:text-sm shadow-md"
+                    disabled={isLoading}
                     variant="outline"
                 >
                     Create Folder

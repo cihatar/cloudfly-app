@@ -31,7 +31,7 @@ export default function Restore({ _id, parent, type }: { _id: string, parent: st
     return (
         <CustomButton onClick={handleClick} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
             <RotateCcw className="mr-1"/>
-            <span>Restore</span>
+            Restore
         </CustomButton>
     )
 }

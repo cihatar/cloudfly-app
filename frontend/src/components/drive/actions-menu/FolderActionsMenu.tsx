@@ -37,7 +37,7 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
                             <MenubarItem className="p-0">
                                 <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
                                     <Pen className="mr-1"/>
-                                    <span>Rename</span> 
+                                    Rename
                                 </CustomButton>
                             </MenubarItem>
                             <MenubarSeparator />
@@ -69,7 +69,7 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
                             <MenubarItem className="p-0">
                                  <CustomButton onClick={() => setTrashDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Trash2 className="mr-1"/>
-                                    <span>Move to Trash</span>
+                                    Move to Trash
                                 </CustomButton>
                             </MenubarItem>
                             :
@@ -87,7 +87,7 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
                             <MenubarItem className="p-0">
                                 <CustomButton onClick={() => setDeleteDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Trash2 className="mr-1"/>
-                                    <span>Delete permanently</span>
+                                    Delete permanently
                                 </CustomButton>
                             </MenubarItem>
                         }

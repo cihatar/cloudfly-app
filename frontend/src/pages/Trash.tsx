@@ -27,7 +27,7 @@ export default function Trash() {
             {
                 isLoading ? <DriveLoading /> : 
                 !data.files && !data.folders ? 
-                <div className="flex flex-col text-center items-center justify-center gap-4 mt-36 select-none pointer-events-none">
+                <div className="flex flex-col text-center items-center justify-center gap-4 mt-56 select-none pointer-events-none">
                     <img src={throwAway} alt="Trash" className="w-48 lg:w-72"/>
                     <p className="text-zinc-800 dark:text-zinc-200 text-sm">
                         Nothing to see here, your trash is clean.

@@ -31,7 +31,7 @@ export default function Star({ _id, parent, type }: { _id: string, parent: strin
     return (
         <CustomButton onClick={handleClick} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
             <FolderHeart className="mr-1"/>
-            <span>Add to Starred</span> 
+            Add to Starred
         </CustomButton>
     )
 }

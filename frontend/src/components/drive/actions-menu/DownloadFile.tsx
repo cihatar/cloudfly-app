@@ -28,7 +28,7 @@ export default function DownloadFile({ _id, originalName }: { _id: string; origi
     return (
         <CustomButton onClick={handleDownload} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
             <Download className="mr-1"/>
-            <span>Download</span>
+            Download
         </CustomButton>
     );
 }

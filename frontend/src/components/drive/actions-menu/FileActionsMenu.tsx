@@ -44,7 +44,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             <MenubarItem className="p-0">
                                 <CustomButton onClick={() => setDetailsSheetOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Info className="mr-1"/>
-                                    <span>Details</span>
+                                    Details
                                 </CustomButton>
                             </MenubarItem>
                             <MenubarSeparator />
@@ -57,7 +57,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             <MenubarItem className="p-0">
                                 <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Pen className="mr-1"/>
-                                    <span>Rename</span> 
+                                    Rename 
                                 </CustomButton>
                             </MenubarItem>
                             <MenubarSeparator />
@@ -84,7 +84,6 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             
                         }
 
-
                         {/* share & make private */}
                         {
                             isDeleted ? <></> :
@@ -93,7 +92,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             <MenubarItem className="p-0">   
                                 <CustomButton onClick={() => setPrivateDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Lock className="mr-1"/>
-                                    <span>Make private</span> 
+                                    Make private 
                                 </CustomButton>
                             </MenubarItem>
                             <MenubarSeparator />
@@ -103,14 +102,13 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             <MenubarItem className="p-0">   
                                 <CustomButton onClick={() => setShareDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Share2 className="mr-1"/>
-                                    <span>Share</span> 
+                                    Share 
                                 </CustomButton>
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
                         }
                        
-
                         {/* download */}
                         {
                             !isDeleted && <>
@@ -127,7 +125,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             <MenubarItem className="p-0">
                                 <CustomButton onClick={() => setTrashDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Trash2 className="mr-1"/>
-                                    <span>Move to Trash</span>
+                                    Move to Trash
                                 </CustomButton>
                             </MenubarItem>
                             :
@@ -145,7 +143,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             <MenubarItem className="p-0">
                                 <CustomButton onClick={() => setDeleteDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Trash2 className="mr-1"/>
-                                    <span>Delete permanently</span>
+                                    Delete permanently
                                 </CustomButton>
                             </MenubarItem>
                         }

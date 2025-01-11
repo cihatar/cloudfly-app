@@ -53,8 +53,8 @@ export default function Starred() {
             {
                 isLoading ? <DriveLoading /> : 
                 !data.files && !data.folders ? 
-                <div className="flex flex-col text-center items-center justify-center gap-4 mt-36 select-none pointer-events-none">
-                    <img src={stars} alt="Upload file" className="w-48 lg:w-72"/>
+                <div className="flex flex-col text-center items-center justify-center gap-4 mt-44 select-none pointer-events-none">
+                    <img src={stars} alt="Stars" className="w-48 lg:w-72"/>
                     <p className="text-zinc-800 dark:text-zinc-200 text-sm">
                         No files or folders found. 
                         <br /> 

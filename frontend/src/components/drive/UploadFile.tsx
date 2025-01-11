@@ -16,7 +16,7 @@ import { v4 as uuid } from 'uuid';
 import { useAppDispatch } from "@/store/hooks";
 import { setCurrentStorage } from "@/store/user/userSlice";
 
-export default function UploadFile({ parent, fileNames }: { parent: string, fileNames: string[] }) {
+export default function UploadFile({ parent, fileNames, isLoading }: { parent: string, fileNames: string[], isLoading: boolean }) {
     const [sameFiles, setSameFiles] = useState<string[]>([]);
     const [filesFormData, setFilesFormData] =  useState<FormData>(new FormData());
 
@@ -110,6 +110,7 @@ export default function UploadFile({ parent, fileNames }: { parent: string, file
             <CustomButton
                 type="button"
                 className="bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md text-white"
+                disabled={isLoading}
                 variant="default"
                 onClick={() => {
                     // reset states

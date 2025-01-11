@@ -79,8 +79,8 @@ export default function Drive() {
                     <Title>{folderStack[folderStack.length - 1].name}</Title>
                 </div>
                 <div className="flex gap-2">
-                    <UploadFile  parent={parent} fileNames={fileNames} />
-                    <CreateFolder parent={parent} />
+                    <UploadFile  parent={parent} fileNames={fileNames} isLoading={isLoading} />
+                    <CreateFolder parent={parent} isLoading={isLoading} />
                 </div>
             </div>
 
