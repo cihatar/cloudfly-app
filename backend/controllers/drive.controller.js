@@ -367,6 +367,7 @@ const moveToTrash = async (req, res) => {
         file.isDeleted = true;
         file.deletedAt = new Date(Date.now());
         file.isStarred = false;
+        file.publicKey = null;
         await file.save();
         message = "Your file has been moved to trash";
     } else if (type === 'folder') {
@@ -379,6 +380,38 @@ const moveToTrash = async (req, res) => {
         folder.isStarred = false;
         await folder.save();
         message = "Your folder has been moved to trash";
+    } else {
+        throw new CustomAPIError("Invalid type provided", 400);
+    }
+    
+    res.status(200).json({ message });
+}
+
+// restore 
+const restore = async (req, res) => {
+    let { _id, type } = req.body;
+    _id = isValidObjectId(_id) ? _id : null;
+    const user = req.user;
+
+    let message;
+    if (type === 'file') {
+        const file = await File.findOne({ _id, owner: user._id });
+        if (!file) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        file.isDeleted = false;
+        file.deletedAt = null;
+        await file.save();
+        message = "Your file has been restored";
+    } else if (type === 'folder') {
+        const folder = await Folder.findOne({ _id, owner: user._id });
+        if (!folder) {
+            throw new CustomAPIError("Folder not found", 404);
+        }
+        folder.isDeleted = false;
+        folder.deletedAt = null;
+        await folder.save();
+        message = "Your folder has been restored";
     } else {
         throw new CustomAPIError("Invalid type provided", 400);
     }
@@ -467,6 +500,7 @@ module.exports = {
     shareFile,
     makeFilePrivate,
     moveToTrash,
+    restore,
     getFilePreviewPublic,
     getFileDetailsPublic,
     downloadFilePublic,

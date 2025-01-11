@@ -56,6 +56,11 @@ export const moveToTrash = async (data: { _id: string, type: string }) => {
     return res.data;
 }
 
+export const restore = async (data: { _id: string, type: string }) => {
+    const res = await customAxios.put("/api/drive/restore", data);
+    return res.data;
+}
+
 export const getFilePreviewPublic = async (key: string) => {
     try {
         const res = await customAxios.get(`/api/drive/file-preview-public/${key}`, {

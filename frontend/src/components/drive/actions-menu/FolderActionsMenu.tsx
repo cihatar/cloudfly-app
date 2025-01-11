@@ -13,6 +13,7 @@ import Rename from "./Rename";
 import Star from "./Star";
 import Unstar from "./Unstar";
 import MovetoTrash from "./MovetoTrash";
+import Restore from "./Restore";
 import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: FolderProps) {
@@ -59,16 +60,14 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
                             </>
                         }
                         
-                        {/* move to trash */}
+                        {/* move to trash & restore */}
                         {
                             !isDeleted ?
                             <MenubarItem className="p-0">
                                 <MovetoTrash _id={_id} parent={parent} type="folder" />
                             </MenubarItem>
                             :
-                            <CustomButton type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
-                                Restore 
-                            </CustomButton>
+                            <Restore _id={_id} parent={parent} type="folder" />
                         }
 
                     </MenubarContent>

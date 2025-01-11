@@ -17,6 +17,7 @@ import ShareFile from "./ShareFile";
 import MakeFilePrivate from "./MakeFilePrivate";
 import DownloadFile from "./DownloadFile";
 import MovetoTrash from "./MovetoTrash";
+import Restore from "./Restore";
 import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, originalName, isStarred, isDeleted, publicKey }: FileProps) {
@@ -124,9 +125,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                                 <MovetoTrash _id={_id} parent={parent} type="file" />
                             </MenubarItem>
                             :
-                            <CustomButton type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
-                                Restore 
-                            </CustomButton>
+                            <Restore _id={_id} parent={parent} type="file" />
                         }
 
                     </MenubarContent>
