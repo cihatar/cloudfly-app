@@ -19,6 +19,7 @@ export interface FileProps {
     mimeType: string;
     type: string; 
     isStarred: boolean;
+    isDeleted: boolean;
     publicKey: string | null;
 }
 
@@ -27,6 +28,7 @@ export interface FolderProps {
     parent: string; 
     name: string; 
     isStarred: boolean;
+    isDeleted: boolean;
 }
 
 export default function Drive() {
@@ -61,7 +63,7 @@ export default function Drive() {
         setFolderStack((stack) => stack.filter((s) => s._id !== currentFolderId));
         setParent(prevFolderId);
     }
-    
+
     return (
         <Animate> 
 
@@ -106,6 +108,7 @@ export default function Drive() {
                                         parent={folder.parent} 
                                         name={folder.name}
                                         isStarred={folder.isStarred}
+                                        isDeleted={folder.isDeleted}
                                         />
                                     </div>
                                 ))
@@ -127,6 +130,7 @@ export default function Drive() {
                                         mimeType={file.mimeType}
                                         type={file.type} 
                                         isStarred={file.isStarred}
+                                        isDeleted={file.isDeleted}
                                         publicKey={file.publicKey}
                                     />
                                 ))

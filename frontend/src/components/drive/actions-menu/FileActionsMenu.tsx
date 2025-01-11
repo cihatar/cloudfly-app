@@ -19,7 +19,7 @@ import DownloadFile from "./DownloadFile";
 import MovetoTrash from "./MovetoTrash";
 import { CustomButton } from "@/components/global/FormElements";
 
-export default function FileActionsMenu({ _id, parent, originalName, isStarred, publicKey }: FileProps) {
+export default function FileActionsMenu({ _id, parent, originalName, isStarred, isDeleted, publicKey }: FileProps) {
     const [isDetailsSheetOpen, setDetailsSheetOpen] = useState(false);
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
     const [isShareDialogOpen, setShareDialogOpen] = useState(false);
@@ -35,70 +35,99 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                     <MenubarContent>
 
                         {/* details */}
-                        <MenubarItem className="p-0">
-                            <CustomButton onClick={() => setDetailsSheetOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
-                                <Info className="mr-1"/>
-                                <span>Details</span>
-                            </CustomButton>
-                        </MenubarItem>
-
-                        <MenubarSeparator />
+                        {
+                            !isDeleted && <>
+                            <MenubarItem className="p-0">
+                                <CustomButton onClick={() => setDetailsSheetOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <Info className="mr-1"/>
+                                    <span>Details</span>
+                                </CustomButton>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                        }
 
                         {/* rename */}
-                        <MenubarItem className="p-0">
-                            <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
-                                <Pen className="mr-1"/>
-                                <span>Rename</span> 
-                            </CustomButton>
-                        </MenubarItem>
-
-                        <MenubarSeparator />
+                        {
+                            !isDeleted && <>
+                            <MenubarItem className="p-0">
+                                <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <Pen className="mr-1"/>
+                                    <span>Rename</span> 
+                                </CustomButton>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                        }
 
                         {/* star & unstar */}
                         {
+                            isDeleted ? <></> :   
                             isStarred ?
+                            <>
                             <MenubarItem className="p-0">
                                 <Unstar _id={_id} parent={parent} type="file" />
                             </MenubarItem>
+                            <MenubarSeparator />
+                            </>
                             :
+                            <>
                             <MenubarItem className="p-0">
                                 <Star _id={_id} parent={parent} type="file" />
                             </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                            
                         }
 
-                        <MenubarSeparator />
 
                         {/* share & make private */}
                         {
+                            isDeleted ? <></> :
                             publicKey ? 
+                            <>
                             <MenubarItem className="p-0">   
                                 <CustomButton onClick={() => setPrivateDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Lock className="mr-1"/>
                                     <span>Make private</span> 
                                 </CustomButton>
                             </MenubarItem>
+                            <MenubarSeparator />
+                            </>
                             :  
+                            <>
                             <MenubarItem className="p-0">   
                                 <CustomButton onClick={() => setShareDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
                                     <Share2 className="mr-1"/>
                                     <span>Share</span> 
                                 </CustomButton>
                             </MenubarItem>
+                            <MenubarSeparator />
+                            </>
                         }
                        
-                        <MenubarSeparator />
 
                         {/* download */}
-                        <MenubarItem className="p-0">
-                            <DownloadFile _id={_id} originalName={originalName} />
-                        </MenubarItem>
-
-                        <MenubarSeparator />
-
-                        {/* move to trash */}
-                        <MenubarItem className="p-0">
-                            <MovetoTrash _id={_id} parent={parent} type="file" />
-                        </MenubarItem>
+                        {
+                            !isDeleted && <>
+                            <MenubarItem className="p-0">
+                                <DownloadFile _id={_id} originalName={originalName} />
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                        }
+                        
+                        {/* move to trash & restore */}
+                        {
+                            !isDeleted ?
+                            <MenubarItem className="p-0">
+                                <MovetoTrash _id={_id} parent={parent} type="file" />
+                            </MenubarItem>
+                            :
+                            <CustomButton type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                Restore 
+                            </CustomButton>
+                        }
 
                     </MenubarContent>
                 </MenubarMenu>

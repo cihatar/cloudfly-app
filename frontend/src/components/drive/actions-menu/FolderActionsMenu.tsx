@@ -15,7 +15,7 @@ import Unstar from "./Unstar";
 import MovetoTrash from "./MovetoTrash";
 import { CustomButton } from "@/components/global/FormElements";
 
-export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps) {
+export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: FolderProps) {
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
 
     return (
@@ -28,33 +28,48 @@ export default function FileActionsMenu({ _id, parent, isStarred }: FolderProps)
                     <MenubarContent>
 
                         {/* rename */}
-                        <MenubarItem className="p-0">
-                            <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
-                                <Pen className="mr-1"/>
-                                <span>Rename</span> 
-                            </CustomButton>
-                        </MenubarItem>
-
-                        <MenubarSeparator />
+                        {
+                            !isDeleted && <>
+                            <MenubarItem className="p-0">
+                                <CustomButton onClick={() => setRenameDialogOpen(true)} type="button" variant="secondary" className="w-full justify-start bg-transparent cursor-default">
+                                    <Pen className="mr-1"/>
+                                    <span>Rename</span> 
+                                </CustomButton>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                        }
 
                         {/* star & unstar */}
                         {
+                            isDeleted ? <></> :
                             isStarred ?
+                            <>
                             <MenubarItem className="p-0">
                                 <Unstar _id={_id} parent={parent} type="folder" />
                             </MenubarItem>
+                            <MenubarSeparator />
+                            </>
                             :
+                            <>
                             <MenubarItem className="p-0">
                                 <Star _id={_id} parent={parent} type="folder" />
                             </MenubarItem>
+                            <MenubarSeparator />
+                            </>
                         }
-
-                        <MenubarSeparator />
                         
                         {/* move to trash */}
-                        <MenubarItem className="p-0">
-                            <MovetoTrash _id={_id} parent={parent} type="folder" />
-                        </MenubarItem>
+                        {
+                            !isDeleted ?
+                            <MenubarItem className="p-0">
+                                <MovetoTrash _id={_id} parent={parent} type="folder" />
+                            </MenubarItem>
+                            :
+                            <CustomButton type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                Restore 
+                            </CustomButton>
+                        }
 
                     </MenubarContent>
                 </MenubarMenu>

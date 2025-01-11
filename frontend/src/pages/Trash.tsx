@@ -46,6 +46,7 @@ export default function Trash() {
                                             parent={folder.parent} 
                                             name={folder.name}
                                             isStarred={folder.isStarred}
+                                            isDeleted={folder.isDeleted}
                                         />
                                     </div>
                                 ))
@@ -67,6 +68,7 @@ export default function Trash() {
                                             mimeType={file.mimeType}
                                             type={file.type} 
                                             isStarred={file.isStarred}
+                                            isDeleted={file.isDeleted}
                                             publicKey={file.publicKey}
                                         />
                                     </div>
