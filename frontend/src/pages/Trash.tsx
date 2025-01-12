@@ -40,15 +40,10 @@ export default function Trash() {
                         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-2 text-xs">
                             {
                                 data.folders.map((folder: FolderProps) => (
-                                    <div key={folder._id}>
-                                        <Folder 
-                                            _id={folder._id} 
-                                            parent={folder.parent} 
-                                            name={folder.name}
-                                            isStarred={folder.isStarred}
-                                            isDeleted={folder.isDeleted}
-                                        />
-                                    </div>
+                                    <Folder
+                                        key={folder._id} 
+                                        folder={folder}
+                                    />
                                 ))
                             }
                         </div>
