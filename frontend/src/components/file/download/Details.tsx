@@ -13,10 +13,7 @@ interface DetailsProps {
 }
 
 export default function Details({ data, isLoading, error, keyProp }: { data: DetailsProps, isLoading: boolean, error: string, keyProp: string }) {
-    return (
-        <>
-            {
-                isLoading ?
+    return isLoading ?
                 <>
                     <div className='flex items-center gap-2 mb-4 p-2'>
                         <Skeleton className='w-8 h-8' />
@@ -71,7 +68,4 @@ export default function Details({ data, isLoading, error, keyProp }: { data: Det
                 <div className='w-full h-full flex items-center justify-center text-xs text-zinc-500 select-none'>
                     <p>{error}</p>
                 </div>
-            }
-        </>
-    )
 }

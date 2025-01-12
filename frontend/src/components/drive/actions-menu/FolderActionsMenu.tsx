@@ -18,7 +18,7 @@ import Restore from "./Restore";
 import Delete from "./Delete";
 import { CustomButton } from "@/components/global/FormElements";
 
-export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: FolderProps) {
+export default function FolderActionsMenu({ _id, parent, isStarred, isDeleted }: FolderProps) {
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
     const [isMoveDialogOpen, setMoveDialogOpen] = useState(false);
     const [isTrashDialogOpen, setTrashDialogOpen] = useState(false);

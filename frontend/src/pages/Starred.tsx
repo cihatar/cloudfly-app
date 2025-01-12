@@ -21,8 +21,8 @@ export default function Starred() {
         staleTime: 2 * 60 * 1000,
     });
 
-    // handle folder double click
-    const handleDoubleClick = (folder: FolderProps) => {
+    // handle change directory
+    const handleChangeDirectory = (folder: FolderProps) => {
         setFolderStack([...folderStack, { _id: folder._id, name: folder.name }]);
         setParent(folder._id);
     }
@@ -68,15 +68,11 @@ export default function Starred() {
                         <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-2 text-xs">
                             {
                                 data.folders.map((folder: FolderProps) => (
-                                    <div key={folder._id} onDoubleClick={() => handleDoubleClick(folder)}>
-                                        <Folder 
-                                            _id={folder._id} 
-                                            parent={folder.parent} 
-                                            name={folder.name}
-                                            isStarred={folder.isStarred}
-                                            isDeleted={folder.isDeleted}
-                                        />
-                                    </div>
+                                    <Folder 
+                                        key={folder._id}
+                                        folder={folder}
+                                        handleChangeDirectory={handleChangeDirectory}
+                                    />
                                 ))
                             }
                         </div>

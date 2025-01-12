@@ -87,7 +87,7 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
                                 data?.parentFolder ? 
                                 <>
                                     <div className="flex items-center text-xs rounded-md">
-                                        <CustomButton onClick={() => setParentFolder(data.parentFolder.parent)} className="rounded-full p-0 h-8 w-8" type="button" variant="ghost" effect={false}>
+                                        <CustomButton onClick={() => setParentFolder(data.parentFolder.parent)} className="bg-transparent hover:bg-transparent p-0 h-8 w-8" type="button" variant="ghost" effect={false}>
                                             <ChevronLeft className="scale-75" />
                                         </CustomButton>
                                         <p className="text-xs select-none">{data.parentFolder.name}</p>
@@ -120,7 +120,7 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
                                                     <img src={folderIcon} className="p-2 w-10 select-none pointer-events-none" />
                                                     <p className="select-none">{folder.name}</p>
                                                 </div>
-                                                <CustomButton onClick={() => handleOpenFolder(folder._id)} className="rounded-full p-0 h-8 w-8" type="button" variant="ghost" effect={false}>
+                                                <CustomButton onClick={() => handleOpenFolder(folder._id)} className="bg-transparent hover:bg-transparent p-0 h-8 w-8" type="button" variant="secondary" effect={false}>
                                                     <ChevronRight className="scale-75" />
                                                 </CustomButton>
                                             </div>
