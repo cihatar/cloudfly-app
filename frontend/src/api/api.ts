@@ -40,8 +40,9 @@ export const unstar = async (data: { _id: string, type: string }) => {
     return res.data;
 }
 
-export const getFolders = async (parent: string) => {
-    const res = await customAxios.get(`/api/drive/get-folders/${parent}`);
+export const getFolders = async (_id: string, parent: string) => {
+    const query = _id ? `?folderId=${_id}` : "";
+    const res = await customAxios.get(`/api/drive/get-folders/${parent}${query}`);
     return res.data;
 }
 

@@ -7,11 +7,12 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FolderProps } from "@/pages/Drive";
-import { EllipsisVertical, Pen, Trash2 } from "lucide-react";
+import { EllipsisVertical, FolderInput, Pen, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Rename from "./Rename";
 import Star from "./Star";
 import Unstar from "./Unstar";
+import Move from "./Move";
 import MovetoTrash from "./MovetoTrash";
 import Restore from "./Restore";
 import Delete from "./Delete";
@@ -19,6 +20,7 @@ import { CustomButton } from "@/components/global/FormElements";
 
 export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: FolderProps) {
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
+    const [isMoveDialogOpen, setMoveDialogOpen] = useState(false);
     const [isTrashDialogOpen, setTrashDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -62,6 +64,19 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
                             <MenubarSeparator />
                             </>
                         }
+
+                        {/* move */}
+                           {
+                            !isDeleted && <>
+                            <MenubarItem className="p-0">
+                                <CustomButton onClick={() => setMoveDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <FolderInput className="mr-1" />
+                                    Move 
+                                </CustomButton>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
+                        }
                         
                         {/* move to trash & restore */}
                         {
@@ -98,6 +113,9 @@ export default function FileActionsMenu({ _id, parent, isStarred, isDeleted }: F
 
             {/* rename dialog */}
             <Rename _id={_id} parent={parent} type="folder" isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
+
+            {/* move dialog */}
+            <Move _id={_id} parent={parent} type="folder" isMoveDialogOpen={isMoveDialogOpen} setMoveDialogOpen={setMoveDialogOpen} />
 
             {/* trash dialog */}
             <MovetoTrash _id={_id} parent={parent} type="folder" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />

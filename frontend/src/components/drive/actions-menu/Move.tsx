@@ -32,7 +32,7 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
 
     const { data, isLoading } = useQuery({
         queryKey: ["folders", parentFolder],
-        queryFn: () => getFolders(parentFolder || 'root'),
+        queryFn: () => getFolders(type === "folder" ? _id : "", parentFolder || 'root'),
         enabled: isMoveDialogOpen
     });
 

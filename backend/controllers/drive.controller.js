@@ -323,15 +323,17 @@ const unstar = async (req, res) => {
 // get folders
 const getFolders = async (req, res) => {
     let parent = req.params.id;
+    let folderId = req.query.folderId;
     parent = isValidObjectId(parent) ? parent : null;
+    folderId = isValidObjectId(folderId) ? folderId : null;
     const user = req.user;
-
-    let folders = await Folder.find({ owner: user._id, parent, isDeleted: false })
-        .select("_id parent name isStarred isDeleted");
+    
+    let folders = await Folder.find({ _id: { $ne: folderId }, owner: user._id, parent, isDeleted: false })
+        .select("_id parent name");
     folders = folders.length === 0 ? null : folders;
 
     let parentFolder = await Folder.findOne({ _id: folders !== null ? folders[0].parent : parent, owner: user._id, isDeleted: false})
-            .select("_id parent name isStarred isDeleted");
+            .select("_id parent name");
     
     res.status(200).json({ folders, parentFolder });
 }
