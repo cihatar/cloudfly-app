@@ -15,6 +15,8 @@ const {
     shareFile,
     star,
     unstar,
+    getFolders,
+    move,
     makeFilePrivate,
     moveToTrash,
     restore,
@@ -34,6 +36,8 @@ router.post("/create-folder", authenticateUser, trimRequest.all, createFolder);
 router.put("/rename", authenticateUser, trimRequest.all, rename);
 router.put("/star", authenticateUser, star);
 router.put("/unstar", authenticateUser, unstar);
+router.get("/get-folders/:id", authenticateUser, getFolders);
+router.put("/move", authenticateUser, move);
 router.put("/share-file", authenticateUser, shareFile);
 router.put("/make-file-private", authenticateUser, makeFilePrivate);
 router.put("/move-to-trash", authenticateUser, moveToTrash);

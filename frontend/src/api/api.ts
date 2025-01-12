@@ -1,7 +1,6 @@
 import customAxios from "@/config/axios";
 
 export const getFilesAndFolders = async (parent: string) => {
-    await new Promise(resolve => setTimeout(resolve, 2000));
     const res = await customAxios.get(`/api/drive/get/${parent}`);
     return res.data;
 }
@@ -38,6 +37,16 @@ export const star = async (data: { _id: string, type: string }) => {
 
 export const unstar = async (data: { _id: string, type: string }) => {
     const res = await customAxios.put("/api/drive/unstar", data);
+    return res.data;
+}
+
+export const getFolders = async (parent: string) => {
+    const res = await customAxios.get(`/api/drive/get-folders/${parent}`);
+    return res.data;
+}
+
+export const move = async (data: { _id: string, parent: string, type: string }) => {
+    const res = await customAxios.put("/api/drive/move", data);
     return res.data;
 }
 

@@ -7,12 +7,13 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import { FileProps } from "@/pages/Drive";
-import { EllipsisVertical, Info, Lock, Pen, Share2, Trash2 } from "lucide-react";
+import { EllipsisVertical, FolderInput, Info, Lock, Pen, Share2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Details from "./Details";
 import Rename from "./Rename";
 import Star from "./Star";
 import Unstar from "./Unstar";
+import Move from "./Move";
 import ShareFile from "./ShareFile";
 import MakeFilePrivate from "./MakeFilePrivate";
 import DownloadFile from "./DownloadFile";
@@ -24,6 +25,7 @@ import { CustomButton } from "@/components/global/FormElements";
 export default function FileActionsMenu({ _id, parent, originalName, isStarred, isDeleted, publicKey }: FileProps) {
     const [isDetailsSheetOpen, setDetailsSheetOpen] = useState(false);
     const [isRenameDialogOpen, setRenameDialogOpen] = useState(false);
+    const [isMoveDialogOpen, setMoveDialogOpen] = useState(false);
     const [isShareDialogOpen, setShareDialogOpen] = useState(false);
     const [isPrivateDialogOpen, setPrivateDialogOpen] = useState(false);
     const [isTrashDialogOpen, setTrashDialogOpen] = useState(false);
@@ -81,7 +83,19 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
-                            
+                        }
+
+                        {/* move */}
+                        {
+                            !isDeleted && <>
+                            <MenubarItem className="p-0">
+                                <CustomButton onClick={() => setMoveDialogOpen(true)} type="button" variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
+                                    <FolderInput className="mr-1" />
+                                    Move 
+                                </CustomButton>
+                            </MenubarItem>
+                            <MenubarSeparator />
+                            </>
                         }
 
                         {/* share & make private */}
@@ -157,6 +171,9 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
 
             {/* rename dialog */}
             <Rename _id={_id} parent={parent} type="file" isRenameDialogOpen={isRenameDialogOpen} setRenameDialogOpen={setRenameDialogOpen} />
+
+            {/* move dialog */}
+            <Move _id={_id} parent={parent} type="file" isMoveDialogOpen={isMoveDialogOpen} setMoveDialogOpen={setMoveDialogOpen} />
 
             {/* share dialog */}
             <ShareFile _id={_id} parent={parent} publicKey={publicKey} isShareDialogOpen={isShareDialogOpen} setShareDialogOpen={setShareDialogOpen} />

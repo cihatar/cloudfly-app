@@ -112,7 +112,7 @@ const getFilesAndFolders = async (req, res) => {
     folders = folders.length === 0 ? null : folders;
 
     res.status(200).json({ files, folders });
-} 
+}
 
 // get starred files and folders
 const getStarredFilesAndFolders = async (req, res) => {
@@ -320,6 +320,59 @@ const unstar = async (req, res) => {
     res.status(200).json({ message });
 }
 
+// get folders
+const getFolders = async (req, res) => {
+    let parent = req.params.id;
+    parent = isValidObjectId(parent) ? parent : null;
+    const user = req.user;
+
+    let folders = await Folder.find({ owner: user._id, parent, isDeleted: false })
+        .select("_id parent name isStarred isDeleted");
+    folders = folders.length === 0 ? null : folders;
+
+    let parentFolder = await Folder.findOne({ _id: folders !== null ? folders[0].parent : parent, owner: user._id, isDeleted: false})
+            .select("_id parent name isStarred isDeleted");
+    
+    res.status(200).json({ folders, parentFolder });
+}
+
+// move
+const move = async (req, res) => {
+    let { _id, parent, type } = req.body;
+    _id = isValidObjectId(_id) ? _id : null;
+    parent = isValidObjectId(parent) ? parent : null;
+    const user = req.user;
+
+    let message;
+    if (type === 'file') {
+        const file = await File.findOne({ _id, owner: user._id });
+        if (!file) {
+            throw new CustomAPIError("File not found", 404);
+        }
+        if (file.parent?.toString() === parent || file.parent === parent) {
+            throw new CustomAPIError("This file is already in this directory", 400);
+        }
+        file.parent = parent;
+        await file.save();
+        message = "Your file has been moved";
+    } else if (type === 'folder') {
+        const folder = await Folder.findOne({ _id, owner: user._id });
+        if (!folder) {
+            throw new CustomAPIError("Folder not found", 404);
+        }
+        if (folder.parent?.toString() === parent || folder.parent === parent) {
+            throw new CustomAPIError("This folder is already in this directory", 400);
+        }
+        folder.parent = parent;
+        await folder.save();
+        message = "Your folder has been moved";
+    } else {
+        throw new CustomAPIError("Invalid type provided", 400);
+    }
+    
+    res.status(200).json({ message });
+}
+
 // share file/make public
 const shareFile = async (req, res) => {
     let { _id } = req.body;
@@ -403,10 +456,6 @@ const restore = async (req, res) => {
         if (!parentFolder || parentFolder?.isDeleted) {
             file.parent = null;
         }
-        const existingFile = await File.findOne({ owner: user._id, parent: file.parent, originalName: file.originalName, isDeleted: false });
-        if (existingFile) {
-            file.originalName = path.basename(file.originalName, path.extname(file.originalName)) + " (Restored)" + path.extname(file.originalName);
-        }
         file.isDeleted = false;
         file.deletedAt = null;
         await file.save();
@@ -419,10 +468,6 @@ const restore = async (req, res) => {
         const parentFolder = await Folder.findOne({ _id: folder.parent, owner: user._id });
         if (!parentFolder || parentFolder?.isDeleted) {
             folder.parent = null;
-        }
-        const existingFolder = await Folder.findOne({ owner: user._id, parent: folder.parent, name: folder.name, isDeleted: false });
-        if (existingFolder) {
-            folder.name += " (Restored)"
         }
         folder.isDeleted = false;
         folder.deletedAt = null;
@@ -457,12 +502,12 @@ const deletePermanently = async (req, res) => {
             throw new CustomAPIError("File not found", 404);
         }
         async function deleteRecursive(parent) {
-            const subFiles = await File.find({ owner: user._id, parent });    
+            const subFiles = await File.find({ owner: user._id, parent, isDeleted: false });    
             for (let file of subFiles) {
                 user.currentStorage -= file.size;
                 await file.deleteOne();
             }  
-            const subFolders = await Folder.find({ owner: user._id, parent });            
+            const subFolders = await Folder.find({ owner: user._id, parent, isDeleted: false });            
             for (let folder of subFolders) {
                 await deleteRecursive(folder._id); 
                 await folder.deleteOne();
@@ -556,6 +601,8 @@ module.exports = {
     rename,
     star,
     unstar,
+    getFolders,
+    move,
     shareFile,
     makeFilePrivate,
     moveToTrash,
