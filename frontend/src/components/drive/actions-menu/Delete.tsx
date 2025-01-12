@@ -10,12 +10,17 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
+import { useAppDispatch } from "@/store/hooks";
+import { setCurrentStorage } from "@/store/user/userSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
 export default function Delete({ _id, type, isDeleteDialogOpen, setDeleteDialogOpen }: { _id: string; type: string; isDeleteDialogOpen: boolean; setDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     // toast
     const showToast = useCustomToast();
+
+    // redux
+    const dispatch = useAppDispatch();
 
     // ref
     const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
@@ -27,6 +32,7 @@ export default function Delete({ _id, type, isDeleteDialogOpen, setDeleteDialogO
         mutationFn: (data: { _id: string, type: string }) => deletePermanently(data),
         onSuccess: (data) => {
             showToast(data.message);
+            dispatch(setCurrentStorage(data.currentStorage))
             queryClient.invalidateQueries({ queryKey: ['trash']});
             cancelBtnRef.current?.click();
         },

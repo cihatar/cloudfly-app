@@ -448,6 +448,8 @@ const deletePermanently = async (req, res) => {
         if (!file) {
             throw new CustomAPIError("File not found", 404);
         }
+        user.currentStorage -= file.size;
+        await user.save();
         message = "Your file has been permanently deleted";
     } else if (type === 'folder') {
         const folder = await Folder.findOne({ _id, owner: user._id, isDeleted: true });
@@ -457,6 +459,7 @@ const deletePermanently = async (req, res) => {
         async function deleteRecursive(parent) {
             const subFiles = await File.find({ owner: user._id, parent });    
             for (let file of subFiles) {
+                user.currentStorage -= file.size;
                 await file.deleteOne();
             }  
             const subFolders = await Folder.find({ owner: user._id, parent });            
@@ -467,11 +470,12 @@ const deletePermanently = async (req, res) => {
         }
         await deleteRecursive(folder._id);
         await folder.deleteOne();
+        await user.save();
         message = "Your folder has been permanently deleted";
     } else {
         throw new CustomAPIError("Invalid type provided", 400);
     }
-    res.status(200).json({ message });
+    res.status(200).json({ currentStorage: user.currentStorage, message });
 }
 
 // get file preview (public)
