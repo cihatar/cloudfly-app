@@ -1,14 +1,17 @@
 import Animate from '@/components/global/Animate'
 import throwAway from "@/assets/throw_away.svg";
 import { getTrashedFilesAndFolders } from '@/api/api';
-import File from '@/components/drive/File';
-import { Subtitle, Title } from '@/components/global/Titles'
+import { Title } from '@/components/global/Titles'
 import { useQuery } from '@tanstack/react-query';
-import { FileProps, FolderProps } from './Drive';
-import Folder from '@/components/drive/Folder';
 import DriveLoading from '@/components/drive/DriveLoading';
+import FilesAndFolders from '@/components/drive/FilesAndFolders';
+import { useState } from 'react';
+import { SelectedItemsProps } from './Drive';
+import SelectionBar from '@/components/drive/SelectionBar';
 
 export default function Trash() {
+    const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
+
     const { data, isLoading } = useQuery({
         queryKey: ["trash"],
         queryFn: () => getTrashedFilesAndFolders(),
@@ -16,6 +19,7 @@ export default function Trash() {
     });
     
     return (
+        <>
         <Animate>
             {/* title */}  
             <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
@@ -24,6 +28,7 @@ export default function Trash() {
                 </div>
             </div>
 
+            {/* not found */}
             {
                 isLoading ? <DriveLoading /> : 
                 !data.files && !data.folders ? 
@@ -33,48 +38,19 @@ export default function Trash() {
                         Nothing to see here, your trash is clean.
                     </p>
                 </div> : 
-                <> 
-                {
-                    data.folders && <>
-                        <Subtitle className="mt-8 text-xs text-zinc-800 dark:text-zinc-200">Folders</Subtitle>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-2 text-xs">
-                            {
-                                data.folders.map((folder: FolderProps) => (
-                                    <Folder
-                                        key={folder._id} 
-                                        folder={folder}
-                                    />
-                                ))
-                            }
-                        </div>
-                    </>
-                }
-                {
-                    data.files && <>
-                        <Subtitle className="mt-8 text-xs text-zinc-800 dark:text-zinc-200">Files</Subtitle>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-4 text-xs">
-                            {
-                                data.files.map((file: FileProps) => (
-                                    <div key={file._id}>
-                                        <File 
-                                            _id={file._id} 
-                                            parent={file.parent} 
-                                            originalName={file.originalName} 
-                                            mimeType={file.mimeType}
-                                            type={file.type} 
-                                            isStarred={file.isStarred}
-                                            isDeleted={file.isDeleted}
-                                            publicKey={file.publicKey}
-                                        />
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </>
-                }
-                </>
+                // files and folders
+                <FilesAndFolders 
+                    data={data}
+                    setSelectedItems={setSelectedItems}
+                    selectedItems={selectedItems}
+                />
             }
 
         </Animate>
+
+        {/* selection bar */}
+        <SelectionBar selectedItems={selectedItems} page="trash" />
+
+        </>
     )
 }
