@@ -13,7 +13,7 @@ export default function UploadProgress() {
                 <CloudDownload />
             </CustomButton> 
             :  
-            <Animate className="fixed bottom-0 lg:bottom-6 lg:right-6 z-50 dark:bg-zinc-900 rounded-md w-full lg:w-80 border-2 shadow-md">
+            <Animate className="bg-white dark:bg-zinc-900 fixed bottom-0 lg:bottom-6 lg:right-6 z-50 rounded-md w-full lg:w-80 border-2 shadow-md">
                 <div className="font-semibold text-lg p-4 flex items-center justify-between">
                     <p className="">Uploads</p>
                     <div className="flex gap-4">

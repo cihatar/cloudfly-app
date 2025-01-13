@@ -3,12 +3,12 @@ import goingUp from "@/assets/going_up.svg";
 import { Subtitle, Title } from "@/components/global/Titles";
 import { getFilesAndFolders } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { DragEvent, useEffect, useState } from "react";
 import File from "@/components/drive/File";
 import Folder from "@/components/drive/Folder";
 import DriveLoading from "@/components/drive/DriveLoading";
 import CreateFolder from "@/components/drive/CreateFolder";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, HardDriveUpload } from "lucide-react";
 import UploadFile from "@/components/drive/UploadFile";
 import { CustomButton } from "@/components/global/FormElements";
 
@@ -35,6 +35,8 @@ export default function Drive() {
     const [parent, setParent] = useState<string>("root");
     const [fileNames, setFileNames] = useState<string[]>([]);
     const [folderStack, setFolderStack] = useState<{_id: string, name: string}[]>([{ _id: parent, name: "My Drive"}]);
+    const [droppedFiles, setDroppedFiles] = useState<FileList | null>(null);
+    const [dragging, setDragging] = useState(false);
 
     const { data, isLoading } = useQuery({
         queryKey: ["drive", parent],
@@ -64,8 +66,37 @@ export default function Drive() {
         setParent(prevFolderId);
     }
 
+    // handle drop files
+    const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setDroppedFiles(null);
+        setDragging(false);
+        const droppedFiles = e.dataTransfer.files;
+        if (droppedFiles.length > 0) {
+            setDroppedFiles(droppedFiles);
+        }
+    };    
+
     return (
-        <Animate> 
+        // drag and drop
+        <Animate 
+            className="h-full relative"
+            onDragOver={(e) => e.preventDefault()}
+            onDragEnter={() => setDragging(true)}
+            onDragLeave={(e) => {
+                const relatedTarget = e.relatedTarget as Node | null;
+                if (e.relatedTarget && e.currentTarget.contains(relatedTarget)) return;
+                setDragging(false);
+            }}
+            onDragExit={() => setDragging(false)}
+            onDrop={handleDrop}
+        > 
+            <div
+            className={`transition-all shadow-md flex items-center justify-center gap-2 p-4 text-xs text-white bg-bluedefault rounded-full fixed bottom-0 left-1/2 transform -translate-x-1/2 z-[1000] 
+                ${dragging ? `visible opacity-1 -translate-y-10` : `invisible opacity-0`} `}
+            >
+                <HardDriveUpload className="scale-75" /> Drop files to upload
+            </div>
 
             {/* title & buttons*/}  
             <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
@@ -79,11 +110,11 @@ export default function Drive() {
                     <Title>{folderStack[folderStack.length - 1].name}</Title>
                 </div>
                 <div className="flex gap-2">
-                    <UploadFile  parent={parent} fileNames={fileNames} isLoading={isLoading} />
+                    <UploadFile  parent={parent} fileNames={fileNames} isLoading={isLoading} droppedFiles={droppedFiles} />
                     <CreateFolder parent={parent} isLoading={isLoading} />
                 </div>
             </div>
-
+                    
             {
                 isLoading ? <DriveLoading /> : 
                 !data.files && !data.folders ? 

@@ -7,7 +7,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import customAxios from "@/config/axios";
 import { CustomButton } from "../global/FormElements";
@@ -16,9 +16,10 @@ import { v4 as uuid } from 'uuid';
 import { useAppDispatch } from "@/store/hooks";
 import { setCurrentStorage } from "@/store/user/userSlice";
 
-export default function UploadFile({ parent, fileNames, isLoading }: { parent: string, fileNames: string[], isLoading: boolean }) {
+export default function UploadFile({ parent, fileNames, isLoading, droppedFiles }: { parent: string, fileNames: string[], isLoading: boolean, droppedFiles: FileList | null }) {
     const [sameFiles, setSameFiles] = useState<string[]>([]);
     const [filesFormData, setFilesFormData] =  useState<FormData>(new FormData());
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     // context
     const { updateUploadedFiles, updateUploadedFilesProgress, updateUploadStatus } = useUploadContext();
@@ -70,30 +71,39 @@ export default function UploadFile({ parent, fileNames, isLoading }: { parent: s
     };
     
     // handle file input change
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-
-        const files = e.target.files as FileList;
+    const handleChange = (e?: React.ChangeEvent<HTMLInputElement>) => {
+        e?.preventDefault();
+        
+        const files = e?.target.files as FileList || droppedFiles;
+        
         const formData = new FormData();
-    
-        let filesWithConflicts: string[] = [];
 
+        let filesWithConflicts: string[] = [];
+        
         for (const file of files) {
             if (fileNames.includes(file.name)) {
                 filesWithConflicts.push(file.name);
             }
             formData.append("files", file);
         }
-        formData.append("parent", parent);
-
+        formData.append("parent", parent);        
+        
         // if there is a conflict show dialog otherwise upload files immediately
         if (filesWithConflicts.length > 0) {
+            setDialogOpen(true);
             setSameFiles(filesWithConflicts);
             setFilesFormData(formData);
         } else {
             handleUpload(formData);
-        }        
+        } 
     };
+
+    useEffect(() => {
+        if (droppedFiles && fileRef.current) {
+            fileRef.current.value = "";
+            handleChange();
+        }
+    }, [droppedFiles])
 
     return (
         <>
@@ -113,10 +123,6 @@ export default function UploadFile({ parent, fileNames, isLoading }: { parent: s
                 disabled={isLoading}
                 variant="default"
                 onClick={() => {
-                    // reset states
-                    setSameFiles([]);
-                    setFilesFormData(new FormData());
-                    
                     if (fileRef.current) {
                         fileRef.current.click();
                         fileRef.current.value = "";
@@ -126,35 +132,45 @@ export default function UploadFile({ parent, fileNames, isLoading }: { parent: s
                 Upload File
             </CustomButton>
 
-            {sameFiles.length !== 0 && 
-                <Dialog defaultOpen>
-                    <DialogContent className="sm:max-w-md">
-                        <DialogHeader>
-                            <DialogTitle>File already exists</DialogTitle>
-                            <DialogDescription className="flex flex-col gap-y-4">
-                                The file you are trying to upload already exists in this directory
-                            </DialogDescription>
-                            <div className="grid grid-cols-3 gap-4 text-xs max-h-48 overflow-y-auto py-2">
-                                {sameFiles.map((name) => (
-                                    <div key={name} className="dark:bg-zinc-800 bg-zinc-100 p-2 flex items-center gap-2 rounded-md">
-                                        {name}
-                                    </div>
-                                ))}
-                            </div>
-                            <p className="text-xs text-red-500 border-t pt-2"> If you replace the file, the existing file will be permanently deleted</p>
-                        </DialogHeader>
-                        <DialogFooter className="sm:justify-start gap-2">
-                            <CustomButton onClick={() => handleUpload(filesFormData)} type="button" >Replace</CustomButton>
-                            <DialogClose asChild>
-                                <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
-                                    Cancel
-                                </CustomButton>
-                            </DialogClose>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-            }
             
+            <Dialog open={dialogOpen} onOpenChange={(open) => {
+                setDialogOpen(open);
+            }}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>
+                            {sameFiles?.length > 1 ? 
+                            "Files already exist" : 
+                            "File already exists"}
+                        </DialogTitle>
+                        <DialogDescription className="flex flex-col gap-y-4">
+                            {sameFiles?.length > 1 ? 
+                            "The files you are trying to upload already exist in this directory" : 
+                            "The file you are trying to upload already exists in this directory"}
+                        </DialogDescription>
+                        <div className="grid grid-cols-3 gap-4 text-xs max-h-48 overflow-y-auto py-2">
+                            {sameFiles?.map((name) => (
+                                <div key={name} className="dark:bg-zinc-800 bg-zinc-100 p-2 flex items-center gap-2 rounded-md">
+                                    {name}
+                                </div>
+                            ))}
+                        </div>
+                        <p className="text-xs text-red-500 border-t pt-2">
+                            {sameFiles?.length > 1 ? 
+                            "If you replace the files, the existing ones will be permanently deleted" : 
+                            "If you replace the file, the existing one will be permanently deleted"}
+                        </p>
+                    </DialogHeader>
+                    <DialogFooter className="sm:justify-start gap-2">
+                        <CustomButton onClick={() => handleUpload(filesFormData)} type="button" >Replace</CustomButton>
+                        <DialogClose asChild>
+                            <CustomButton type="button" variant="secondary" ref={cancelBtnRef}>
+                                Cancel
+                            </CustomButton>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }
