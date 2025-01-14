@@ -10,7 +10,7 @@ import { ChevronLeft, HardDriveUpload } from "lucide-react";
 import UploadFile from "@/components/drive/UploadFile";
 import { CustomButton } from "@/components/global/FormElements";
 import FilesAndFolders from "@/components/drive/FilesAndFolders";
-import SelectionBar from "@/components/drive/SelectionBar";
+import SelectionBar from "@/components/drive/selection-bar/SelectionBar";
 
 export interface FileProps {
     _id: string; 

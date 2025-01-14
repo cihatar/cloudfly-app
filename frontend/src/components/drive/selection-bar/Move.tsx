@@ -9,17 +9,20 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
-import { FolderProps } from "@/pages/Drive";
+import { FolderProps, SelectedItemsProps } from "@/pages/Drive";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, HardDrive, Loader2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, FolderInput, HardDrive, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
-export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialogOpen }: { _id: string; parent: string; type: string, isMoveDialogOpen: boolean; setMoveDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function Move({ items, parent }: { items: SelectedItemsProps, parent: string }) {
+    const [folders, setFolders] = useState<FolderProps[] | null>(null);
+    const [isMoveDialogOpen, setMoveDialogOpen] = useState(false);
     const [parentFolder, setParentFolder] = useState<string>(parent);
-    const [selectedFolderId, setSelectedFolderId] = useState<string>("");
+    const [selectedFolderId, setSelectedFolderId] = useState<string>("");    
 
     // toast
     const showToast = useCustomToast();
@@ -28,13 +31,20 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
     const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
 
     // query
-    const queryClient = useQueryClient();
+    const queryClient = useQueryClient();        
 
     const { data, isLoading } = useQuery({
         queryKey: ["folders", parentFolder],
-        queryFn: () => getFolders(type === "folder" ? _id : "", parentFolder || 'root'),
+        queryFn: () => getFolders("", parentFolder || 'root'),
         enabled: isMoveDialogOpen
     });
+
+    useEffect(() => {
+        if (data) {
+            const newFolders = data.folders.filter((item1: FolderProps ) => !items.folders.some(item2 => item1._id === item2._id));            
+            setFolders(newFolders);
+        }
+    }, [data])
 
     const { mutate, isPending } = useMutation({
         mutationFn: (data: { data: FilesAndFoldersReqBody; parent: string; }) => move(data),
@@ -47,7 +57,7 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
         onError: (data: any) => {
             showToast(data.response.data.error, false);
         }
-    });    
+    });
 
     // handle open folder
     const handleOpenFolder = (id: string) => {
@@ -61,17 +71,24 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
 
     // handle move
     const handleMove = () => {
-        const param = type === "file" ? {files: [{ _id }], folders: null} : {files: null, folders: [{ _id }]}
-        mutate({ data: param, parent: selectedFolderId });
+        const fileIdArr = items.files.map((item) => ({ _id: item._id })); 
+        const folderIdArr = items.folders.map((item) => ({ _id: item._id })); 
+        mutate({ data: { files: fileIdArr, folders: folderIdArr }, parent: selectedFolderId });
     }
 
     return (
         <Dialog open={isMoveDialogOpen} onOpenChange={setMoveDialogOpen}>
+            <DialogTrigger>
+                <CustomButton type="button" variant="secondary" className="w-full justify-start cursor-default rounded-full">
+                    <FolderInput />
+                    Move
+                </CustomButton>
+            </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle className="capitalize">Move {type}</DialogTitle>
+                    <DialogTitle className="capitalize">move</DialogTitle>
                     <DialogDescription>
-                        Select a folder to move the {type}
+                        Select a folder to move 
                     </DialogDescription>
                 </DialogHeader>
 
@@ -106,14 +123,14 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
 
                             <>
                             {   
-                                data?.folders === null ?
+                                folders === null ?
                                 <p className="text-center text-xs text-zinc-500 mt-8 select-none">
                                     No folder found in this directory
                                 </p>
                                 :
                                 <div className="grid grid-cols-2 gap-2">
                                     {
-                                        data?.folders?.map((folder: FolderProps) => (
+                                        folders?.map((folder: FolderProps) => (
                                             <div key={folder._id} onClick={() => handleSelect(folder._id)} onDoubleClick={() => handleOpenFolder(folder._id)} 
                                             className={`flex items-center justify-between text-xs rounded-md 
                                             ${selectedFolderId === folder._id ? "bg-bluedefault/25" : "dark:bg-white/5 dark:hover:bg-white/10 bg-blackdefault/5 hover:bg-blackdefault/10"}`}>

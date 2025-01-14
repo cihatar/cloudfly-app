@@ -10,10 +10,13 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
+import { SelectedItemsProps } from "@/pages/Drive";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
 import { useRef } from "react";
 
-export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setTrashDialogOpen }: { _id: string; parent: string; type: string; isTrashDialogOpen: boolean; setTrashDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function MovetoTrash({ items }: { items: SelectedItemsProps }) {
     // toast
     const showToast = useCustomToast();
 
@@ -27,7 +30,7 @@ export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setT
         mutationFn: (data: FilesAndFoldersReqBody) => moveToTrash(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['drive']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
             queryClient.invalidateQueries({ queryKey: ['trash']});
             cancelBtnRef.current?.click();
@@ -39,18 +42,24 @@ export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setT
 
     // handle move to trash
     const handleTrash = () => {
-        const param = type === "file" ? {files: [{ _id }], folders: null} : {files: null, folders: [{ _id }]}
-        mutate(param);
+        const fileIdArr = items.files.map((item) => ({ _id: item._id })); 
+        const folderIdArr = items.folders.map((item) => ({ _id: item._id })); 
+        mutate({ files: fileIdArr, folders: folderIdArr });
     }
 
     return (
-        <Dialog open={isTrashDialogOpen} onOpenChange={setTrashDialogOpen}>
+        <Dialog>
+            <DialogTrigger>
+                <CustomButton type="button" variant="destructive" className="w-full justify-start cursor-default rounded-full">
+                    <Trash2 />
+                    Move to Trash
+                </CustomButton>
+            </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Move to Trash</DialogTitle>
                     <DialogDescription>
-                        Once moved to trash, this {type} will be automatically and permanently deleted after 1 month
-                        {type === "file" && ". Additionally, if the file is public, the link will become invalid"}
+                        Once moved to trash, it will be automatically and permanently deleted after 1 month
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="sm:justify-start gap-2">

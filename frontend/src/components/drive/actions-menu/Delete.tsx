@@ -1,4 +1,4 @@
-import { deletePermanently } from "@/api/api";
+import { deletePermanently, FilesAndFoldersReqBody } from "@/api/api";
 import { CustomButton } from "@/components/global/FormElements";
 import {
     Dialog,
@@ -29,7 +29,7 @@ export default function Delete({ _id, type, isDeleteDialogOpen, setDeleteDialogO
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: { _id: string, type: string }) => deletePermanently(data),
+        mutationFn: (data: FilesAndFoldersReqBody) => deletePermanently(data),
         onSuccess: (data) => {
             showToast(data.message);
             dispatch(setCurrentStorage(data.currentStorage))
@@ -43,7 +43,8 @@ export default function Delete({ _id, type, isDeleteDialogOpen, setDeleteDialogO
 
     // handle delete
     const handleDelete = () => {
-        mutate({ _id, type });
+        const param = type === "file" ? {files: [{ _id }], folders: null} : {files: null, folders: [{ _id }]}
+        mutate(param);
     }
 
     return (

@@ -1,4 +1,4 @@
-import { FilesAndFoldersReqBody, moveToTrash } from "@/api/api";
+import { deletePermanently, FilesAndFoldersReqBody } from "@/api/api";
 import { CustomButton } from "@/components/global/FormElements";
 import {
     Dialog,
@@ -8,14 +8,22 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
+import { SelectedItemsProps } from "@/pages/Drive";
+import { useAppDispatch } from "@/store/hooks";
+import { setCurrentStorage } from "@/store/user/userSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Trash2 } from "lucide-react";
 import { useRef } from "react";
 
-export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setTrashDialogOpen }: { _id: string; parent: string; type: string; isTrashDialogOpen: boolean; setTrashDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function Delete({ items }: { items: SelectedItemsProps }) {
     // toast
     const showToast = useCustomToast();
+
+    // redux
+    const dispatch = useAppDispatch();
 
     // ref
     const cancelBtnRef = useRef<null | HTMLButtonElement>(null);
@@ -24,11 +32,10 @@ export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setT
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: FilesAndFoldersReqBody) => moveToTrash(data),
+        mutationFn: (data: FilesAndFoldersReqBody) => deletePermanently(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
-            queryClient.invalidateQueries({ queryKey: ['starred']});
+            dispatch(setCurrentStorage(data.currentStorage))
             queryClient.invalidateQueries({ queryKey: ['trash']});
             cancelBtnRef.current?.click();
         },
@@ -37,29 +44,37 @@ export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setT
         }
     });
 
-    // handle move to trash
-    const handleTrash = () => {
-        const param = type === "file" ? {files: [{ _id }], folders: null} : {files: null, folders: [{ _id }]}
-        mutate(param);
+    // handle delete
+    const handleDelete = () => {
+        const fileIdArr = items.files.map((item) => ({ _id: item._id })); 
+        const folderIdArr = items.folders.map((item) => ({ _id: item._id })); 
+        mutate({ files: fileIdArr, folders: folderIdArr });
     }
 
     return (
-        <Dialog open={isTrashDialogOpen} onOpenChange={setTrashDialogOpen}>
+        <Dialog>
+            <DialogTrigger>
+                <CustomButton type="button" variant="destructive" className="w-full justify-start cursor-default rounded-full">
+                    <Trash2 />
+                    Delete permanently
+                </CustomButton>
+            </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Move to Trash</DialogTitle>
+                    <DialogTitle className="capitalize">Delete</DialogTitle>
                     <DialogDescription>
-                        Once moved to trash, this {type} will be automatically and permanently deleted after 1 month
-                        {type === "file" && ". Additionally, if the file is public, the link will become invalid"}
+                        Once you delete, it will be permanently removed from the system and cannot be restored under any circumstances. 
+                        Please ensure that you have a backup or are absolutely certain before proceeding with the deletion
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="sm:justify-start gap-2">
                     <CustomButton
-                        onClick={handleTrash}
+                        onClick={handleDelete}
                         type="button"
+                        variant="destructive"
                         loading={isPending}
                     >
-                        Move to Trash
+                        Delete Permanently
                     </CustomButton>
                     <DialogClose asChild>
                         <CustomButton

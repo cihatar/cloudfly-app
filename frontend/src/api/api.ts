@@ -1,5 +1,10 @@
 import customAxios from "@/config/axios";
 
+export interface FilesAndFoldersReqBody {
+    files: { _id: string }[] | null;
+    folders: { _id: string }[] | null;
+}
+
 export const getFilesAndFolders = async (parent: string) => {
     const res = await customAxios.get(`/api/drive/get/${parent}`);
     return res.data;
@@ -30,12 +35,12 @@ export const rename = async (data: { _id: string, parent: string, name: string, 
     return res.data;
 }
 
-export const star = async (data: { _id: string, type: string }) => {
+export const star = async (data: FilesAndFoldersReqBody) => {
     const res = await customAxios.put("/api/drive/star", data);
     return res.data;
 }
 
-export const unstar = async (data: { _id: string, type: string }) => {
+export const unstar = async (data: FilesAndFoldersReqBody) => {
     const res = await customAxios.put("/api/drive/unstar", data);
     return res.data;
 }
@@ -46,7 +51,7 @@ export const getFolders = async (_id: string, parent: string) => {
     return res.data;
 }
 
-export const move = async (data: { _id: string, parent: string, type: string }) => {
+export const move = async (data: { data: FilesAndFoldersReqBody, parent: string }) => {
     const res = await customAxios.put("/api/drive/move", data);
     return res.data;
 }
@@ -61,18 +66,18 @@ export const makeFilePrivate = async (data: { _id: string }) => {
     return res.data;
 }
 
-export const moveToTrash = async (data: { _id: string, type: string }) => {
+export const moveToTrash = async (data: FilesAndFoldersReqBody) => {
     const res = await customAxios.put("/api/drive/move-to-trash", data);
     return res.data;
 }
 
-export const restore = async (data: { _id: string, type: string }) => {
+export const restore = async (data: FilesAndFoldersReqBody) => {
     const res = await customAxios.put("/api/drive/restore", data);
     return res.data;
 }
 
-export const deletePermanently = async (data: { _id: string, type: string }) => {
-    const res = await customAxios.delete(`/api/drive/delete/${data._id}?type=${data.type}`);
+export const deletePermanently = async (data: FilesAndFoldersReqBody) => {
+    const res = await customAxios.delete(`/api/drive/delete/`, { data });
     return res.data;
 }
 

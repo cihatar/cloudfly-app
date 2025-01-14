@@ -7,7 +7,7 @@ import DriveLoading from '@/components/drive/DriveLoading';
 import FilesAndFolders from '@/components/drive/FilesAndFolders';
 import { useState } from 'react';
 import { SelectedItemsProps } from './Drive';
-import SelectionBar from '@/components/drive/SelectionBar';
+import SelectionBar from '@/components/drive/selection-bar/SelectionBar';
 
 export default function Trash() {
     const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });

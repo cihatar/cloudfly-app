@@ -1,10 +1,11 @@
 import { FilesAndFoldersReqBody, star } from '@/api/api';
 import { CustomButton } from '@/components/global/FormElements'
 import useCustomToast from '@/hooks/useCustomToast';
+import { SelectedItemsProps } from '@/pages/Drive';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { FolderHeart } from 'lucide-react'
+import { FolderHeart } from 'lucide-react';
 
-export default function Star({ _id, parent, type }: { _id: string, parent: string, type: string }) {
+export default function Star({ items }: { items: SelectedItemsProps }) {
     // toast
     const showToast = useCustomToast();
 
@@ -25,13 +26,14 @@ export default function Star({ _id, parent, type }: { _id: string, parent: strin
 
     // handle star
     const handleStar = () => {
-        const param = type === "file" ? {files: [{ _id }], folders: null} : {files: null, folders: [{ _id }]}
-        mutate(param);
+        const fileIdArr = items.files.map((item) => ({ _id: item._id })); 
+        const folderIdArr = items.folders.map((item) => ({ _id: item._id })); 
+        mutate({ files: fileIdArr, folders: folderIdArr });
     }
 
     return (
-        <CustomButton onClick={handleStar} variant="secondary" effect={false} className="w-full justify-start bg-transparent cursor-default">
-            <FolderHeart className="mr-1"/>
+        <CustomButton onClick={handleStar} type="button" variant="secondary" className="w-full justify-start cursor-default rounded-full">
+            <FolderHeart />
             Add to Starred
         </CustomButton>
     )

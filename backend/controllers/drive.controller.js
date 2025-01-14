@@ -262,62 +262,68 @@ const rename = async (req, res) => {
 
 // star file or folder
 const star = async (req, res) => {
-    let { _id, type } = req.body;
-    _id = isValidObjectId(_id) ? _id : null;
+    let { files, folders } = req.body;
     const user = req.user;
 
-    let message;
-    if (type === 'file') {
-        const file = await File.findOne({ _id, owner: user._id });
-        if (!file) {
-            throw new CustomAPIError("File not found", 404);
+    if (!files && !folders) {
+        throw new CustomAPIError("No files or folders found");
+    }  
+
+    if (files && files.length > 0) {
+        for (const f of files) {
+            const file = await File.findOne({ _id: f._id, owner: user._id });
+            if (!file) {
+                throw new CustomAPIError("File not found", 404);
+            }
+            file.isStarred = true;
+            await file.save();
         }
-        file.isStarred = true;
-        await file.save();
-        message = "Your file has been starred";
-    } else if (type === 'folder') {
-        const folder = await Folder.findOne({ _id, owner: user._id });
-        if (!folder) {
-            throw new CustomAPIError("Folder not found", 404);
-        }
-        folder.isStarred = true;
-        await folder.save();
-        message = "Your folder has been starred";
-    } else {
-        throw new CustomAPIError("Invalid type provided", 400);
     }
-    
-    res.status(200).json({ message });
+    if (folders && folders.length > 0) {
+        for (const f of folders) {
+            const folder = await Folder.findOne({ _id: f._id, owner: user._id });
+            if (!folder) {
+                throw new CustomAPIError("Folder not found", 404);
+            }
+            folder.isStarred = true;
+            await folder.save();
+        }
+    }
+
+    res.status(200).json({ message: "Starred successfully" });
 }
 
 // unstar file or folder
 const unstar = async (req, res) => {
-    let { _id, type } = req.body;
-    _id = isValidObjectId(_id) ? _id : null;
+    let { files, folders } = req.body;
     const user = req.user;
 
-    let message;
-    if (type === 'file') {
-        const file = await File.findOne({ _id, owner: user._id });
-        if (!file) {
-            throw new CustomAPIError("File not found", 404);
+    if (!files && !folders) {
+        throw new CustomAPIError("No files or folders found");
+    }  
+
+    if (files && files.length > 0) {
+        for (const f of files) {
+            const file = await File.findOne({ _id: f._id, owner: user._id });
+            if (!file) {
+                throw new CustomAPIError("File not found", 404);
+            }
+            file.isStarred = false;
+            await file.save();
         }
-        file.isStarred = false;
-        await file.save();
-        message = "Your file has been removed from starred";
-    } else if (type === 'folder') {
-        const folder = await Folder.findOne({ _id, owner: user._id });
-        if (!folder) {
-            throw new CustomAPIError("Folder not found", 404);
+    }
+    if (folders && folders.length > 0) {
+        for (const f of folders) {
+            const folder = await Folder.findOne({ _id: f._id, owner: user._id });
+            if (!folder) {
+                throw new CustomAPIError("Folder not found", 404);
+            }
+            folder.isStarred = false;
+            await folder.save();
         }
-        folder.isStarred = false;
-        await folder.save();
-        message = "Your folder has been removed from starred";
-    } else {
-        throw new CustomAPIError("Invalid type provided", 400);
     }
     
-    res.status(200).json({ message });
+    res.status(200).json({ message: "Removed from starred" });
 }
 
 // get folders
@@ -340,39 +346,38 @@ const getFolders = async (req, res) => {
 
 // move
 const move = async (req, res) => {
-    let { _id, parent, type } = req.body;
-    _id = isValidObjectId(_id) ? _id : null;
+    let { data, parent } = req.body;
     parent = isValidObjectId(parent) ? parent : null;
     const user = req.user;
+    let files = data.files;
+    let folders = data.folders;
 
-    let message;
-    if (type === 'file') {
-        const file = await File.findOne({ _id, owner: user._id });
-        if (!file) {
-            throw new CustomAPIError("File not found", 404);
+    if (!files && !folders) {
+        throw new CustomAPIError("No files or folders found");
+    }  
+
+    if (files && files.length > 0) {
+        for (const f of files) {
+            const file = await File.findOne({ _id: f._id, owner: user._id });
+            if (!file) {
+                throw new CustomAPIError("File not found", 404);
+            }
+            file.parent = parent;
+            await file.save();
         }
-        if (file.parent?.toString() === parent || file.parent === parent) {
-            throw new CustomAPIError("This file is already in this directory", 400);
+    } 
+    if (folders && folders.length > 0) {
+        for (const f of folders) {
+            const folder = await Folder.findOne({ _id: f._id, owner: user._id });
+            if (!folder) {
+                throw new CustomAPIError("Folder not found", 404);
+            }
+            folder.parent = parent;
+            await folder.save();
         }
-        file.parent = parent;
-        await file.save();
-        message = "Your file has been moved";
-    } else if (type === 'folder') {
-        const folder = await Folder.findOne({ _id, owner: user._id });
-        if (!folder) {
-            throw new CustomAPIError("Folder not found", 404);
-        }
-        if (folder.parent?.toString() === parent || folder.parent === parent) {
-            throw new CustomAPIError("This folder is already in this directory", 400);
-        }
-        folder.parent = parent;
-        await folder.save();
-        message = "Your folder has been moved";
-    } else {
-        throw new CustomAPIError("Invalid type provided", 400);
     }
-    
-    res.status(200).json({ message });
+
+    res.status(200).json({ message: "Moved successfully" });
 }
 
 // share file/make public
@@ -409,100 +414,106 @@ const makeFilePrivate = async (req, res) => {
 }
 
 const moveToTrash = async (req, res) => {
-    let { _id, type } = req.body;
-    _id = isValidObjectId(_id) ? _id : null;
+    let { files, folders } = req.body;
     const user = req.user;
-
-    let message;
-    if (type === 'file') {
-        const file = await File.findOne({ _id, owner: user._id });
-        if (!file) {
-            throw new CustomAPIError("File not found", 404);
-        }
-        file.isDeleted = true;
-        file.deletedAt = new Date(Date.now());
-        file.isStarred = false;
-        file.publicKey = null;
-        await file.save();
-        message = "Your file has been moved to trash";
-    } else if (type === 'folder') {
-        const folder = await Folder.findOne({ _id, owner: user._id });
-        if (!folder) {
-            throw new CustomAPIError("Folder not found", 404);
-        }
-        folder.isDeleted = true;
-        folder.deletedAt = new Date(Date.now());
-        folder.isStarred = false;
-        await folder.save();
-        message = "Your folder has been moved to trash";
-    } else {
-        throw new CustomAPIError("Invalid type provided", 400);
-    }
     
-    res.status(200).json({ message });
+    if (!files && !folders) {
+        throw new CustomAPIError("No files or folders found");
+    }
+
+    if (files && files.length > 0) {
+        for (const f of files) {
+            const file = await File.findOne({ _id: f._id, owner: user._id });
+            if (!file) {
+                throw new CustomAPIError("File not found", 404);
+            }
+            file.isDeleted = true;
+            file.deletedAt = new Date(Date.now());
+            file.isStarred = false;
+            file.publicKey = null;
+            await file.save();
+        }
+    } 
+    if (folders && folders.length > 0) {
+        for (const f of folders) {
+            const folder = await Folder.findOne({ _id: f._id, owner: user._id });
+            if (!folder) {
+                throw new CustomAPIError("Folder not found", 404);
+            }
+            folder.isDeleted = true;
+            folder.deletedAt = new Date(Date.now());
+            folder.isStarred = false;
+            await folder.save();
+        }
+    } 
+    
+    res.status(200).json({ message: "Moved to trash" });
 }
 
 // restore 
 const restore = async (req, res) => {
-    let { _id, type } = req.body;
-    _id = isValidObjectId(_id) ? _id : null;
+    let { files, folders } = req.body;
     const user = req.user;
 
-    let message;
-    if (type === 'file') {
-        const file = await File.findOne({ _id, owner: user._id });
-        if (!file) {
-            throw new CustomAPIError("File not found", 404);
+    if (!files && !folders) {
+        throw new CustomAPIError("No files or folders found");
+    }    
+
+    if (files && files.length > 0) {
+        for (const f of files) {
+            const file = await File.findOne({ _id: f._id, owner: user._id });
+            if (!file) {
+                throw new CustomAPIError("File not found", 404);
+            }
+            const parentFolder = await Folder.findOne({ _id: file.parent, owner: user._id });
+            if (!parentFolder || parentFolder?.isDeleted) {
+                file.parent = null;
+            }
+            file.isDeleted = false;
+            file.deletedAt = null;
+            await file.save();
         }
-        const parentFolder = await Folder.findOne({ _id: file.parent, owner: user._id });
-        if (!parentFolder || parentFolder?.isDeleted) {
-            file.parent = null;
+    }
+    if (folders && folders.length > 0) {
+        for (const f of folders) {
+            const folder = await Folder.findOne({ _id: f._id, owner: user._id });
+            if (!folder) {
+                throw new CustomAPIError("Folder not found", 404);
+            }
+            const parentFolder = await Folder.findOne({ _id: folder.parent, owner: user._id });
+            if (!parentFolder || parentFolder?.isDeleted) {
+                folder.parent = null;
+            }
+            folder.isDeleted = false;
+            folder.deletedAt = null;
+            await folder.save();
         }
-        file.isDeleted = false;
-        file.deletedAt = null;
-        await file.save();
-        message = "Your file has been restored";
-    } else if (type === 'folder') {
-        const folder = await Folder.findOne({ _id, owner: user._id });
-        if (!folder) {
-            throw new CustomAPIError("Folder not found", 404);
-        }
-        const parentFolder = await Folder.findOne({ _id: folder.parent, owner: user._id });
-        if (!parentFolder || parentFolder?.isDeleted) {
-            folder.parent = null;
-        }
-        folder.isDeleted = false;
-        folder.deletedAt = null;
-        await folder.save();
-        message = "Your folder has been restored";
-    } else {
-        throw new CustomAPIError("Invalid type provided", 400);
     }
     
-    res.status(200).json({ message });
+    res.status(200).json({ message: "Restored successfully" });
 }
 
 // delete permanently
 const deletePermanently = async (req, res) => {
-    let type = req.query.type;
-    let _id = req.params.id;
-    _id = isValidObjectId(_id) ? _id : null;
+    let { files, folders } = req.body;
     const user = req.user;
 
-    let message;
-    if (type === 'file') {
-        const file = await File.findOneAndDelete({ _id, owner: user._id, isDeleted: true });
-        if (!file) {
-            throw new CustomAPIError("File not found", 404);
+    if (!files && !folders) {
+        throw new CustomAPIError("No files or folders found");
+    } 
+
+    if (files && files.length > 0) {
+        for (const f of files) {
+            const file = await File.findOneAndDelete({ _id: f._id, owner: user._id, isDeleted: true });
+            if (!file) {
+                throw new CustomAPIError("File not found", 404);
+            }
+            user.currentStorage -= file.size;
+            await user.save();
         }
-        user.currentStorage -= file.size;
-        await user.save();
-        message = "Your file has been permanently deleted";
-    } else if (type === 'folder') {
-        const folder = await Folder.findOne({ _id, owner: user._id, isDeleted: true });
-        if (!folder) {
-            throw new CustomAPIError("File not found", 404);
-        }
+    }
+    if (folders && folders.length > 0) {
+
         async function deleteRecursive(parent) {
             const subFiles = await File.find({ owner: user._id, parent, isDeleted: false });    
             for (let file of subFiles) {
@@ -515,14 +526,19 @@ const deletePermanently = async (req, res) => {
                 await folder.deleteOne();
             }
         }
-        await deleteRecursive(folder._id);
-        await folder.deleteOne();
-        await user.save();
-        message = "Your folder has been permanently deleted";
-    } else {
-        throw new CustomAPIError("Invalid type provided", 400);
+
+        for (const f of folders) {
+            const folder = await Folder.findOne({ _id: f._id, owner: user._id, isDeleted: true });
+            if (!folder) {
+                throw new CustomAPIError("Folder not found", 404);
+            }
+            await deleteRecursive(folder._id);
+            await folder.deleteOne();
+            await user.save();
+        }
     }
-    res.status(200).json({ currentStorage: user.currentStorage, message });
+    
+    res.status(200).json({ currentStorage: user.currentStorage, message: "Deleted successfully" });
 }
 
 // get file preview (public)

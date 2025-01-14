@@ -9,7 +9,7 @@ import { FolderProps, SelectedItemsProps } from './Drive';
 import { CustomButton } from '@/components/global/FormElements';
 import DriveLoading from '@/components/drive/DriveLoading';
 import FilesAndFolders from '@/components/drive/FilesAndFolders';
-import SelectionBar from '@/components/drive/SelectionBar';
+import SelectionBar from '@/components/drive/selection-bar/SelectionBar';
 
 export default function Starred() {
     const [parent, setParent] = useState<string>("root");
