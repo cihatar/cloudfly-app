@@ -109,16 +109,15 @@ const changePassword = async (req, res) => {
 const deleteUser = async (req, res) => {
     const user = req.user;
 
-    const userFiles = await File.find({ owner: user._id });
-    if (userFiles.length > 0) {
-        const userFilesPath = path.join(__dirname, `../private/${user._id}/`);
-        await Promise.all(userFiles.map(async (file) => {
-            try {
-                await fs.rm(userFilesPath + file.name, { recursive: true, force: true });
-            } catch (err) {
-                throw new CustomAPIError("Something went wrong", 500);
-            }
-        }));
+    const userFilesPath = path.join(__dirname, `../private/${user._id}`);
+    try {
+        await fs.access(userFilesPath);
+        try {
+            await fs.rm(userFilesPath, { recursive: true, force: true });
+        } catch (err) {
+            throw new CustomAPIError("Something went wrong", 500);
+        }
+    } catch (error) {
     }
 
     await user.deleteOne();
