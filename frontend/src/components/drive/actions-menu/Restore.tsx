@@ -4,7 +4,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { RotateCcw } from "lucide-react";
 
-export default function Restore({ _id, parent, type }: { _id: string, parent: string, type: string }) {
+export default function Restore({ _id, type }: { _id: string, type: string }) {
     // toast
     const showToast = useCustomToast();
 
@@ -15,7 +15,7 @@ export default function Restore({ _id, parent, type }: { _id: string, parent: st
         mutationFn: (data: FilesAndFoldersReqBody) => restore(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['drive']});
             queryClient.invalidateQueries({ queryKey: ['trash']});
         },
         onError: (data: any) => {

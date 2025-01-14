@@ -49,8 +49,8 @@ export default function MovetoTrash({ items }: { items: SelectedItemsProps }) {
 
     return (
         <Dialog>
-            <DialogTrigger>
-                <CustomButton type="button" variant="destructive" className="w-full justify-start cursor-default rounded-full">
+            <DialogTrigger asChild>
+                <CustomButton type="button" variant="destructive" className="w-full cursor-default rounded-full">
                     <Trash2 />
                     Move to Trash
                 </CustomButton>

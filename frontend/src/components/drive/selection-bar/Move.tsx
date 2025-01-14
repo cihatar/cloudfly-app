@@ -18,12 +18,11 @@ import { ChevronLeft, ChevronRight, FolderInput, HardDrive, Loader2 } from "luci
 import { useEffect, useRef, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
-export default function Move({ items, parent }: { items: SelectedItemsProps, parent: string }) {
-    const [folders, setFolders] = useState<FolderProps[] | null>(null);
+export default function Move({ items, parentFolder, setParentFolder }: { items: SelectedItemsProps, parentFolder: string, setParentFolder: (id: string) => void }) {
+    const [folders, setFolders] = useState<FolderProps[]>([]);
     const [isMoveDialogOpen, setMoveDialogOpen] = useState(false);
-    const [parentFolder, setParentFolder] = useState<string>(parent);
-    const [selectedFolderId, setSelectedFolderId] = useState<string>("");    
-
+    const [selectedFolderId, setSelectedFolderId] = useState<string>("");
+    
     // toast
     const showToast = useCustomToast();
 
@@ -32,20 +31,20 @@ export default function Move({ items, parent }: { items: SelectedItemsProps, par
 
     // query
     const queryClient = useQueryClient();        
-
+    
     const { data, isLoading } = useQuery({
         queryKey: ["folders", parentFolder],
         queryFn: () => getFolders("", parentFolder || 'root'),
         enabled: isMoveDialogOpen
     });
-
+    
     useEffect(() => {
         if (data) {
-            const newFolders = data.folders.filter((item1: FolderProps ) => !items.folders.some(item2 => item1._id === item2._id));            
+            const newFolders = data?.folders?.filter((item1: FolderProps ) => !items.folders.some(item2 => item1._id === item2._id)) || [];            
             setFolders(newFolders);
         }
-    }, [data])
-
+    }, [data, items])
+    
     const { mutate, isPending } = useMutation({
         mutationFn: (data: { data: FilesAndFoldersReqBody; parent: string; }) => move(data),
         onSuccess: (data) => {
@@ -58,28 +57,28 @@ export default function Move({ items, parent }: { items: SelectedItemsProps, par
             showToast(data.response.data.error, false);
         }
     });
-
+    
     // handle open folder
     const handleOpenFolder = (id: string) => {
         setParentFolder(id);
     }
-
+    
     // handle select folder
     const handleSelect = (id: string) => {
         setSelectedFolderId(selectedFolderId === id ? "" : id);
     }
-
+    
     // handle move
     const handleMove = () => {
         const fileIdArr = items.files.map((item) => ({ _id: item._id })); 
         const folderIdArr = items.folders.map((item) => ({ _id: item._id })); 
         mutate({ data: { files: fileIdArr, folders: folderIdArr }, parent: selectedFolderId });
-    }
-
+    }    
+    
     return (
         <Dialog open={isMoveDialogOpen} onOpenChange={setMoveDialogOpen}>
-            <DialogTrigger>
-                <CustomButton type="button" variant="secondary" className="w-full justify-start cursor-default rounded-full">
+            <DialogTrigger asChild>
+                <CustomButton type="button" variant="secondary" className="w-full cursor-default rounded-full">
                     <FolderInput />
                     Move
                 </CustomButton>
@@ -123,7 +122,7 @@ export default function Move({ items, parent }: { items: SelectedItemsProps, par
 
                             <>
                             {   
-                                folders === null ?
+                                (folders?.length === 0) ?
                                 <p className="text-center text-xs text-zinc-500 mt-8 select-none">
                                     No folder found in this directory
                                 </p>

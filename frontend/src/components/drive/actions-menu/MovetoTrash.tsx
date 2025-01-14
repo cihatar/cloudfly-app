@@ -13,7 +13,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
-export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setTrashDialogOpen }: { _id: string; parent: string; type: string; isTrashDialogOpen: boolean; setTrashDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function MovetoTrash({ _id, type, isTrashDialogOpen, setTrashDialogOpen }: { _id: string; type: string; isTrashDialogOpen: boolean; setTrashDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     // toast
     const showToast = useCustomToast();
 
@@ -27,7 +27,7 @@ export default function MovetoTrash({ _id, parent, type, isTrashDialogOpen, setT
         mutationFn: (data: FilesAndFoldersReqBody) => moveToTrash(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['drive']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
             queryClient.invalidateQueries({ queryKey: ['trash']});
             cancelBtnRef.current?.click();

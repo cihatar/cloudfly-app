@@ -4,7 +4,7 @@ import useCustomToast from '@/hooks/useCustomToast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { StarOff } from 'lucide-react'
 
-export default function Unstar({ _id, parent, type }: { _id: string, parent: string, type: string }) {
+export default function Unstar({ _id, type }: { _id: string, type: string }) {
     // toast
     const showToast = useCustomToast();
 
@@ -15,7 +15,7 @@ export default function Unstar({ _id, parent, type }: { _id: string, parent: str
         mutationFn: (data: FilesAndFoldersReqBody) => unstar(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['drive']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
         },
         onError: (data: any) => {

@@ -13,7 +13,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
-export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setPrivateDialogOpen }: { _id: string; parent: string; isPrivateDialogOpen: boolean; setPrivateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
+export default function MakeFilePrivate({ _id, isPrivateDialogOpen, setPrivateDialogOpen }: { _id: string; isPrivateDialogOpen: boolean; setPrivateDialogOpen: React.Dispatch<React.SetStateAction<boolean>>; }) {
     // toast
     const showToast = useCustomToast();
 
@@ -27,7 +27,7 @@ export default function MakeFilePrivate({ _id, parent, isPrivateDialogOpen, setP
         mutationFn: (data: { _id: string }) => makeFilePrivate(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['drive']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
             cancelBtnRef.current?.click();
         },

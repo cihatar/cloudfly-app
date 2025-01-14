@@ -32,7 +32,7 @@ export default function Unstar({ items }: { items: SelectedItemsProps }) {
     }
 
     return (
-        <CustomButton onClick={handleUnstar} type="button" variant="secondary" className="w-full justify-start cursor-default rounded-full">
+        <CustomButton onClick={handleUnstar} type="button" variant="secondary" className="w-full cursor-default rounded-full">
             <StarOff />
             Remove from Starred
         </CustomButton>

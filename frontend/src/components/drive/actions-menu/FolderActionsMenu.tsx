@@ -52,14 +52,14 @@ export default function FolderActionsMenu({ _id, parent, isStarred, isDeleted }:
                             isStarred ?
                             <>
                             <MenubarItem className="p-0">
-                                <Unstar _id={_id} parent={parent} type="folder" />
+                                <Unstar _id={_id} type="folder" />
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
                             :
                             <>
                             <MenubarItem className="p-0">
-                                <Star _id={_id} parent={parent} type="folder" />
+                                <Star _id={_id} type="folder" />
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
@@ -90,7 +90,7 @@ export default function FolderActionsMenu({ _id, parent, isStarred, isDeleted }:
                             :
                             <>
                             <MenubarItem className="p-0">
-                                <Restore _id={_id} parent={parent} type="folder" />
+                                <Restore _id={_id} type="folder" />
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
@@ -118,7 +118,7 @@ export default function FolderActionsMenu({ _id, parent, isStarred, isDeleted }:
             <Move _id={_id} parent={parent} type="folder" isMoveDialogOpen={isMoveDialogOpen} setMoveDialogOpen={setMoveDialogOpen} />
 
             {/* trash dialog */}
-            <MovetoTrash _id={_id} parent={parent} type="folder" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
+            <MovetoTrash _id={_id} type="folder" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
 
             {/* delete dialog */}
             <Delete _id={_id} type="folder" isDeleteDialogOpen={isDeleteDialogOpen} setDeleteDialogOpen={setDeleteDialogOpen} />

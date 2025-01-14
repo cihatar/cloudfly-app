@@ -72,14 +72,14 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             isStarred ?
                             <>
                             <MenubarItem className="p-0">
-                                <Unstar _id={_id} parent={parent} type="file" />
+                                <Unstar _id={_id} type="file" />
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
                             :
                             <>
                             <MenubarItem className="p-0">
-                                <Star _id={_id} parent={parent} type="file" />
+                                <Star _id={_id} type="file" />
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
@@ -145,7 +145,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
                             :
                             <>
                             <MenubarItem className="p-0">
-                                <Restore _id={_id} parent={parent} type="file" />
+                                <Restore _id={_id} type="file" />
                             </MenubarItem>
                             <MenubarSeparator />
                             </>
@@ -176,13 +176,13 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
             <Move _id={_id} parent={parent} type="file" isMoveDialogOpen={isMoveDialogOpen} setMoveDialogOpen={setMoveDialogOpen} />
 
             {/* share dialog */}
-            <ShareFile _id={_id} parent={parent} publicKey={publicKey} isShareDialogOpen={isShareDialogOpen} setShareDialogOpen={setShareDialogOpen} />
+            <ShareFile _id={_id} publicKey={publicKey} isShareDialogOpen={isShareDialogOpen} setShareDialogOpen={setShareDialogOpen} />
 
             {/* private dialog */}
-            <MakeFilePrivate _id={_id} parent={parent} isPrivateDialogOpen={isPrivateDialogOpen} setPrivateDialogOpen={setPrivateDialogOpen} />
+            <MakeFilePrivate _id={_id} isPrivateDialogOpen={isPrivateDialogOpen} setPrivateDialogOpen={setPrivateDialogOpen} />
 
             {/* trash dialog */}
-            <MovetoTrash _id={_id} parent={parent} type="file" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
+            <MovetoTrash _id={_id} type="file" isTrashDialogOpen={isTrashDialogOpen} setTrashDialogOpen={setTrashDialogOpen} />
 
             {/* delete dialog */}
             <Delete _id={_id} type="file" isDeleteDialogOpen={isDeleteDialogOpen} setDeleteDialogOpen={setDeleteDialogOpen} />

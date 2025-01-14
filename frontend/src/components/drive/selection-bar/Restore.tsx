@@ -32,7 +32,7 @@ export default function Restore({ items }: { items: SelectedItemsProps }) {
     }
 
     return (
-        <CustomButton onClick={handleRestore} type="button" variant="secondary" className="w-full justify-start cursor-default rounded-full">
+        <CustomButton onClick={handleRestore} type="button" variant="secondary" className="w-full cursor-default rounded-full">
             <RotateCcw />
             Restore
         </CustomButton>

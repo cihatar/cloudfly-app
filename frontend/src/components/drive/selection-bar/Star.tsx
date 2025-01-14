@@ -16,7 +16,7 @@ export default function Star({ items }: { items: SelectedItemsProps }) {
         mutationFn: (data: FilesAndFoldersReqBody) => star(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['drive']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
         },
         onError: (data: any) => {
@@ -32,7 +32,7 @@ export default function Star({ items }: { items: SelectedItemsProps }) {
     }
 
     return (
-        <CustomButton onClick={handleStar} type="button" variant="secondary" className="w-full justify-start cursor-default rounded-full">
+        <CustomButton onClick={handleStar} type="button" variant="secondary" className="w-full cursor-default rounded-full">
             <FolderHeart />
             Add to Starred
         </CustomButton>

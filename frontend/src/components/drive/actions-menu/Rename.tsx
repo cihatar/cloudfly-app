@@ -27,7 +27,7 @@ export default function Rename({ _id, parent, type, isRenameDialogOpen, setRenam
         mutationFn: (data: { _id: string, parent: string; name: string, type: string }) => rename(data),
         onSuccess: (data) => {
             showToast(data.message);
-            queryClient.invalidateQueries({ queryKey: ['drive', parent || "root"]});
+            queryClient.invalidateQueries({ queryKey: ['drive']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
             cancelBtnRef.current?.click();
         },
