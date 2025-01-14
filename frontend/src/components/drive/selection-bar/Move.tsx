@@ -40,7 +40,8 @@ export default function Move({ items, parentFolder, setParentFolder }: { items: 
     
     useEffect(() => {
         if (data) {
-            const newFolders = data?.folders?.filter((item1: FolderProps ) => !items.folders.some(item2 => item1._id === item2._id)) || [];            
+            const newFolders = data?.folders?.filter((item1: FolderProps ) => !items.folders.some(item2 => item1._id === item2._id)) || [];
+            setSelectedFolderId("");            
             setFolders(newFolders);
         }
     }, [data, items])

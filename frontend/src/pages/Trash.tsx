@@ -8,6 +8,7 @@ import FilesAndFolders from '@/components/drive/FilesAndFolders';
 import { useState } from 'react';
 import { SelectedItemsProps } from './Drive';
 import SelectionBar from '@/components/drive/selection-bar/SelectionBar';
+import EmptyTrash from '@/components/drive/trash/EmptyTrash';
 
 export default function Trash() {
     const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
@@ -17,7 +18,7 @@ export default function Trash() {
         queryFn: () => getTrashedFilesAndFolders(),
         staleTime: 2 * 60 * 1000,
     });
-    
+
     return (
         <>
         <Animate>
@@ -26,6 +27,10 @@ export default function Trash() {
                 <div className="flex items-center justify-start gap-2">
                     <Title>Trash</Title>
                 </div>
+                {
+                    (data?.files || data?.folders) &&
+                    <EmptyTrash data={data} />
+                }
             </div>
 
             {/* not found */}
