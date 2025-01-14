@@ -1,4 +1,5 @@
 const CustomAPIError = require("../errors/custom.error.js");
+const File = require("../models/file.model.js");
 const path = require("path");
 const fs = require("fs").promises;
 const { v4: uuid } = require('uuid');
@@ -47,9 +48,9 @@ const updateImage = async (req, res) => {
 const removeImage = async (req, res) => {
     const user = req.user;
     
-    const uploadPath = path.join(__dirname, `../public/images/${user._id}/`);
+    const imagePath = path.join(__dirname, `../public/images/${user._id}/`);
     try {
-        await fs.rm(uploadPath, { recursive: true, force: true })
+        await fs.rm(imagePath, { recursive: true, force: true })
     } catch (err) {
         throw new CustomAPIError("Something went wrong", 500);
     }
@@ -107,6 +108,19 @@ const changePassword = async (req, res) => {
 // delete user
 const deleteUser = async (req, res) => {
     const user = req.user;
+
+    const userFiles = await File.find({ owner: user._id });
+    if (userFiles.length > 0) {
+        const userFilesPath = path.join(__dirname, `../private/${user._id}/`);
+        await Promise.all(userFiles.map(async (file) => {
+            try {
+                await fs.rm(userFilesPath + file.name, { recursive: true, force: true });
+            } catch (err) {
+                throw new CustomAPIError("Something went wrong", 500);
+            }
+        }));
+    }
+
     await user.deleteOne();
     res.clearCookie("token");
     res.status(200).json({ message: "Your account has been deleted" });

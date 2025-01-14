@@ -502,24 +502,38 @@ const deletePermanently = async (req, res) => {
         throw new CustomAPIError("No files or folders found");
     } 
 
+    const userFilesPath = path.join(__dirname, `../private/${user._id}/`);
+
     if (files && files.length > 0) {
         for (const f of files) {
-            const file = await File.findOneAndDelete({ _id: f._id, owner: user._id, isDeleted: true });
+            const file = await File.findOne({ _id: f._id, owner: user._id, isDeleted: true });
             if (!file) {
                 throw new CustomAPIError("File not found", 404);
             }
+            try {
+                await fs.rm(userFilesPath + file.name, { recursive: true, force: true });
+            } catch (err) {
+                throw new CustomAPIError("Something went wrong", 500);
+            }
             user.currentStorage -= file.size;
+            await file.deleteOne();
             await user.save();
         }
     }
     if (folders && folders.length > 0) {
 
         async function deleteRecursive(parent) {
-            const subFiles = await File.find({ owner: user._id, parent, isDeleted: false });    
-            for (let file of subFiles) {
+            const subFiles = await File.find({ owner: user._id, parent, isDeleted: false });  
+            for (let file of subFiles) {                    
+                try {
+                    await fs.rm(userFilesPath + file.name, { recursive: true, force: true });
+                } catch (err) {
+                    throw new CustomAPIError("Something went wrong", 500);
+                }
                 user.currentStorage -= file.size;
                 await file.deleteOne();
             }  
+              
             const subFolders = await Folder.find({ owner: user._id, parent, isDeleted: false });            
             for (let folder of subFolders) {
                 await deleteRecursive(folder._id); 
