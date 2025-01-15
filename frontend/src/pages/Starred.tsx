@@ -26,6 +26,7 @@ export default function Starred() {
     const handleChangeDirectory = (folder: FolderProps) => {
         setFolderStack([...folderStack, { _id: folder._id, name: folder.name }]);
         setParent(folder._id);
+        setSelectedItems({ files: [], folders: [], count: 0 });
     }
 
     // handle go back
@@ -77,7 +78,7 @@ export default function Starred() {
         </Animate>
 
         {/* selection bar */}
-        <SelectionBar selectedItems={selectedItems} page="starred" />
+        <SelectionBar data={data} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="starred" />
 
         </>
     )

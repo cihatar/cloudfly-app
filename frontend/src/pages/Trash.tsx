@@ -54,7 +54,7 @@ export default function Trash() {
         </Animate>
 
         {/* selection bar */}
-        <SelectionBar selectedItems={selectedItems} page="trash" />
+        <SelectionBar data={data} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="trash" />
 
         </>
     )

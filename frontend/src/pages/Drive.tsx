@@ -148,7 +148,7 @@ export default function Drive() {
         </div>
 
         {/* selection bar */}
-        <SelectionBar selectedItems={selectedItems} page="drive" />
+        <SelectionBar data={data} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="drive" />
            
         </>
     )

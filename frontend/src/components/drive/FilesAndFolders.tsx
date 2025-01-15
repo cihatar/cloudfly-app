@@ -49,7 +49,7 @@ export default function FilesAndFolders({
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (!target.closest('.item')) {
+            if (!target.closest('.item') && !target.closest('.select-all')) {
                 setSelectedItems({ files: [], folders: [], count: 0 });
             }
         };
