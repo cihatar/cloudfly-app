@@ -362,6 +362,25 @@ const move = async (req, res) => {
             if (!file) {
                 throw new CustomAPIError("File not found", 404);
             }
+
+            if (file.parent?.toString() === parent || file.parent === parent) {
+                throw new CustomAPIError("This file is already in this directory", 400);
+            }
+
+            async function generateName(name, i) {                
+                const fileWithSameName = await File.findOne({ owner: user._id, parent, originalName: name, isDeleted: false });
+                if (!fileWithSameName) {
+                    file.originalName = name;
+                    return;
+                }
+                const existingFileName = path.basename(file.originalName, path.extname(file.originalName)) + " (" + i + ")" + path.extname(file.originalName);
+                i++;
+                await generateName(existingFileName, i);
+            }
+
+            let i = 1;
+            await generateName(file.originalName, i);
+
             file.parent = parent;
             await file.save();
         }
@@ -372,6 +391,25 @@ const move = async (req, res) => {
             if (!folder) {
                 throw new CustomAPIError("Folder not found", 404);
             }
+
+            if (folder.parent?.toString() === parent || folder.parent === parent) {
+                throw new CustomAPIError("This folder is already in this directory", 400);
+            }
+
+            async function generateName(name, i) {                
+                const folderWithSameName = await Folder.findOne({ owner: user._id, parent, name, isDeleted: false });
+                if (!folderWithSameName) {
+                    folder.name = name;
+                    return;
+                }
+                const existingFolderName = folder.name + " (" + i + ")";
+                i++;
+                await generateName(existingFolderName, i);
+            }
+
+            let i = 1;
+            await generateName(folder.name, i);
+
             folder.parent = parent;
             await folder.save();
         }
@@ -469,8 +507,23 @@ const restore = async (req, res) => {
             if (!parentFolder || parentFolder?.isDeleted) {
                 file.parent = null;
             }
+
+            async function generateName(name, i) {                
+                const fileWithSameName = await File.findOne({ owner: user._id, parent: file.parent, originalName: name, isDeleted: false });
+                if (!fileWithSameName) {
+                    file.originalName = name;
+                    return;
+                }
+                const existingFileName = path.basename(file.originalName, path.extname(file.originalName)) + " (" + i + ")" + path.extname(file.originalName);
+                i++;
+                await generateName(existingFileName, i);
+            }
+
+            let i = 1;
+            await generateName(file.originalName, i);
+
             file.isDeleted = false;
-            file.deletedAt = null;
+            file.deletedAt = null;  
             await file.save();
         }
     }
@@ -484,6 +537,21 @@ const restore = async (req, res) => {
             if (!parentFolder || parentFolder?.isDeleted) {
                 folder.parent = null;
             }
+
+            async function generateName(name, i) {                
+                const folderWithSameName = await Folder.findOne({ owner: user._id, parent: folder.parent, name, isDeleted: false });
+                if (!folderWithSameName) {
+                    folder.name = name;
+                    return;
+                }
+                const existingFolderName = folder.name + " (" + i + ")";
+                i++;
+                await generateName(existingFolderName, i);
+            }
+
+            let i = 1;
+            await generateName(folder.name, i);
+
             folder.isDeleted = false;
             folder.deletedAt = null;
             await folder.save();
