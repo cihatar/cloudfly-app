@@ -114,6 +114,32 @@ const getFilesAndFolders = async (req, res) => {
     res.status(200).json({ files, folders });
 }
 
+// get latest data
+const getLatestFiles = async (req, res) => {
+    const user = req.user;    
+
+    let lastUploadedFiles = await File.find({ owner: user._id, isDeleted: false, })
+        .sort({ createdAt: -1 })
+        .limit(6);  
+
+    let lastUpdatedFiles = await File.find({ owner: user._id, isDeleted: false, })
+        .sort({ updatedAt: -1 })
+        .limit(6);  
+    
+    // remove newly uploaded files from updated files array
+    lastUpdatedFiles = lastUpdatedFiles.filter(updatedFile => 
+        !lastUploadedFiles.some(uploadedFile => 
+            uploadedFile._id.toString() === updatedFile._id.toString() &&
+            uploadedFile.createdAt.getTime() === updatedFile.updatedAt.getTime()
+        )
+    );
+
+    lastUploadedFiles = lastUploadedFiles.length === 0 ? null : lastUploadedFiles;
+    lastUpdatedFiles = lastUpdatedFiles.length === 0 ? null : lastUpdatedFiles;
+
+    res.status(200).json({ lastUploadedFiles, lastUpdatedFiles });
+}
+
 // get starred files and folders
 const getStarredFilesAndFolders = async (req, res) => {
     let parent = req.params.id;
@@ -721,6 +747,7 @@ const downloadFilePublic = async (req, res) => {
 module.exports = {
     uploadFile,
     getFilesAndFolders,
+    getLatestFiles,
     getStarredFilesAndFolders,
     getTrashedFilesAndFolders,
     getFileDetails,

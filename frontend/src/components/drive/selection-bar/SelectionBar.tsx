@@ -24,7 +24,7 @@ export default function SelectionBar({ data, setSelectedItems, selectedItems, pa
 
     const setParentFolder = (id: string) => setParent(id); 
 
-    const selectAll = () => setSelectedItems({ files: data?.files || [], folders: data?.folders || [], count: data?.files?.length || 0 + data?.folders?.length || 0 });
+    const selectAll = () => setSelectedItems({ files: data?.files || [], folders: data?.folders || [], count: (data?.files?.length || 0) + (data?.folders?.length || 0) });
 
     console.log(data);
     

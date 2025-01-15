@@ -10,6 +10,11 @@ export const getFilesAndFolders = async (parent: string) => {
     return res.data;
 }
 
+export const getLatestFiles = async () => {
+    const res = await customAxios.get("/api/drive/get-latest");
+    return res.data;
+}
+
 export const getStarredFilesAndFolders = async (parent: string) => {
     const res = await customAxios.get(`/api/drive/get-starred/${parent}`);
     return res.data;

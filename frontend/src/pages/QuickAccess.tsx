@@ -1,9 +1,18 @@
+import { getLatestFiles } from "@/api/api";
+import File from "@/components/drive/File";
 import Animate from "@/components/global/Animate";
 import { InputField } from "@/components/global/FormElements";
 import { Subtitle, Title } from "@/components/global/Titles";
+import { useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react";
+import { FileProps } from "./Drive";
 
 export default function QuickAccess() {
+    const { data, isLoading } = useQuery({
+        queryKey: ["quick-access"],
+        queryFn: () => getLatestFiles(),
+    });
+    
     return (
         <>
         <Animate>
@@ -17,42 +26,39 @@ export default function QuickAccess() {
                 </div>
             </div>
 
-            <Subtitle className="mt-12 text-xs text-zinc-800 dark:text-zinc-200">Last uploaded files</Subtitle>
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-4 text-xs transition-all duration-300">
-            
-                <div className="item w-full h-48 flex flex-col items-start border rounded-md group overflow-hidden relative hover:bg-zinc-100 dark:hover:bg-zinc-900">
-                    <div className="w-full h-full p-2">
-                        <div className={`flex items-center justify-center h-32 font-semibold text-xl text-white bg-blue-400 uppercase rounded-md mb-2 select-none pointer-events-none`}>
-                            MP4
-                        </div>
-                        <p className="font-medium select-none">video.mp4</p>
-                        <p className="text-zinc-500 select-none">mp4</p>
+            {/* last uploaded files */}
+            {
+                data?.lastUploadedFiles && <>
+                    <Subtitle className="mt-12 text-xs text-zinc-800 dark:text-zinc-200">Last uploaded files</Subtitle>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-4 text-xs">
+                        {
+                            data.lastUploadedFiles.map((file: FileProps) => (
+                                <File 
+                                    key={file._id} 
+                                    file={file}
+                                />
+                            ))
+                        }
                     </div>
-                </div>
+                </>
+            }
 
-                <div className="item w-full h-48 flex flex-col items-start border rounded-md group overflow-hidden relative hover:bg-zinc-100 dark:hover:bg-zinc-900">
-                    <div className="w-full h-full p-2">
-                        <div className={`flex items-center justify-center h-32 font-semibold text-xl text-white bg-zinc-600 uppercase rounded-md mb-2 select-none pointer-events-none`}>
-                            TXT
-                        </div>
-                        <p className="font-medium select-none">notes.txt</p>
-                        <p className="text-zinc-500 select-none">txt</p>
+            {/* last updated files */}
+            {
+                data?.lastUpdatedFiles && <>
+                    <Subtitle className="mt-12 text-xs text-zinc-800 dark:text-zinc-200">Last updated files</Subtitle>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-4 text-xs">
+                        {
+                            data.lastUpdatedFiles.map((file: FileProps) => (
+                                <File 
+                                    key={file._id} 
+                                    file={file}
+                                />
+                            ))
+                        }
                     </div>
-                </div>
-            </div>
-
-            <Subtitle className="mt-12 text-xs text-zinc-800 dark:text-zinc-200">Last updated files</Subtitle>
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 3xl:grid-cols-8 gap-4 text-xs transition-all duration-300">
-                <div className="item w-full h-48 flex flex-col items-start border rounded-md group overflow-hidden relative hover:bg-zinc-100 dark:hover:bg-zinc-900">
-                    <div className="w-full h-full p-2">
-                        <div className={`flex items-center justify-center h-32 font-semibold text-xl text-white bg-purple-400 uppercase rounded-md mb-2 select-none pointer-events-none`}>
-                            MP3
-                        </div>
-                        <p className="font-medium select-none">test.mp3</p>
-                        <p className="text-zinc-500 select-none">mp3</p>
-                    </div>
-                </div>
-            </div>
+                </>
+            }
             
         </Animate>
 
