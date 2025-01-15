@@ -3,6 +3,7 @@ import { useAppSelector } from "@/store/hooks";
 import {
     AlignJustify,
     ChevronRight,
+    FileStack,
     FolderHeart,
     HardDrive,
     Settings,
@@ -99,6 +100,19 @@ export default function Sidebar() {
                                 <div className="flex items-center gap-2">
                                     <HardDrive className="scale-75" />
                                     <p className="text-sm">My Drive</p>
+                                </div>
+                                <ChevronRight className="scale-50" />
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink
+                                to="/quick-access"
+                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                >
+                                <div className="flex items-center gap-2">
+                                    <FileStack className="scale-75" />
+                                    <p className="text-sm">Quick Access</p>
                                 </div>
                                 <ChevronRight className="scale-50" />
                             </NavLink>

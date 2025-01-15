@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import FileDownload from "./pages/FileDownload";
 import Drive from "./pages/Drive";
+import QuickAccess from "./pages/QuickAccess";
 import Starred from "./pages/Starred";
 import Trash from "./pages/Trash";
 import ProfileSettings from "./pages/ProfileSettings";
@@ -40,6 +41,7 @@ function AppRoutes() {
                                 <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
                                 <Route element={user ? <Sidebar /> : <Navigate to="/auth/login" />}>
                                     <Route path="/drive" element={<Drive />} />
+                                    <Route path="/quick-access" element={<QuickAccess />} />
                                     <Route path="/starred" element={<Starred />} />
                                     <Route path="/trash" element={<Trash />} />
                                     <Route path="/profile/settings" element={<ProfileSettings />} />
