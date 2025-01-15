@@ -3,12 +3,12 @@ import throwAway from "@/assets/throw_away.svg";
 import { getTrashedFilesAndFolders } from '@/api/api';
 import { Title } from '@/components/global/Titles'
 import { useQuery } from '@tanstack/react-query';
-import DriveLoading from '@/components/drive/DriveLoading';
 import FilesAndFolders from '@/components/drive/FilesAndFolders';
 import { useState } from 'react';
 import { SelectedItemsProps } from './Drive';
 import SelectionBar from '@/components/drive/selection-bar/SelectionBar';
 import EmptyTrash from '@/components/drive/trash/EmptyTrash';
+import { DrivePageLoading } from '@/components/global/Loading';
 
 export default function Trash() {
     const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
@@ -35,7 +35,7 @@ export default function Trash() {
 
             {/* not found */}
             {
-                isLoading ? <DriveLoading /> : 
+                isLoading ? <DrivePageLoading /> : 
                 !data.files && !data.folders ? 
                 <div className="flex flex-col text-center items-center justify-center gap-4 mt-56 select-none pointer-events-none">
                     <img src={throwAway} alt="Trash" className="w-48 lg:w-72"/>

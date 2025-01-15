@@ -7,9 +7,9 @@ import { useQuery } from '@tanstack/react-query';
 import { getFilesAndFolders, getStarredFilesAndFolders } from '@/api/api';
 import { FolderProps, SelectedItemsProps } from './Drive';
 import { CustomButton } from '@/components/global/FormElements';
-import DriveLoading from '@/components/drive/DriveLoading';
 import FilesAndFolders from '@/components/drive/FilesAndFolders';
 import SelectionBar from '@/components/drive/selection-bar/SelectionBar';
+import { DrivePageLoading } from '@/components/global/Loading';
 
 export default function Starred() {
     const [parent, setParent] = useState<string>("root");
@@ -56,7 +56,7 @@ export default function Starred() {
             
             {/* not found */}
             {
-                isLoading ? <DriveLoading /> : 
+                isLoading ? <DrivePageLoading /> : 
                 !data.files && !data.folders ? 
                 <div className="flex flex-col text-center items-center justify-center gap-4 mt-44 select-none pointer-events-none">
                     <img src={stars} alt="Stars" className="w-48 lg:w-72"/>

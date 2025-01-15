@@ -4,13 +4,13 @@ import { Title } from "@/components/global/Titles";
 import { getFilesAndFolders } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { DragEvent, useEffect, useState } from "react";
-import DriveLoading from "@/components/drive/DriveLoading";
 import CreateFolder from "@/components/drive/CreateFolder";
 import { ChevronLeft, HardDriveUpload } from "lucide-react";
 import UploadFile from "@/components/drive/UploadFile";
 import { CustomButton } from "@/components/global/FormElements";
 import FilesAndFolders from "@/components/drive/FilesAndFolders";
 import SelectionBar from "@/components/drive/selection-bar/SelectionBar";
+import { DrivePageLoading } from "@/components/global/Loading";
 
 export interface FileProps {
     _id: string; 
@@ -120,7 +120,7 @@ export default function Drive() {
             
             {/* not found */}
             {
-                isLoading ? <DriveLoading /> : 
+                isLoading ? <DrivePageLoading /> : 
                 !data.files && !data.folders ? 
                 <div className="flex flex-col text-center items-center justify-center gap-4 mt-36 select-none pointer-events-none">
                     <img src={goingUp} alt="Upload file" className="w-48 lg:w-72"/>

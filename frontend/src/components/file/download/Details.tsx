@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton';
 import DownloadFile from './DownloadFile';
+import { FileDownloadPageDetailsLoading } from '@/components/global/Loading';
 
 interface DetailsProps {
     owner: {
@@ -14,20 +14,7 @@ interface DetailsProps {
 
 export default function Details({ data, isLoading, error, keyProp }: { data: DetailsProps, isLoading: boolean, error: string, keyProp: string }) {
     return isLoading ?
-                <>
-                    <div className='flex items-center gap-2 mb-4 p-2'>
-                        <Skeleton className='w-8 h-8' />
-                        <div>
-                            <Skeleton className='w-32 h-2 mb-1' />
-                            <Skeleton className='w-16 h-2' />
-                        </div>
-                    </div>
-                    <div className='p-2'>
-                        <Skeleton className='w-16 h-2' />
-                    </div>
-                    <Skeleton className='w-full h-20' />
-                    <Skeleton className='w-full h-10 mt-4' />
-                </>
+                <FileDownloadPageDetailsLoading />
                 :
                 !error ? 
                 <>
