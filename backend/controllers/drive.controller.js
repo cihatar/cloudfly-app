@@ -503,9 +503,23 @@ const restore = async (req, res) => {
             if (!file) {
                 throw new CustomAPIError("File not found", 404);
             }
+
             const parentFolder = await Folder.findOne({ _id: file.parent, owner: user._id });
             if (!parentFolder || parentFolder?.isDeleted) {
                 file.parent = null;
+            } else {
+                async function isParentDeleted(parent) {
+                    const deletedParent = await Folder.findOne({ _id: parent, owner: user._id });
+                    if (deletedParent && deletedParent?.isDeleted) {
+                        file.parent = null;
+                        return;
+                    } else if (!deletedParent) {
+                        return;
+                    }
+                    await isParentDeleted(deletedParent.parent);
+                }
+
+                await isParentDeleted(parentFolder.parent);
             }
 
             async function generateName(name, i) {                
@@ -533,9 +547,23 @@ const restore = async (req, res) => {
             if (!folder) {
                 throw new CustomAPIError("Folder not found", 404);
             }
+            
             const parentFolder = await Folder.findOne({ _id: folder.parent, owner: user._id });
             if (!parentFolder || parentFolder?.isDeleted) {
                 folder.parent = null;
+            } else {
+                async function isParentDeleted(parent) {
+                    const deletedParent = await Folder.findOne({ _id: parent, owner: user._id });
+                    if (deletedParent && deletedParent?.isDeleted) {
+                        folder.parent = null;
+                        return;
+                    } else if (!deletedParent) {
+                        return;
+                    }
+                    await isParentDeleted(deletedParent.parent);
+                }
+
+                await isParentDeleted(parentFolder.parent);
             }
 
             async function generateName(name, i) {                
