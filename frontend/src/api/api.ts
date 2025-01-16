@@ -15,6 +15,11 @@ export const getLatestFiles = async () => {
     return res.data;
 }
 
+export const searchFilesAndFolders = async (query: string) => {
+    const res = await customAxios.get(`/api/drive/search?k=${query}`);
+    return res.data;
+}
+
 export const getStarredFilesAndFolders = async (parent: string) => {
     const res = await customAxios.get(`/api/drive/get-starred/${parent}`);
     return res.data;

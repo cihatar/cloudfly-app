@@ -24,10 +24,7 @@ export default function SelectionBar({ data, setSelectedItems, selectedItems, pa
 
     const setParentFolder = (id: string) => setParent(id); 
 
-    const selectAll = () => setSelectedItems({ files: data?.files || [], folders: data?.folders || [], count: (data?.files?.length || 0) + (data?.folders?.length || 0) });
-
-    console.log(data);
-    
+    const selectAll = () => setSelectedItems({ files: data?.files || [], folders: data?.folders || [], count: (data?.files?.length || 0) + (data?.folders?.length || 0) });    
     
     return (
         <div className={`transition-all shadow-md flex flex-col lg:flex-row items-center justify-center gap-2 p-4 text-xs rounded-md lg:rounded-full fixed bottom-0 left-1/2 transform -translate-x-1/2 z-10 border bg-white dark:bg-zinc-900
@@ -50,6 +47,21 @@ export default function SelectionBar({ data, setSelectedItems, selectedItems, pa
                     <Star items={items} />
                 }
                 <Move items={items} parentFolder={parent} setParentFolder={setParentFolder} />
+                <MovetoTrash items={items} />
+                </>
+            }
+
+            {
+                page === "quick-access" && <>
+                {
+                    items?.files.every(i => i.isStarred === true) &&
+                    items?.folders.every(i => i.isStarred === true) ?
+                    <>
+                    <Unstar items={items} />
+                    </>
+                    :
+                    <Star items={items} />
+                }
                 <MovetoTrash items={items} />
                 </>
             }

@@ -1,39 +1,88 @@
 import Animate from "@/components/global/Animate";
-import upload_files from "@/assets/upload_files.svg";
-import { getLatestFiles } from "@/api/api";
-import File from "@/components/drive/File";
-import { InputField } from "@/components/global/FormElements";
+import { getFilesAndFolders, getLatestFiles, searchFilesAndFolders } from "@/api/api";
+import { CustomButton, InputField } from "@/components/global/FormElements";
 import { Subtitle, Title } from "@/components/global/Titles";
 import { useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
-import { FileProps } from "./Drive";
-import { QuickAccessPageLoading } from "@/components/global/Loading";
+import upload_files from "@/assets/upload_files.svg";
+import { ChevronLeft, Search, SearchX } from "lucide-react";
+import { DrivePageLoading, QuickAccessPageLoading } from "@/components/global/Loading";
+import { useState } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
+import FilesAndFolders from "@/components/drive/FilesAndFolders";
+import File from "@/components/drive/File";
+import { FileProps, FolderProps, SelectedItemsProps } from "./Drive";
+import SelectionBar from "@/components/drive/selection-bar/SelectionBar";
 
 export default function QuickAccess() {
+    const [parent, setParent] = useState<string>("root");
+    const [folderStack, setFolderStack] = useState<{_id: string, name: string}[]>([{ _id: parent, name: "Quick Access"}]);
+    const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
+    const [query, setQuery] = useState("");
+
+    const debounceQuery = useDebounce(query, 1000);
+
+    // get latest files
     const { data, isLoading } = useQuery({
         queryKey: ["quick-access"],
         queryFn: () => getLatestFiles(),
     });
-    
+
+    // search 
+    const { data: searchData, isLoading: searchLoading } = useQuery({
+        queryKey: ["search", debounceQuery],
+        queryFn: () => searchFilesAndFolders(debounceQuery),
+        enabled: !!debounceQuery
+    });
+
+    // open folder
+    const { data: driveData, isLoading: driveLoading } = useQuery({
+        queryKey: ["open-folder", parent],
+        queryFn: () => getFilesAndFolders(parent),
+        staleTime: 2 * 60 * 1000,
+        enabled: parent !== "root"
+    });
+
+    // handle change directory 
+    const handleChangeDirectory = (folder: FolderProps) => {
+        setFolderStack([...folderStack, { _id: folder._id, name: folder.name }]);
+        setParent(folder._id);
+        setSelectedItems({ files: [], folders: [], count: 0 });
+    }
+
+    // handle go back
+    const handleGoBack = () => {
+        const currentFolderId = folderStack[folderStack.length - 1]._id;
+        const prevFolderId = folderStack[folderStack.length - 2]._id || 'root';
+        setFolderStack((stack) => stack.filter((s) => s._id !== currentFolderId));
+        setParent(prevFolderId);
+    }    
+
     return (
         <>
         <Animate>
 
             {/* title & search */}  
             <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 justify-between">
-                <Title className="whitespace-nowrap">Quick Access</Title>
+            <div className="flex items-center justify-start gap-2">
+                    {
+                        folderStack[folderStack.length - 1].name !== "Quick Access" && 
+                        <CustomButton onClick={handleGoBack} type="button" variant="ghost" effect={false} className="rounded-full p-0 h-8 w-8" >
+                            <ChevronLeft />
+                        </CustomButton>
+                    }
+                    <Title className="whitespace-nowrap">{folderStack[folderStack.length - 1].name}</Title>
+                </div>
                 {
                     !data?.lastUploadedFiles && !data?.lastUpdatedFiles ? <></> :
-                    <div className="relative w-full">
-                        <InputField className="rounded-full pl-12" type="text" placeholder="Search files and folders" />
+                    <div className={`relative w-full ${parent !== "root" && "hidden"}`}>
+                        <InputField className="rounded-full pl-12" type="text" placeholder="Search files and folders" onChange={(e) => setQuery(e.target.value)} />
                         <Search className="scale-75 absolute top-2 left-4" />
                     </div>
                 }
-                
             </div>
-
-            {/* not found */}
+            
             {
+                !debounceQuery ? 
                 isLoading ? <QuickAccessPageLoading /> : 
                 !data.lastUploadedFiles && !data.lastUpdatedFiles ? 
                 <div className="flex flex-col text-center items-center justify-center gap-4 mt-40 select-none pointer-events-none">
@@ -79,9 +128,28 @@ export default function QuickAccess() {
                     </>
                 }
                 </>
+                :
+                searchLoading ? <DrivePageLoading /> : 
+                !searchData?.files && !searchData?.folders ? 
+                <div className="flex flex-col text-center items-center justify-center gap-4 mt-44 select-none pointer-events-none">
+                    <SearchX width={200} height={200} />
+                    <p className="text-zinc-800 dark:text-zinc-200 text-sm">
+                        Sorry, we couldn't find any files or folders matching
+                        {" "} 
+                        <span className="font-semibold">'{debounceQuery}'</span>
+                    </p>
+                </div> :
+                <FilesAndFolders 
+                    data={driveData ? driveData : searchData}
+                    handleChangeDirectory={handleChangeDirectory}
+                    setSelectedItems={setSelectedItems}
+                    selectedItems={selectedItems}
+                />
             }
 
         </Animate>
+
+        <SelectionBar data={driveData ? driveData : searchData} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="quick-access" />
 
         </>
   )

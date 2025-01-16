@@ -140,6 +140,22 @@ const getLatestFiles = async (req, res) => {
     res.status(200).json({ lastUploadedFiles, lastUpdatedFiles });
 }
 
+// search files and folders
+const searchFilesAndFolders = async (req, res) => {
+    const { k } = req.query;
+    const user = req.user;  
+    
+    let files = await File.find({ owner: user._id, isDeleted: false, originalName: { $regex: `^${k}`, $options: 'i' } })
+        .select("_id parent originalName mimeType type isStarred isDeleted publicKey");
+    let folders = await Folder.find({ owner: user._id, isDeleted: false, name: { $regex: `^${k}`, $options: 'i' } })
+        .select("_id parent name isStarred isDeleted");
+
+    files = files.length === 0 ? null : files;
+    folders = folders.length === 0 ? null : folders;
+
+    res.status(200).json({ files, folders });
+}
+
 // get starred files and folders
 const getStarredFilesAndFolders = async (req, res) => {
     let parent = req.params.id;
@@ -748,6 +764,7 @@ module.exports = {
     uploadFile,
     getFilesAndFolders,
     getLatestFiles,
+    searchFilesAndFolders,
     getStarredFilesAndFolders,
     getTrashedFilesAndFolders,
     getFileDetails,
