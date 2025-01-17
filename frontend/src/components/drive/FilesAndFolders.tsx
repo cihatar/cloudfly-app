@@ -9,11 +9,13 @@ export default function FilesAndFolders({
     handleChangeDirectory,
     setSelectedItems,
     selectedItems, 
+    isSelecting,
 }: {
     data: { files: FileProps[], folders: FolderProps[] };
     handleChangeDirectory?: (folder: FolderProps) => void;
     setSelectedItems: React.Dispatch<React.SetStateAction<SelectedItemsProps>>;
     selectedItems: SelectedItemsProps;
+    isSelecting: boolean;
 }) {
     // handle select item
     const handleSelectItem = useCallback((item: FileProps | FolderProps, type: "file" | "folder") => {
@@ -49,7 +51,7 @@ export default function FilesAndFolders({
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (!target.closest('.item') && !target.closest('.select-all')) {
+            if (!isSelecting && !target.closest('.item') && !target.closest('.selection-bar')) {
                 setSelectedItems({ files: [], folders: [], count: 0 });
             }
         };
@@ -57,7 +59,7 @@ export default function FilesAndFolders({
         return () => {
             document.removeEventListener('click', handleClickOutside);
         };
-    }, []);
+    }, [isSelecting]);
 
      return (
         <> 

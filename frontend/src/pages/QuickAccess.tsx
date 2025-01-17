@@ -12,11 +12,13 @@ import FilesAndFolders from "@/components/drive/FilesAndFolders";
 import File from "@/components/drive/File";
 import { FileProps, FolderProps, SelectedItemsProps } from "./Drive";
 import SelectionBar from "@/components/drive/selection-bar/SelectionBar";
+import SelectionRectangle from "@/components/global/SelectionRectangle";
 
 export default function QuickAccess() {
     const [parent, setParent] = useState<string>("root");
     const [folderStack, setFolderStack] = useState<{_id: string, name: string}[]>([{ _id: parent, name: "Quick Access"}]);
     const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
+    const [isSelecting, setIsSelecting] = useState(false);
     const [query, setQuery] = useState("");
 
     const debounceQuery = useDebounce(query, 1000);
@@ -144,12 +146,16 @@ export default function QuickAccess() {
                     handleChangeDirectory={handleChangeDirectory}
                     setSelectedItems={setSelectedItems}
                     selectedItems={selectedItems}
+                    isSelecting={isSelecting}
                 />
             }
 
         </Animate>
 
         <SelectionBar data={driveData ? driveData : searchData} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="quick-access" />
+
+        {/* selection rectangle */}
+        <SelectionRectangle data={driveData ? driveData : searchData} setSelectedItems={setSelectedItems} setIsSelecting={setIsSelecting} />
 
         </>
   )

@@ -11,6 +11,7 @@ import { CustomButton } from "@/components/global/FormElements";
 import FilesAndFolders from "@/components/drive/FilesAndFolders";
 import SelectionBar from "@/components/drive/selection-bar/SelectionBar";
 import { DrivePageLoading } from "@/components/global/Loading";
+import SelectionRectangle from "@/components/global/SelectionRectangle";
 
 export interface FileProps {
     _id: string; 
@@ -42,6 +43,7 @@ export default function Drive() {
     const [fileNames, setFileNames] = useState<string[]>([]);
     const [folderStack, setFolderStack] = useState<{_id: string, name: string}[]>([{ _id: parent, name: "My Drive"}]);
     const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
+    const [isSelecting, setIsSelecting] = useState(false);
     const [droppedFiles, setDroppedFiles] = useState<FileList | null>(null);
     const [dragging, setDragging] = useState(false);
 
@@ -83,13 +85,12 @@ export default function Drive() {
         if (droppedFiles.length > 0) {
             setDroppedFiles(droppedFiles);
         }
-    };    
+    };
 
     return (
         <>
         {/* drag and drop */}
         <Animate 
-            className="h-full relative"
             onDragOver={(e) => e.preventDefault()}
             onDragEnter={() => setDragging(true)}
             onDragLeave={(e) => {
@@ -136,6 +137,7 @@ export default function Drive() {
                     handleChangeDirectory={handleChangeDirectory}
                     setSelectedItems={setSelectedItems}
                     selectedItems={selectedItems}
+                    isSelecting={isSelecting}
                 />
             }
             
@@ -149,7 +151,10 @@ export default function Drive() {
 
         {/* selection bar */}
         <SelectionBar data={data} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="drive" />
-           
+
+        {/* selection rectangle */}
+        <SelectionRectangle data={data} setSelectedItems={setSelectedItems} setIsSelecting={setIsSelecting} />
+
         </>
     )
 }

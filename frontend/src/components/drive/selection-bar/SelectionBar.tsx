@@ -27,11 +27,11 @@ export default function SelectionBar({ data, setSelectedItems, selectedItems, pa
     const selectAll = () => setSelectedItems({ files: data?.files || [], folders: data?.folders || [], count: (data?.files?.length || 0) + (data?.folders?.length || 0) });    
     
     return (
-        <div className={`transition-all shadow-md flex flex-col lg:flex-row items-center justify-center gap-2 p-4 text-xs rounded-md lg:rounded-full fixed bottom-0 left-1/2 transform -translate-x-1/2 z-10 border bg-white dark:bg-zinc-900
+        <div className={`selection-bar transition-all shadow-md flex flex-col lg:flex-row items-center justify-center gap-2 p-4 text-xs rounded-md lg:rounded-full fixed bottom-0 left-1/2 transform -translate-x-1/2 z-10 border bg-white dark:bg-zinc-900
             ${selectedItems.count ? `visible opacity-1 -translate-y-10` : `invisible opacity-0`} `}
         >
             <p className="text-xs text-center mx-2">{selectedItems.count + " items selected"}</p>
-            <CustomButton onClick={selectAll} type="button" variant="secondary" className="select-all w-full cursor-default rounded-full">
+            <CustomButton onClick={selectAll} type="button" variant="secondary" className="w-full cursor-default rounded-full">
                 <Wand />
                 Select All
             </CustomButton>

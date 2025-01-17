@@ -9,9 +9,11 @@ import { SelectedItemsProps } from './Drive';
 import SelectionBar from '@/components/drive/selection-bar/SelectionBar';
 import EmptyTrash from '@/components/drive/trash/EmptyTrash';
 import { DrivePageLoading } from '@/components/global/Loading';
+import SelectionRectangle from '@/components/global/SelectionRectangle';
 
 export default function Trash() {
     const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
+    const [isSelecting, setIsSelecting] = useState(false);
 
     const { data, isLoading } = useQuery({
         queryKey: ["trash"],
@@ -48,6 +50,7 @@ export default function Trash() {
                     data={data}
                     setSelectedItems={setSelectedItems}
                     selectedItems={selectedItems}
+                    isSelecting={isSelecting}
                 />
             }
 
@@ -55,6 +58,9 @@ export default function Trash() {
 
         {/* selection bar */}
         <SelectionBar data={data} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="trash" />
+
+        {/* selection rectangle */}
+        <SelectionRectangle data={data} setSelectedItems={setSelectedItems} setIsSelecting={setIsSelecting} />
 
         </>
     )

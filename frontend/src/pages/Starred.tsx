@@ -10,11 +10,13 @@ import { CustomButton } from '@/components/global/FormElements';
 import FilesAndFolders from '@/components/drive/FilesAndFolders';
 import SelectionBar from '@/components/drive/selection-bar/SelectionBar';
 import { DrivePageLoading } from '@/components/global/Loading';
+import SelectionRectangle from '@/components/global/SelectionRectangle';
 
 export default function Starred() {
     const [parent, setParent] = useState<string>("root");
     const [folderStack, setFolderStack] = useState<{_id: string, name: string}[]>([{ _id: parent, name: "Starred"}]);
     const [selectedItems, setSelectedItems] = useState<SelectedItemsProps>({ files: [], folders: [], count: 0 });
+    const [isSelecting, setIsSelecting] = useState(false);
 
     const { data, isLoading } = useQuery({
         queryKey: ["starred", parent],
@@ -72,6 +74,7 @@ export default function Starred() {
                     handleChangeDirectory={handleChangeDirectory}
                     setSelectedItems={setSelectedItems}
                     selectedItems={selectedItems}
+                    isSelecting={isSelecting}
                 />
             }
             
@@ -79,6 +82,9 @@ export default function Starred() {
 
         {/* selection bar */}
         <SelectionBar data={data} setSelectedItems={setSelectedItems} selectedItems={selectedItems} page="starred" />
+
+        {/* selection rectangle */}
+        <SelectionRectangle data={data} setSelectedItems={setSelectedItems} setIsSelecting={setIsSelecting} />
 
         </>
     )
