@@ -59,12 +59,17 @@
   }
 }
 
+* {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply font-sans antialiased dark:bg-blackdefault text-foreground;
+    @apply font-sans antialiased dark:bg-blackdefault text-foreground overflow-hidden;
   }
 }
 

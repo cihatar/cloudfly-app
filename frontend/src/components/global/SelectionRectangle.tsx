@@ -123,7 +123,7 @@ export default function SelectionRectangle({
 
     return isSelectionActive &&
         <div
-            className="absolute bg-bluedefault/25 z-30"
+            className="absolute bg-bluedefault/20 dark:bg-zinc-500/20 z-30"
             ref={containerRef}
             style={{
                 left: Math.min(startPosition.x, currentPosition.x),

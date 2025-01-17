@@ -41,7 +41,7 @@ export default function Starred() {
 
     return (
         <>
-        <Animate>
+        <Animate className="min-h-full p-6 lg:p-12">
 
             {/* title & button */}  
             <div className="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">

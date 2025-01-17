@@ -149,7 +149,7 @@ export default function Sidebar() {
                 {/* footer */}
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger className="cursor-default">
                         <div className="text-xs border rounded-md select-none flex flex-col justify-center items-center gap-2 p-2 mt-2">
                             {bytesToSize(user?.currentStorage)}
                             {" / "}
@@ -170,7 +170,7 @@ export default function Sidebar() {
             </div>
 
             {/* outlet */}
-            <div className="w-full lg:h-full p-6 lg:p-12 lg:overflow-y-auto">
+            <div className="w-full lg:h-full lg:overflow-y-auto">
                 <Outlet />
             </div>
 

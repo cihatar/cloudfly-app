@@ -15,6 +15,7 @@ import { useUploadContext } from "@/context/UploadContext";
 import { v4 as uuid } from 'uuid';
 import { useAppDispatch } from "@/store/hooks";
 import { setCurrentStorage } from "@/store/user/userSlice";
+import { Upload } from "lucide-react";
 
 export default function UploadFile({ parent, fileNames, isLoading, droppedFiles }: { parent: string, fileNames: string[], isLoading: boolean, droppedFiles: FileList | null }) {
     const [sameFiles, setSameFiles] = useState<string[]>([]);
@@ -119,7 +120,7 @@ export default function UploadFile({ parent, fileNames, isLoading, droppedFiles 
             />
             <CustomButton
                 type="button"
-                className="bg-bluedefault hover:bg-bluedefault/95 w-24 h-8 text-xs lg:w-32 lg:h-10 lg:text-sm shadow-md text-white"
+                className="bg-bluedefault hover:bg-bluedefault/95 text-white cursor-default rounded-full"
                 disabled={isLoading}
                 variant="default"
                 onClick={() => {
@@ -129,6 +130,7 @@ export default function UploadFile({ parent, fileNames, isLoading, droppedFiles 
                     }
                 }}
             >
+                <Upload />
                 Upload File
             </CustomButton>
 

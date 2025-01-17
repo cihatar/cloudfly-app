@@ -90,7 +90,7 @@ export default function Drive() {
     return (
         <>
         {/* drag and drop */}
-        <Animate 
+        <Animate className={`min-h-full p-6 lg:p-12 ${dragging && "transition-colors bg-bluedefault/10 outline-double outline-1 -outline-offset-4 outline-bluedefault rounded-md"}`}
             onDragOver={(e) => e.preventDefault()}
             onDragEnter={() => setDragging(true)}
             onDragLeave={(e) => {
@@ -144,7 +144,7 @@ export default function Drive() {
         </Animate>
 
         <div
-            className={`transition-all shadow-md flex items-center justify-center gap-2 p-4 text-xs text-white bg-bluedefault rounded-full fixed bottom-0 left-1/2 transform -translate-x-1/2 z-10 
+            className={`transition-all shadow-md flex items-center justify-center gap-2 p-4 text-sm text-white bg-bluedefault rounded-full fixed bottom-0 left-1/2 transform -translate-x-1/2 z-10 
             ${dragging ? `visible opacity-1 -translate-y-32` : `invisible opacity-0`} `}>
                 <HardDriveUpload className="scale-75" /> Drop files to upload
         </div>

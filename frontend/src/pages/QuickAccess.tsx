@@ -61,7 +61,7 @@ export default function QuickAccess() {
 
     return (
         <>
-        <Animate>
+        <Animate className="min-h-full p-6 lg:p-12">
 
             {/* title & search */}  
             <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 justify-between">

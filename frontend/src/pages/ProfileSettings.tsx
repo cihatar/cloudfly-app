@@ -12,7 +12,7 @@ export default function ProfileSettings() {
     const user = useAppSelector((state) => state.user.user);
 
     return (
-        <Animate>
+        <Animate className="min-h-full p-6 lg:p-12">
 
             {/* title */}
             <Title subtitle="Update and customize your profile information">

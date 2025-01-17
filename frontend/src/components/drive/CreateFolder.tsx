@@ -14,6 +14,7 @@ import { createFolder } from "@/api/api";
 import { useRef } from "react";
 import useCustomToast from "@/hooks/useCustomToast";
 import { FileProps, FolderProps } from "@/pages/Drive";
+import { FolderPlus } from "lucide-react";
 
 export default function CreateFolder({ parent, isLoading }: { parent: string, isLoading: boolean }) {
     // toast
@@ -53,11 +54,11 @@ export default function CreateFolder({ parent, isLoading }: { parent: string, is
             <DialogTrigger asChild>
                 <CustomButton
                     type="button" 
-                    className="border w-24 h-8 text-xs
-                    lg:w-32 lg:h-10 lg:text-sm shadow-md"
+                    className="cursor-default rounded-full"
                     disabled={isLoading}
                     variant="outline"
                 >
+                    <FolderPlus />
                     Create Folder
                 </CustomButton>
             </DialogTrigger>
