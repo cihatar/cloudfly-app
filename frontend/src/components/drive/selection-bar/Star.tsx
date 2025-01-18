@@ -17,6 +17,7 @@ export default function Star({ items }: { items: SelectedItemsProps }) {
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive']});
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
         },
         onError: (data: any) => {

@@ -62,6 +62,8 @@ export default function UploadFile({ parent, fileNames, isLoading, droppedFiles 
         onSuccess: (data) => {
             dispatch(setCurrentStorage(data.currentStorage))
             queryClient.invalidateQueries({ queryKey: ["drive", parent]});
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
+            queryClient.invalidateQueries({ queryKey: ['starred']});
         }
     });
 

@@ -31,6 +31,7 @@ export default function ShareFile({ _id, publicKey, isShareDialogOpen, setShareD
                     setLoading(false);
                     setCopied(false);
                 })
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
         },
         onError: (data: any) => {

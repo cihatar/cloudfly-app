@@ -22,7 +22,7 @@ export default function SelectionRectangle({
         if (target.closest(".item") || 
         target.offsetParent?.id.startsWith("radix") ||
         target.id.startsWith("radix") ||
-        target.closest(".selection-bar")) return;
+        target.closest(".select-all-button")) return;
 
         setStartPosition({
         x: e.clientX,

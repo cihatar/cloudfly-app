@@ -33,7 +33,7 @@ export default function FileActionsMenu({ _id, parent, originalName, isStarred, 
 
     return (
         <>
-            <Menubar className="absolute top-4 right-4 invisible">
+            <Menubar className="absolute top-2 right-2 invisible">
                 <MenubarMenu>
                     <MenubarTrigger className="p-0">
                         <EllipsisVertical className="w-8 h-8 p-2 rounded-full hover:bg-zinc-800/5 dark:hover:bg-zinc-200/5 group-hover:visible text-white" />

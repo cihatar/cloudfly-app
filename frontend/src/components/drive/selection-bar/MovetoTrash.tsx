@@ -31,6 +31,7 @@ export default function MovetoTrash({ items }: { items: SelectedItemsProps }) {
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive']});
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
             queryClient.invalidateQueries({ queryKey: ['trash']});
             cancelBtnRef.current?.click();

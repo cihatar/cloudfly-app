@@ -41,6 +41,7 @@ export default function Move({ _id, parent, type, isMoveDialogOpen, setMoveDialo
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive']});
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
             cancelBtnRef.current?.click();
         },

@@ -51,7 +51,7 @@ export default function FilesAndFolders({
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (!isSelecting && !target.closest('.item') && !target.closest('.selection-bar')) {
+            if (!isSelecting && !target.closest('.item') && !target.closest('.select-all-button')) {
                 setSelectedItems({ files: [], folders: [], count: 0 });
             }
         };

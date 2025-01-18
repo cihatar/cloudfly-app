@@ -16,6 +16,8 @@ export default function Restore({ _id, type }: { _id: string, type: string }) {
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive']});
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
+            queryClient.invalidateQueries({ queryKey: ['starred']});
             queryClient.invalidateQueries({ queryKey: ['trash']});
         },
         onError: (data: any) => {

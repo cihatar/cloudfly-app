@@ -16,6 +16,7 @@ export default function Unstar({ _id, type }: { _id: string, type: string }) {
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive']});
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
         },
         onError: (data: any) => {

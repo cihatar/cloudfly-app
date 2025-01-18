@@ -1,6 +1,7 @@
 import { FileProps, FolderProps } from "@/pages/Drive";
 import { getColor } from "@/utils/color";
 import FileActionsMenu from "./actions-menu/FileActionsMenu";
+import { StarIcon } from "lucide-react";
 
 export default function File({ 
     file, 
@@ -26,6 +27,12 @@ export default function File({
                 <p className="text-zinc-500 select-none">{file.type}</p>
             </div>
 
+            {/* star icon */}
+            {
+                file.isStarred &&
+                <StarIcon className="scale-50 absolute top-4 left-4 text-transparent fill-white invisible group-hover:visible" />
+            }
+           
             {/* overflow menu */}
             <FileActionsMenu {...file} />
 

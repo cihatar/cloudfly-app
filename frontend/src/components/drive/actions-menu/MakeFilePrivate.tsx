@@ -28,6 +28,7 @@ export default function MakeFilePrivate({ _id, isPrivateDialogOpen, setPrivateDi
         onSuccess: (data) => {
             showToast(data.message);
             queryClient.invalidateQueries({ queryKey: ['drive']});
+            queryClient.invalidateQueries({ queryKey: ['quick-access']});
             queryClient.invalidateQueries({ queryKey: ['starred']});
             cancelBtnRef.current?.click();
         },
