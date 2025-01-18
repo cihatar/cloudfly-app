@@ -23,26 +23,22 @@ import { Progress } from "../ui/progress";
 import LogoutButton from "../auth/LogoutButton";
 import UploadProgress from "./UploadProgress";
 import { bytesToSize, convertToPercentage } from "@/utils/convert";
+import { isMobile } from "@/store/sidebar/sidebarReducer";
 
 export default function Sidebar() {
-    // show sidebar 
-    const [showSidebar, setShowSidebar] = useState(false);
-
     // redux
-    const user = useAppSelector((state) => state.user.user);
+    const isSidebarOpen = useAppSelector((state) => state.sidebar?.isSidebarOpen);
+    const user = useAppSelector((state) => state.user.user);        
 
     return (
-        <div className="screen-with-sidebar h-screendefault overflow-auto">
-
-            <div className="lg:hidden absolute top-3 left-3 cursor-pointer" onClick={() => setShowSidebar(!showSidebar)}>
-                <AlignJustify className="scale-75"/>
-            </div>
+        <div className={`${isMobile ? "screen-with-sidebar" : !isSidebarOpen ? "screen-with-small-sidebar" : "screen-with-sidebar"} h-screendefault overflow-auto`}>
             
-            <div className={`w-full bg-zinc-100 dark:bg-zinc-900 px-6 py-4 flex flex-col justify-between z-10 lg:flex ${!showSidebar && 'hidden'}`}>
+            {/* sidebar */}
+            <div className={`w-full border-r px-6 py-4 flex flex-col justify-between z-10 ${!isSidebarOpen && 'hidden'}`}>
                 <div>
                     {/* header */}
                     <DropdownMenu>
-                        <DropdownMenuTrigger className="w-full flex justify-between items-center mb-4 p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800">
+                        <DropdownMenuTrigger className="w-full flex justify-between items-center mb-4 p-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800">
                             <div className="w-full flex items-center justify-between">
                                 <div className="flex items-center gap-2">
 
@@ -67,14 +63,6 @@ export default function Sidebar() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                                 <Link
-                                    to="/profile"
-                                    className="flex items-center gap-1"
-                                >
-                                    Profile
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Link
                                     to="/profile/settings"
                                     className="flex items-center gap-1"
                                 >
@@ -95,7 +83,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 to="/drive"
-                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                 >
                                 <div className="flex items-center gap-2">
                                     <HardDrive className="scale-75" />
@@ -108,7 +96,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 to="/quick-access"
-                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                 >
                                 <div className="flex items-center gap-2">
                                     <FileStack className="scale-75" />
@@ -121,7 +109,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 to="/starred"
-                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                 >
                                 <div className="flex items-center gap-2">
                                     <FolderHeart className="scale-75" />
@@ -134,7 +122,7 @@ export default function Sidebar() {
                         <li>
                             <NavLink
                                 to="/trash"
-                                className="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
                                 >
                                 <div className="flex items-center gap-2">
                                     <Trash2 className="scale-75" />
@@ -147,7 +135,7 @@ export default function Sidebar() {
                 </div>
 
                 {/* footer */}
-                <TooltipProvider>
+                <TooltipProvider delayDuration={200}>
                     <Tooltip>
                         <TooltipTrigger className="cursor-default">
                         <div className="text-xs border rounded-md select-none flex flex-col justify-center items-center gap-2 p-2 mt-2">
@@ -169,11 +157,115 @@ export default function Sidebar() {
                 
             </div>
 
+            {/* small sidebar for desktop */}
+            {
+                !isMobile && !isSidebarOpen && 
+                <div className="hidden lg:flex w-20 h-screendefault p-4 border-r flex-col gap-2 items-center">
+                    {/* header */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger className="p-2 rounded-full">
+                            <div className="w-full flex items-center justify-between">
+                                <img src={user?.profileImage} alt={user?.firstName} className="rounded-full w-8 h-8"/>
+                            </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <Link
+                                    to="/profile/settings"
+                                    className="flex items-center gap-1"
+                                >
+                                    Settings
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <LogoutButton />
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <ul className="flex flex-col gap-2">
+                        <li>
+                            <TooltipProvider delayDuration={200}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <NavLink
+                                            to="/drive"
+                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                            >
+                                            <HardDrive className="scale-75" />
+                                        </NavLink>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
+                                    <p>My Drive</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </li>
+
+                        <li>
+                            <TooltipProvider delayDuration={200}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <NavLink
+                                            to="/quick-access"
+                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                            >
+                                            <FileStack className="scale-75" />
+                                        </NavLink>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
+                                    <p>Quick Access</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </li>
+
+                        <li>
+                            <TooltipProvider delayDuration={200}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <NavLink
+                                            to="/starred"
+                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                            >
+                                            <FolderHeart className="scale-75" />
+                                        </NavLink>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
+                                    <p>Starred</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </li>
+
+                        <li>
+                            <TooltipProvider delayDuration={200}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <NavLink
+                                            to="/trash"
+                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                                            >
+                                            <Trash2 className="scale-75" />
+                                        </NavLink>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
+                                    <p>Trash</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </li>
+                    </ul>
+                </div>
+            }
+
             {/* outlet */}
             <div className="w-full lg:h-full lg:overflow-y-auto">
                 <Outlet />
             </div>
 
+            {/* upload progress */}
             <UploadProgress />
             
         </div>

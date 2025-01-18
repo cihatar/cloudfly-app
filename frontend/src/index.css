@@ -83,10 +83,13 @@
   .screen-with-sidebar {
     @apply lg:grid lg:grid-cols-[280px,1fr];
   }
+  .screen-with-small-sidebar {
+    @apply lg:grid lg:grid-cols-[80px,1fr];
+  }
 }
 
 .active {
-  @apply bg-zinc-200 dark:bg-zinc-800;
+  @apply bg-zinc-100 dark:bg-zinc-900;
 }
 
 @keyframes ripple {
