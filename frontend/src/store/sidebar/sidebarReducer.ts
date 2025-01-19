@@ -1,28 +1,27 @@
 import { Action } from "redux";
 
-export const OPEN_SIDEBAR_DESKTOP = "OPEN_SIDEBAR_DESKTOP";
-export const OPEN_SIDEBAR_MOBILE = "OPEN_SIDEBAR_MOBILE";
-export const isMobile = window.screen.width < 1024;
+export const TOGGLE_SIDEBAR_DESKTOP = "TOGGLE_SIDEBAR_DESKTOP";
+export const TOGGLE_SIDEBAR_MOBILE = "TOGGLE_SIDEBAR_MOBILE";
 
 const getSidebarState = (): boolean | null => {
     const sidebarState = localStorage.getItem("sidebar");
     return sidebarState !== null ? JSON.parse(sidebarState) : true;
 };
 
-
 const initialState = {
-    isSidebarOpen: isMobile ? false : getSidebarState(),
+    isDesktopSidebarOpen: getSidebarState(),
+    isMobileSidebarOpen: false,
 };
 
 export default function sidebarReducer(state = initialState, action: Action) {
     switch (action.type) {
-        case OPEN_SIDEBAR_DESKTOP:
-            const newState = !state.isSidebarOpen;
+        case TOGGLE_SIDEBAR_DESKTOP:
+            const newState = !state.isDesktopSidebarOpen;
             localStorage.setItem("sidebar", JSON.stringify(newState));
-            return { ...state, isSidebarOpen: newState };
+            return { ...state, isDesktopSidebarOpen: newState };
 
-        case OPEN_SIDEBAR_MOBILE:
-            return { ...state, isSidebarOpen: !state.isSidebarOpen };
+        case TOGGLE_SIDEBAR_MOBILE:
+            return { ...state, isMobileSidebarOpen: !state.isMobileSidebarOpen };
 
         default:
             return state;

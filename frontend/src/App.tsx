@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import VerifyToken from "./components/global/VerifyToken";
 import Navbar from "./components/global/Navbar";
-import Sidebar from "./components/global/Sidebar";
+import Layout from "./components/global/Layout";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
@@ -39,7 +39,7 @@ function AppRoutes() {
 
                                 {/* private routes */}
                                 <Route path="*" element={user ? <NoPage /> : <Navigate to="/auth/login" />} />
-                                <Route element={user ? <Sidebar /> : <Navigate to="/auth/login" />}>
+                                <Route element={user ? <Layout /> : <Navigate to="/auth/login" />}>
                                     <Route path="/drive" element={<Drive />} />
                                     <Route path="/quick-access" element={<QuickAccess />} />
                                     <Route path="/starred" element={<Starred />} />

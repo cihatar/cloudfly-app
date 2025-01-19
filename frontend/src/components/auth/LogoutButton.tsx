@@ -43,7 +43,7 @@ export default function LogoutButton() {
             type="button"
             variant="secondary"
             effect={false}
-            className="h-5 bg-transparent p-0 font-normal"
+            className="w-full justify-start h-5 bg-transparent focus:bg-transparent p-0 font-normal cursor-default"
         >
                 Logout
         </CustomButton>

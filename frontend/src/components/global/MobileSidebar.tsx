@@ -1,7 +1,4 @@
-import { useState } from "react";
-import { useAppSelector } from "@/store/hooks";
 import {
-    AlignJustify,
     ChevronRight,
     FileStack,
     FolderHeart,
@@ -9,7 +6,7 @@ import {
     Settings,
     Trash2,
 } from "lucide-react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -21,20 +18,14 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Progress } from "../ui/progress";
 import LogoutButton from "../auth/LogoutButton";
-import UploadProgress from "./UploadProgress";
 import { bytesToSize, convertToPercentage } from "@/utils/convert";
-import { isMobile } from "@/store/sidebar/sidebarReducer";
+import { User } from "@/store/user/userSlice";
 
-export default function Sidebar() {
-    // redux
-    const isSidebarOpen = useAppSelector((state) => state.sidebar?.isSidebarOpen);
-    const user = useAppSelector((state) => state.user.user);        
-
+export default function MobileSidebar({ user, isSidebarOpen }: { user: User | null; isSidebarOpen: boolean | null; }) {
     return (
-        <div className={`${isMobile ? "screen-with-sidebar" : !isSidebarOpen ? "screen-with-small-sidebar" : "screen-with-sidebar"} h-screendefault overflow-auto`}>
-            
+        <>
             {/* sidebar */}
-            <div className={`w-full border-r px-6 py-4 flex flex-col justify-between z-10 ${!isSidebarOpen && 'hidden'}`}>
+            <div className={`w-[280px] h-[calc(100%-3rem)] absolute bg-white dark:bg-blackdefault px-6 py-4 flex flex-col justify-between z-50 transition-transform duration-300 transform -translate-x-[100%] ${isSidebarOpen && 'translate-x-[0] shadow-xl'}`}>
                 <div>
                     {/* header */}
                     <DropdownMenu>
@@ -61,7 +52,7 @@ export default function Sidebar() {
                         <DropdownMenuContent>
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
+                            <DropdownMenuItem asChild>
                                 <Link
                                     to="/profile/settings"
                                     className="flex items-center gap-1"
@@ -156,118 +147,6 @@ export default function Sidebar() {
                 </TooltipProvider>
                 
             </div>
-
-            {/* small sidebar for desktop */}
-            {
-                !isMobile && !isSidebarOpen && 
-                <div className="hidden lg:flex w-20 h-screendefault p-4 border-r flex-col gap-2 items-center">
-                    {/* header */}
-                    <DropdownMenu>
-                        <DropdownMenuTrigger className="p-2 rounded-full">
-                            <div className="w-full flex items-center justify-between">
-                                <img src={user?.profileImage} alt={user?.firstName} className="rounded-full w-8 h-8"/>
-                            </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <Link
-                                    to="/profile/settings"
-                                    className="flex items-center gap-1"
-                                >
-                                    Settings
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <LogoutButton />
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                    <ul className="flex flex-col gap-2">
-                        <li>
-                            <TooltipProvider delayDuration={200}>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <NavLink
-                                            to="/drive"
-                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
-                                            >
-                                            <HardDrive className="scale-75" />
-                                        </NavLink>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
-                                    <p>My Drive</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </li>
-
-                        <li>
-                            <TooltipProvider delayDuration={200}>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <NavLink
-                                            to="/quick-access"
-                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
-                                            >
-                                            <FileStack className="scale-75" />
-                                        </NavLink>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
-                                    <p>Quick Access</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </li>
-
-                        <li>
-                            <TooltipProvider delayDuration={200}>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <NavLink
-                                            to="/starred"
-                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
-                                            >
-                                            <FolderHeart className="scale-75" />
-                                        </NavLink>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
-                                    <p>Starred</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </li>
-
-                        <li>
-                            <TooltipProvider delayDuration={200}>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <NavLink
-                                            to="/trash"
-                                            className="flex justify-between p-2 rounded-full cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800"
-                                            >
-                                            <Trash2 className="scale-75" />
-                                        </NavLink>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="absolute whitespace-nowrap left-6 top-1">
-                                    <p>Trash</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        </li>
-                    </ul>
-                </div>
-            }
-
-            {/* outlet */}
-            <div className="w-full lg:h-full lg:overflow-y-auto">
-                <Outlet />
-            </div>
-
-            {/* upload progress */}
-            <UploadProgress />
-            
-        </div>
+        </>
     );
 }
