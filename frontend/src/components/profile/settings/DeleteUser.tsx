@@ -10,6 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { useUploadContext } from "@/context/UploadContext";
 import useCustomToast from "@/hooks/useCustomToast";
 import { useAppDispatch } from "@/store/hooks";
 import { deleteUser } from "@/store/user/userSlice";
@@ -20,6 +21,9 @@ import { useNavigate } from "react-router-dom";
 export default function DeleteUser() {
     // redux
     const dispatch = useAppDispatch();
+
+    // context
+    const { closeUploadProgress } = useUploadContext();
 
     // checkbox 
     const [checked, setChecked] = useState(false);
@@ -44,6 +48,7 @@ export default function DeleteUser() {
             .then((res) => {
                 showToast(res.message);
                 queryClient.clear();
+                closeUploadProgress();
                 navigate("/");
             })
             .catch((err) => {

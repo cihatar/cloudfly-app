@@ -1,15 +1,18 @@
-import React from "react";
 import useCustomToast from "@/hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/user/userSlice";
 import { CustomButton } from "../global/FormElements";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUploadContext } from "@/context/UploadContext";
 
 export default function LogoutButton() {
     // redux
     const dispatch = useAppDispatch();
 
+    // context
+    const { closeUploadProgress } = useUploadContext();
+    
     // navigate
     const navigate = useNavigate();
 
@@ -26,6 +29,7 @@ export default function LogoutButton() {
             .then((res) => {
                 showToast(res.message);
                 queryClient.clear();
+                closeUploadProgress();
                 navigate("/");
             })
             .catch((err) => {
