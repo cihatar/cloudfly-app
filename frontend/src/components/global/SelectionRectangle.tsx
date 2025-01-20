@@ -96,9 +96,7 @@ export default function SelectionRectangle({
                     count: selectedFiles?.length + selectedFolders?.length,
                 } as SelectedItemsProps;          
 
-                requestAnimationFrame(() => {
-                    setSelectedItems(updatedSelection);
-                })
+                setSelectedItems(updatedSelection);
             }
 
             setSelectionActive(false);
